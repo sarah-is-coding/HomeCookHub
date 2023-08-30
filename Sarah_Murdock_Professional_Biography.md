@@ -50,7 +50,7 @@ I am seeking to create a project that bridges the gap between traditional and di
 
 ## Project Ideas:
 
-RecipeRoster
+### RecipeRoster
 
 An app for sharing and organizing recipes, planning meals, and generating grocery lists.
 
@@ -58,7 +58,7 @@ Tech Stack: React/Angular/Vue.js for frontend, Express.js/Django/Flask for backe
 
 Potential Features: User authentication, CRUD operations for recipes, and integrated feedback system.
 
-BookBridges/LitLend
+### BookBridges/LitLend
 
 An online platform for exchanging, lending, or selling books.
 
