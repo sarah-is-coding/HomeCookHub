@@ -44,11 +44,7 @@ Highlights:
 
 - Evaluated open-source tools through extensive research.
 
-## Project Sought
-
-I am seeking to create a project that bridges the gap between traditional and digital reading experiences, be it through a platform for sharing and exchanging books or an innovative recipe sharing system. I'm keen on working on a project that involves a combination of frontend and backend development, integrates with various APIs, and provides real value to its user base.
-
-## Project Ideas:
+## Projects Sought
 
 ### RecipeRoster
 
