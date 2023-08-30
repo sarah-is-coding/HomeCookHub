@@ -13,7 +13,7 @@ Logging Magic (Web Analytics Startup Company), Remote
 
 Duration: May 2023 - August 2023
 
-Technical Skills: Laravel, PHP, HTML, React, CSS, JavaScript, Laravel's Eloquent ORM, AWS
+Technical Skills: Laravel, PHP, HTML, React, CSS, JavaScript, AWS
 
 Non-Technical Skills: Agile development, teamwork, project management, user experience design
 
