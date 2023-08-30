@@ -66,4 +66,5 @@ Tech Stack: Use QuaggaJS for barcode scanning, GitHub pages for frontend, and He
 
 Core Features: User profiles, book listings, transaction mechanism, review system, and author profiles.
 
+
 These project ideas resonate with my background in both web development and computer science, and I am eager to take on the challenge of bringing them to fruition.
