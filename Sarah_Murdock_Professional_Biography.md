@@ -10,9 +10,13 @@ discord : gammaraybear
 
 ### Web Development Intern
 Logging Magic (Web Analytics Startup Company), Remote
+
 Duration: May 2023 - August 2023
-Technical Skills: Laravel, CSS, JavaScript, Laravel's Eloquent ORM, AWS
+
+Technical Skills: Laravel, PHP, HTML, React, CSS, JavaScript, Laravel's Eloquent ORM, AWS
+
 Non-Technical Skills: Agile development, teamwork, project management, user experience design
+
 Highlights:
 
 - Collaborated in a three-person team, utilizing Jira in an AWS environment.
@@ -23,9 +27,13 @@ Highlights:
 
 ### Computer Science Intern
 Booz Allen Hamilton, Beavercreek, OH
+
 Duration: January 2021 - January 2023
+
 Technical Skills: Python, Jupyter Notebook, Pandas, Matplotlib, C, Verilator, Yosys
+
 Non-Technical Skills: Agile (Scrum and Kanban methodologies), briefing, research, testing
+
 Highlights:
 
 - Developed and optimized emitter identification algorithms using Python.
