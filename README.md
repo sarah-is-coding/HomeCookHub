@@ -2,7 +2,7 @@
 
 ## Project Abstract with Problem Statement:
 
-HomeCookHub aims to address the everyday challenge faced by millions: "What should I cook today?" While there's an abundance of recipes online, finding a centralized platform where one can not only discover diverse recipes but also plan meals, track dietary preferences, generate grocery lists, and collaborate with a community is a noticeable gap. Our application looks to bridge this divide by offering a comprehensive solution.
+HomeCookHub aspires to unify the fragmented world of online culinary resources into a singular, holistic platform. Our primary goal is to confront and simplify the multifaceted challenges encountered by home cooks. These range from planning varied and nutritious meals, maintaining organized grocery lists, customizing recipes to align with specific dietary restrictions, acquiring new culinary skills, to making environmentally conscious and sustainable decisions in the kitchen.
 
 ## Inadequacy of Current Solutions:
 
