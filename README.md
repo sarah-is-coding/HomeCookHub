@@ -1,4 +1,4 @@
-# HomeCookHub Senior Design Project
+# HomeCookHub 
 
 ## Project Abstract with Problem Statement:
 
