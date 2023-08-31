@@ -6,6 +6,9 @@ Major: Computer Science
 Email: murdocsg@mail.uc.edu
 
 ## Preston Savey
+
+Major: Computer Science 
+
 ## Mary Meineke
 
 Major: Computer Science
@@ -13,6 +16,9 @@ Major: Computer Science
 Email: meinekme@mail.uc.edu
 
 ## John Thompson
+
+Major: Computer Science 
+
 ### Project Description
 HomeCookHub: 
 
