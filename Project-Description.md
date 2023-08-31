@@ -2,6 +2,8 @@
 ### Sarah Murdock
 ### Preston Savey
 ### Mary Meineke
+Major: Computer Science
+Email: meinekme@mail.uc.edu
 ### John Thompson
 ### Project Description
 HomeCookHub: 
