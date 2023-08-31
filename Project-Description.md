@@ -9,6 +9,8 @@ Email: murdocsg@mail.uc.edu
 
 Major: Computer Science 
 
+Email:
+
 ## Mary Meineke
 
 Major: Computer Science
@@ -18,6 +20,8 @@ Email: meinekme@mail.uc.edu
 ## John Thompson
 
 Major: Computer Science 
+
+Email:
 
 ### Project Description
 HomeCookHub: 
