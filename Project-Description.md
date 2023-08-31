@@ -1,10 +1,10 @@
 ### Team Name: HomeCookHub Group
-### Sarah Murdock
-### Preston Savey
-### Mary Meineke
+## Sarah Murdock
+## Preston Savey
+## Mary Meineke
 Major: Computer Science
 Email: meinekme@mail.uc.edu
-### John Thompson
+## John Thompson
 ### Project Description
 HomeCookHub: 
 
