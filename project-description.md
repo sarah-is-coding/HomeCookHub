@@ -9,7 +9,7 @@ Email: murdocsg@mail.uc.edu
 
 Major: Computer Science 
 
-Email:
+Email: saveypc@mail.uc.edu
 
 ### Mary Meineke
 
