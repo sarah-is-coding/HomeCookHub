@@ -21,7 +21,7 @@ Email: meinekme@mail.uc.edu
 
 Major: Computer Science 
 
-Email:
+Email: thomp5je@mail.uc.edu
 
 ## Project Description
 HomeCookHub: 
