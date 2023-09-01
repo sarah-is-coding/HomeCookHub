@@ -3,7 +3,9 @@
 
 Major: Computer Science 
 
-Email: murdocsg@mail.uc.edu
+Email: murdocsg@mail.uc.edu,
+       sg.mdoc7@gmail.com
+
 
 ### Preston Savey
 
