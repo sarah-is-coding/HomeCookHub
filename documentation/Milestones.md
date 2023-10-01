@@ -17,7 +17,7 @@ Consists of:
 - A way to add ratings and reviews to recipes
 - User guides to help new users figure out how to use the application
 
-**Version 3:**
+**Version 3**
 Consists of:
 - Version 3 along with:
 - improved bug fixes and performance
