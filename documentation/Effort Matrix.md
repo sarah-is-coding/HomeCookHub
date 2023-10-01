@@ -1,4 +1,5 @@
 | Task | Sarah | Preston | John | Mary |
+| ----------- | ----------- | ----------- | ----------- | ----------- |
 | Research web UI design | 45% | 45% | 5% | 5% |
 | Design the UI/UX | 45% | 45% | 5% | 5% |
 | Setup Base Enviroment | 5% | 5% | 45% | 45% |
