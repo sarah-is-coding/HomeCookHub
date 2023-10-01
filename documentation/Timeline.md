@@ -1,4 +1,5 @@
 | Task | Start Date | End Date |
+| ----------- | ----------- |----------- |
 | Research web UI design | 9/26 | 10/10 |
 | Design the UI/UX | 9/26 | 10/10 |
 | Setup Base Enviroment | 9/26 | 10/10 |
