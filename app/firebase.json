@@ -8,7 +8,7 @@
     ]
   },
   "functions": {
-    "source": "functions"
+    "source": "backend/functions"
   },
   "storage": {
     "rules": "storage.rules"
