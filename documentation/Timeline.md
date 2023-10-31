@@ -2,10 +2,10 @@
 | ----------- | ----------- |----------- |
 | Research web UI design | 9/26 | 10/10 |
 | Design the UI/UX | 9/26 | 10/10 |
-| Setup Base Enviroment | 9/26 | 10/10 |
-| Research and Setup Mobile Support | 9/26 | 10/10 |
-| Implement Web UI | 10/10 | 10/24 |
+| Research and Setup Mobile Support | 9/26 | 10/25 |
 | Implement Mobile UI | 10/24 | 11/7 |
+| Setup Base Enviroment | 9/26 | 11/12 |
+| Implement Web UI | 10/10 | 11/12|
 | Database Design and Implementation | 10/10 | 10/24 |
 | Design User Workflow | 10/10 | 10/24 |
 | Create Login Mechanism: | 10/17 | 10/31 |
