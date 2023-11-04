@@ -10,14 +10,30 @@ const HomeContainer = styled.div`
 
 const Title = styled.h1`
   color: ${theme.colors.black};
+  font-family: ${theme.fonts.title};
   position: absolute;
-  left: 35px; // Adjust as needed for padding from the left edge
-  top: 50%;
+  left: 120px; // Adjust as needed for padding from the left edge
+  top: 45%;
   transform: translateY(-50%); // To center it vertically
   width: calc(
     100% - 40px
   ); // Assuming you want to keep 20px padding on both sides
   text-align: left;
+  font-size: 4rem;
+`;
+
+const Body = styled.h1`
+  color: ${theme.colors.black};
+  font-family: ${theme.fonts.primary};
+  position: absolute;
+  left: 120px; // Adjust as needed for padding from the left edge
+  top: 65%;
+  transform: translateY(-50%); // To center it vertically
+  width: calc(
+    100% - 40px
+  ); // Assuming you want to keep 20px padding on both sides
+  text-align: left;
+  font-size: 1rem;
 `;
 
 const ImageContainer = styled.div`
@@ -37,12 +53,15 @@ const HomePage: React.FC = () => {
     <HomeContainer>
       <ImageContainer>
         <Title>
-          Your Ultimate Home Cook Companion: Seamless
+          Your Ultimate
           <br />
-          Meal Planning, Recipe Discovery, Automated
-          <br />
-          Grocery Lists and more
+          Home Cook Companion
         </Title>
+        <Body>
+          Seamless Meal Planning, Recipe Discovery,
+          <br />
+          Automated Grocery Lists and more
+        </Body>
       </ImageContainer>
     </HomeContainer>
   );

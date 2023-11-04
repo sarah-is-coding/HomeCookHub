@@ -1,6 +1,7 @@
 const theme = {
   fonts: {
     primary: "'DM Sans', sans-serif",
+    title: "'Playfair Display', serif",
   },
   colors: {
     white: '#ffffff',
