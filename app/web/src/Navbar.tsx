@@ -1,7 +1,7 @@
 // Navbar.tsx
 import React from "react";
 import styled from "styled-components";
-// import { NavLink } from 'react-router-dom'; // Uncomment when you install react-router-dom
+import { Link } from "react-router-dom";
 import theme from "./theme";
 
 const NavbarContainer = styled.nav`
@@ -14,7 +14,7 @@ const NavbarContainer = styled.nav`
   align-items: center;
 `;
 
-const NavLogo = styled.a`
+const NavLogo = styled(Link)`
   color: ${theme.colors.black};
   text-decoration: none;
   font-weight: bold;
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
   return (
     <NavbarContainer>
       {/* Logo will link to the home page */}
-      <NavLogo href="/">
+      <NavLogo to="/">
         <img
           src="./logo.svg"
           alt="Company Logo"
