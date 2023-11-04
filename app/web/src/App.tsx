@@ -12,7 +12,7 @@ import { Link, NavLink } from "react-router-dom";
 function App() {
   return (
     <>
-      <Navbar />;
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
       </Routes>

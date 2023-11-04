@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
         <img
           src="./logo.svg"
           alt="Company Logo"
-          style={{ marginRight: "10px", width: "190px", height: "auto" }}
+          style={{ marginRight: "10px", width: "200px", height: "auto" }}
         />
       </NavLogo>
       {/* Navigation items */}
