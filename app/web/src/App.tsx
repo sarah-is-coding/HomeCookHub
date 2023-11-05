@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import Navbar from "./components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import HomePage from "./pages/HomePage";
+import RecipeSearchPage from "./pages/RecipeSearchPage";
 
 // Importing BrowserRouter, Routes, and Route components from react-router-dom
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,6 +16,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/recipes" element={<RecipeSearchPage />} />
       </Routes>
     </>
   );
