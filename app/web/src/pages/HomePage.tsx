@@ -58,9 +58,8 @@ const HomePage: React.FC = () => {
           Home Cook Companion
         </Title>
         <Body>
-          Seamless Meal Planning, Recipe Discovery,
-          <br />
-          Automated Grocery Lists and more
+          Seamless Meal Planning, Recipe Discovery, Automated Grocery Lists and
+          more
         </Body>
       </ImageContainer>
     </HomeContainer>

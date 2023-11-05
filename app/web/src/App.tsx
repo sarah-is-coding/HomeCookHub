@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "./logo.svg";
-import Navbar from "./Navbar";
+import Navbar from "./components/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import HomePage from "./pages/HomePage";
 
