@@ -1,44 +1,51 @@
 // pages/RecipeSearchPage.tsx
 
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import theme from "../theme";
+import SearchBar from "../components/SearchBar";
 
 const RecipeSearchContainer = styled.div`
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5%;
 `;
 
 const Title = styled.h1`
   color: ${theme.colors.black};
   font-family: ${theme.fonts.title};
-  position: absolute;
-  top: 15%;
-  transform: translateY(-50%); // To center it vertically
-  width: calc(
-    100% - 40px
-  ); // Assuming you want to keep 20px padding on both sides
   text-align: center;
   font-size: 4rem;
+  margin-bottom: 2rem; /* Space between title and search bar */
 `;
 
 const Body = styled.h1`
   color: ${theme.colors.black};
   font-family: ${theme.fonts.primary};
   position: absolute;
-  left: 120px; // Adjust as needed for padding from the left edge
+  left: 120px;
   top: 65%;
   transform: translateY(-50%); // To center it vertically
-  width: calc(
-    100% - 40px
-  ); // Assuming you want to keep 20px padding on both sides
+  width: calc(100% - 40px);
   text-align: left;
   font-size: 1rem;
 `;
 
 const RecipeSearchPage: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    // search logic, such as filtering recipes
+  };
+
   return (
     <RecipeSearchContainer>
       <Title>Recipes</Title>
+      <SearchBar onSearch={handleSearch} />
+      {/* Display recipes or search results here */}
     </RecipeSearchContainer>
   );
 };

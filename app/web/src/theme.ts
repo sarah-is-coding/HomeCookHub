@@ -8,6 +8,7 @@ const theme = {
     black: '#2C2F24',
     primary: '#9B2D2B',
     light: '#FFF4E1',
+    grey: '#737865',
   },
 };
 
