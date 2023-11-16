@@ -53,4 +53,6 @@
 
 ### 9. Budget
 
+There has not been any expenses
+
 ### 10. Appendix
