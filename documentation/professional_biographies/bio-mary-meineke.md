@@ -6,7 +6,7 @@ Email: mary.meineke@icloud.com
 
 ## Co-op Experience
 ### IS Co-op, Lubrizol, 2 quarters
-- Developed a web application useing .NET framework, Javascript, and HTML that allowed users to interface with data stored in Microsoft SQL Management Studio
+- Developed a web application using .NET framework, Javascript, and HTML which allowed users to interface with data stored in Microsoft SQL Management Studio
 - Assissted in elevated the primary email domain to a higher DMARC standard
 - Updated and improved all email knowledge base articles
 - Created an introduction guide to SQL and Microsoft SQL Management Studio
@@ -19,7 +19,8 @@ Email: mary.meineke@icloud.com
 
 ## Skills/Expertise areas
 - Programming: C, C++, python
-- App Developement in Python as well as with use of the .NET framework
+- App Developement in Python4
+- .NET framework
 - Web development with HTML and Javascript
 - Knowledge of SQL
 - Creating clear technical documentation
