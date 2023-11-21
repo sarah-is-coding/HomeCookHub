@@ -35,7 +35,7 @@
 
 ### 5. [ABET Concerns Essay](documentation/Project%20Constraints.md)
 
-### 6. Powerpoint Slideshow
+### 6. [Powerpoint Slideshow](documentation/Design%20Presentation.pptx)
 
 ### 7. Self Assessment Essays
 
