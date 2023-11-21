@@ -1,7 +1,8 @@
 # Meetings
 | Date | Meeting Subject |
 | ----------- | ----------- |
-| 9/5/2023 | First full team meeting, Assignment 3: Team contract |
+| 8/31/2023 | First Full Team meeting, Assignment 2 |
+| 9/5/2023 | Assignment 3: Team contract |
 | 9/14/2023 | Assignment #4 |
 | 9/19/2023 | Assignment #5 |
 | 9/20/2023 | Assignment #5 |
