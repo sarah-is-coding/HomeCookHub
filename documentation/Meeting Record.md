@@ -19,3 +19,4 @@
 | 11/9/2023 | Frontend & Backend Meetings |
 | 11/14/2023 | Standup |
 | 11/16/2023 | Standup & Assignment 10 |
+| 11/21/2023 | Assignment 10 & Standup |
