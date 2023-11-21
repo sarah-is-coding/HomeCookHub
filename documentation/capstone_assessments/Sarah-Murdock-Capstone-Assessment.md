@@ -1,4 +1,6 @@
 HomeCookHub: Streamlining the Culinary Experience
+
+
 The digital era has drastically transformed our lifestyle, including our dining habits. As a
 computer science enthusiast nearing my graduation, I am excited to present my senior design
 project, "HomeCookHub". It's not just another recipe-sharing platform; it’s an integrative
@@ -7,6 +9,8 @@ with the tools to upload, share recipes, generate grocery lists, and even create
 tailored to personal dietary preferences and existing pantry stocks. As someone passionate
 about technology's impact on our daily lives, I am committed to making this platform user-centric
 and efficient.
+
+
 The robust curriculum of the University of Cincinnati has provided me with both theoretical
 knowledge and practical skills to take on such an ambitious project. Courses like Software
 Engineering and Database Design & Dev (where I mastered SQL) will guide the backbone
@@ -24,6 +28,8 @@ into algorithm optimization, a skill vital for HomeCookHub's recipe suggestions 
 generation functions. Collaborating with teams and presenting findings has honed my
 communication skills, ensuring that I can effectively gather user feedback and implement
 necessary changes to the platform.
+
+
 My motivation for HomeCookHub stems from personal experiences. Like many, I’ve found
 myself scrambling to find recipes that fit my pantry or dietary needs. I envision HomeCookHub
 as a solution that empowers users, fostering a community where culinary enthusiasts,
@@ -32,6 +38,8 @@ begins with user experience; a simple, intuitive interface is paramount. Leverag
 Laravel for backend development and integrating AI for personalized suggestions, I aim to
 create an adaptable platform. The app will prioritize security, responsiveness, and user
 feedback.
+
+
 In terms of outcomes, I expect the platform to be user-friendly, efficient in meal planning, and
 capable of generating grocery lists that streamline shopping experiences. I plan to set up
 periodic review checkpoints, gather user feedback, and analyze user engagement metrics to
