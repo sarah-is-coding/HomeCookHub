@@ -1,7 +1,7 @@
 # Preston Savey Individual Assessment
 
-	The capstone project that we chose is a recipe sharing app. It can be considered a social media, but it is a place where people can get new recipe ideas and share ideas that they have enjoyed.
-We have even thought of other features like a cocktail recipe section to better expand the capabilities/utilities of our app. The idea itself is not what makes me excited for this project, 
+	The capstone project that we chose is a recipe sharing app. It can be considered a social media, but it is a place where people can get new recipe ideas and share ideas that they have enjoyed. We have even thought
+of other features like a cocktail recipe section to better expand the capabilities/utilities of our app. The idea itself is not what makes me excited for this project, 
 but it is more about the skills I will be learning by taking a project like this one on. We will be creating a full stack application using the react framework. We will also be offering the app on mobile and web devices.
 This will extend the user base we will be able to offer our app for.
 
@@ -17,6 +17,7 @@ development. I know how to configure an application with node and to apply diffe
 is something that my manager wanted to explore for their app, so I will be able to bring a unique knowledge about react that my other coworkers do not have. I will be using a lot of the skills that I learned about building
 a new app from my co-op. While keeping this in mind, I will also be using the looser restrictions that we have to experiment and try new things that I might be hesitant to attempt in a professional setting. This is a great
 opportunity for me to showcase both what I have learned and what I am capable of.
+
 	I am expecting to have a fully functioning application for both mobile and web. I am less worried about the web portion as I have learned it can be difficult to translate that to mobile. I will evaluate my
 contributions on my willingness to show off what I have created. If I feel that the work that I have done is something that I would turn into my manager at my job I will know that I have done well. I will also be looking
 for our advisor's opinion on the ease of use of our app. I want to make sure that even the technologically inexperienced will be able to use our app.
