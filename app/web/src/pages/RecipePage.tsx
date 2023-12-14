@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import theme from "../theme";
-// Import any additional components or services needed
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -35,7 +34,7 @@ interface RecipeDetails {
 
 const RecipePage: React.FC = () => {
   const [recipe, setRecipe] = useState<RecipeDetails | null>(null);
-  const params = useParams<{ title?: string }>(); // Notice the change here
+  const params = useParams<{ title?: string }>();
 
   useEffect(() => {
     if (params.title) {
@@ -43,20 +42,16 @@ const RecipePage: React.FC = () => {
         params.title.replace(/-/g, " ")
       );
 
-      // Fetch the recipe details based on normalizedTitle
-      // This is a placeholder for your fetch logic
-      const fetchRecipe = async () => {
-        // Replace this with actual fetch call or data retrieval logic
-        setRecipe({
-          title: normalizedTitle, // Replace with actual title from data
-          image: "/path/to/image.jpg",
-          description: "This is a sample description for the recipe.",
-        });
-      };
-
-      fetchRecipe();
+      // Fetch the recipe details
+      // Replace with actual fetch call or data retrieval logic
+      // For now, using placeholder details
+      setRecipe({
+        title: normalizedTitle,
+        image: "/path/to/image.jpg", // Replace with actual image path
+        description: "This is a sample description for the recipe.",
+      });
     }
-  }, [params.title]); // Dependency on params.title
+  }, [params.title]);
 
   if (!recipe) {
     return <div>Loading...</div>;
