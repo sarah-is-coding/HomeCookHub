@@ -9,6 +9,7 @@ import RecipeSearchPage from "./pages/RecipeSearchPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Other components such as Link or NavLink for navigation links
 import { Link, NavLink } from "react-router-dom";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/recipes" element={<RecipeSearchPage />} />
+        <Route path="/user-profile" element={<ProfilePage></ProfilePage>}></Route>
       </Routes>
     </>
   );
