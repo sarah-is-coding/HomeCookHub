@@ -44,11 +44,10 @@ const RecipeSearchPage: React.FC = () => {
       <Title>Recipes</Title>
       <SearchBar onSearch={handleSearch} />
       <GridContainer>
-        {/* Sample Recipe Boxes */}
         <RecipeBox
           title="Leftover Mashed Potato Bake"
           description="Delicious and easy to make"
-          image="/assets/mashed-potatoes.png" //access image from the public directory
+          image="/assets/mashed-potatoes.png"
           rating={4.5}
           reviewers="5k"
         />

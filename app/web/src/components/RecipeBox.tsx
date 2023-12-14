@@ -1,16 +1,23 @@
-// components/RecipeBox.tsx
-
 import React from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import StarRating from "./StarRating";
+import { Link } from "react-router-dom"; // Import Link
 
-const Box = styled.div`
+const Box = styled(Link)`
+  // Change this from div to Link
   background-color: ${theme.colors.white};
   border: 1px solid ${theme.colors.grey};
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  text-decoration: none; // Remove underline from link
+  color: inherit; // Inherit the color from the parent
+
+  &:hover {
+    text-decoration: none; // Optional: Remove underline on hover as well
+    color: inherit; // Optional: Ensure the color stays the same on hover
+  }
 `;
 
 const Image = styled.img`
@@ -33,8 +40,8 @@ interface RecipeBoxProps {
   title: string;
   description: string;
   image: string;
-  rating: number; // Actual rating out of 5
-  reviewers: string; // Number of reviewers, e.g., "5k"
+  rating: number;
+  reviewers: string;
 }
 
 const RecipeBox: React.FC<RecipeBoxProps> = ({
@@ -44,8 +51,14 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
   rating,
   reviewers,
 }) => {
+  // Format the title to create a URL-friendly string
+  const formattedTitle = encodeURIComponent(
+    title.replace(/\s+/g, "-").toLowerCase()
+  );
+
   return (
-    <Box>
+    // Use the Link component with a dynamic path
+    <Box to={`/recipe/${formattedTitle}`}>
       <Image src={image} alt={title} />
       <Title>{title}</Title>
       <Description>{description}</Description>
