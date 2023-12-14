@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import RecipeCard from "../components/RecipeCard";
 import styled from "styled-components";
 import theme from "../theme";
 
@@ -9,27 +10,48 @@ const PageContainer = styled.div`
   margin: auto;
 `;
 
-const Title = styled.h1`
+const ImageContainer = styled.div`
+  position: relative;
+`;
+
+const TitleOnImage = styled.h1`
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  color: white;
   font-family: ${theme.fonts.title};
-  color: ${theme.colors.black};
-  text-align: center;
 `;
 
-const Image = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 10px;
+const StarRating = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  // Style your star rating component here
 `;
 
-const Description = styled.p`
+const JumpToRecipeButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  // Style your button here
+`;
+
+const BlogDescription = styled.div`
+  margin-top: 20px;
   color: ${theme.colors.grey};
+  // Additional styling
+`;
+
+const CommentsSection = styled.div`
+  margin-top: 20px;
+  // Style for comments section
 `;
 
 interface RecipeDetails {
   title: string;
   image: string;
   description: string;
+  // Include other necessary fields
 }
 
 const RecipePage: React.FC = () => {
@@ -53,16 +75,37 @@ const RecipePage: React.FC = () => {
     }
   }, [params.title]);
 
+  const scrollToRecipeCard = () => {
+    const recipeCard = document.getElementById("recipe-card");
+    if (recipeCard) {
+      recipeCard.scrollIntoView();
+    }
+  };
+
   if (!recipe) {
     return <div>Loading...</div>;
   }
 
   return (
     <PageContainer>
-      <Title>{recipe.title}</Title>
-      <Image src={recipe.image} alt={recipe.title} />
-      <Description>{recipe.description}</Description>
-      {/* Add other recipe details here */}
+      <ImageContainer>
+        <img
+          src={recipe.image}
+          alt={recipe.title}
+          style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+        />
+        <TitleOnImage>{recipe.title}</TitleOnImage>
+        <StarRating>{/* Star rating component */}</StarRating>
+        <JumpToRecipeButton onClick={scrollToRecipeCard}>
+          Jump to Recipe
+        </JumpToRecipeButton>
+      </ImageContainer>
+      <BlogDescription>
+        {/* Long description with tips etc. */}
+        {recipe.description}
+      </BlogDescription>
+      <RecipeCard id="recipe-card" {...recipe} />
+      <CommentsSection>{/* Comments and rating section */}</CommentsSection>
     </PageContainer>
   );
 };
