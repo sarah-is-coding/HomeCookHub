@@ -2,43 +2,60 @@ import React from "react";
 import styled from "styled-components";
 import theme from "../theme";
 
+// Additional components and styles
+import { FaClock, FaUtensils } from "react-icons/fa";
+
 const CardContainer = styled.div`
   background: ${theme.colors.white};
   padding: 20px;
   margin-top: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: ${theme.fonts.primary};
 `;
 
 const CardTitle = styled.h2`
   font-family: ${theme.fonts.title};
   color: ${theme.colors.black};
+  margin-bottom: 20px;
 `;
 
 const StarRating = styled.div`
-  // Style for star rating
+  // Existing star rating styles
 `;
 
 const RecipeInfo = styled.div`
-  // Style for recipe info like servings, calories, etc.
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+const RecipeInfoItem = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
 `;
 
 const IngredientList = styled.ul`
-  // Style for ingredient list
+  // Existing ingredient list styles
 `;
 
 const InstructionList = styled.ol`
-  // Style for instruction list
+  // Existing instruction list styles
 `;
 
 const NutritionInfo = styled.div`
-  // Style for nutrition info
+  // Existing nutrition info styles
 `;
 
 interface RecipeCardProps {
   id: string;
   title: string;
-  // Other props like image, servings, ingredients, etc.
+  servings: number;
+  prepTime: number;
+  cookTime: number;
+  totalTime: number;
+  // Other props like image, ingredients, etc.
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = (props) => {
@@ -47,7 +64,18 @@ const RecipeCard: React.FC<RecipeCardProps> = (props) => {
       <CardTitle>{props.title}</CardTitle>
       <StarRating>{/* Star rating component */}</StarRating>
       <RecipeInfo>
-        {/* Recipe info like servings, prep time, etc. */}
+        <RecipeInfoItem>
+          <FaUtensils /> {props.servings} servings
+        </RecipeInfoItem>
+        <RecipeInfoItem>
+          <FaClock /> Prep: {props.prepTime}
+        </RecipeInfoItem>
+        <RecipeInfoItem>
+          <FaClock /> Cook: {props.cookTime}
+        </RecipeInfoItem>
+        <RecipeInfoItem>
+          <FaClock /> Total: {props.totalTime}
+        </RecipeInfoItem>
       </RecipeInfo>
       <IngredientList>{/* Ingredients */}</IngredientList>
       <InstructionList>{/* Cooking instructions */}</InstructionList>

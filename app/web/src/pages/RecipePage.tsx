@@ -4,6 +4,9 @@ import RecipeCard from "../components/RecipeCard";
 import styled from "styled-components";
 import theme from "../theme";
 
+// Additional styles and components
+import { FaStar } from "react-icons/fa";
+
 const PageContainer = styled.div`
   padding: 20px;
   max-width: 800px;
@@ -51,6 +54,12 @@ interface RecipeDetails {
   title: string;
   image: string;
   description: string;
+  rating: number;
+  reviewers: number;
+  servings: number;
+  prepTime: number;
+  cookTime: number;
+  totalTime: number;
   // Include other necessary fields
 }
 
@@ -71,6 +80,12 @@ const RecipePage: React.FC = () => {
         title: normalizedTitle,
         image: "/path/to/image.jpg", // Replace with actual image path
         description: "This is a sample description for the recipe.",
+        rating: 4.5, // Placeholder value
+        reviewers: 100, // Placeholder value
+        servings: 2,
+        prepTime: 10,
+        cookTime: 20,
+        totalTime: 30,
       });
     }
   }, [params.title]);
@@ -89,21 +104,25 @@ const RecipePage: React.FC = () => {
   return (
     <PageContainer>
       <ImageContainer>
-        <img
-          src={recipe.image}
-          alt={recipe.title}
-          style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-        />
-        <TitleOnImage>{recipe.title}</TitleOnImage>
-        <StarRating>{/* Star rating component */}</StarRating>
+        {/* Existing image and title logic */}
+        <StarRating>
+          {[...Array(5)].map((star, index) => {
+            const ratingValue = index + 1;
+            return (
+              <FaStar
+                key={index}
+                size={24}
+                color={ratingValue <= recipe.rating ? "#ffc107" : "#e4e5e9"}
+              />
+            );
+          })}
+          <span>({recipe.reviewers})</span>
+        </StarRating>
         <JumpToRecipeButton onClick={scrollToRecipeCard}>
           Jump to Recipe
         </JumpToRecipeButton>
       </ImageContainer>
-      <BlogDescription>
-        {/* Long description with tips etc. */}
-        {recipe.description}
-      </BlogDescription>
+      <BlogDescription>{/* Existing blog description logic */}</BlogDescription>
       <RecipeCard id="recipe-card" {...recipe} />
       <CommentsSection>{/* Comments and rating section */}</CommentsSection>
     </PageContainer>
