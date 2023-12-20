@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
 import styled from "styled-components";
 import theme from "../theme";
-
-// Additional styles and components
 import { FaStar } from "react-icons/fa";
 
 const PageContainer = styled.div`
@@ -15,12 +13,27 @@ const PageContainer = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
+  background-image: url(${(props) => props.imageUrl});
+  background-size: cover;
+  height: 300px; // Adjust as needed
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+`;
+
+const ImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5); // Semi-transparent overlay
 `;
 
 const TitleOnImage = styled.h1`
-  position: absolute;
-  bottom: 10px;
-  left: 20px;
+  position: relative;
+  margin-left: 20px;
+  margin-bottom: 10px;
   color: white;
   font-family: ${theme.fonts.title};
 `;
@@ -29,25 +42,26 @@ const StarRating = styled.div`
   position: absolute;
   top: 10px;
   right: 20px;
-  // Style your star rating component here
+  color: white;
 `;
 
 const JumpToRecipeButton = styled.button`
   position: absolute;
   bottom: 10px;
   right: 20px;
-  // Style your button here
+  // Additional styling for the button
 `;
 
 const BlogDescription = styled.div`
   margin-top: 20px;
   color: ${theme.colors.grey};
-  // Additional styling
+  font-size: 18px;
+  line-height: 1.6;
 `;
 
 const CommentsSection = styled.div`
   margin-top: 20px;
-  // Style for comments section
+  // Additional styling for comments section
 `;
 
 interface RecipeDetails {
@@ -60,7 +74,6 @@ interface RecipeDetails {
   prepTime: number;
   cookTime: number;
   totalTime: number;
-  // Include other necessary fields
 }
 
 const RecipePage: React.FC = () => {
@@ -73,15 +86,13 @@ const RecipePage: React.FC = () => {
         params.title.replace(/-/g, " ")
       );
 
-      // Fetch the recipe details
-      // Replace with actual fetch call or data retrieval logic
-      // For now, using placeholder details
       setRecipe({
         title: normalizedTitle,
-        image: "/path/to/image.jpg", // Replace with actual image path
-        description: "This is a sample description for the recipe.",
-        rating: 4.5, // Placeholder value
-        reviewers: 100, // Placeholder value
+        image: "/mashedPotatoes.png", // Set the image path dynamically
+        description:
+          "Are you wondering what to do with those leftover mashed potatoes? Transform them into a delicious and easy-to-make Mashed Potato Bake! This recipe not only gives your leftovers a tasty makeover but also serves as a perfect side dish for any meal.",
+        rating: 4.5,
+        reviewers: 100,
         servings: 2,
         prepTime: 10,
         cookTime: 20,
@@ -103,8 +114,9 @@ const RecipePage: React.FC = () => {
 
   return (
     <PageContainer>
-      <ImageContainer>
-        {/* Existing image and title logic */}
+      <ImageContainer imageUrl={recipe.image}>
+        <ImageOverlay />
+        <TitleOnImage>{recipe.title}</TitleOnImage>
         <StarRating>
           {[...Array(5)].map((star, index) => {
             const ratingValue = index + 1;
@@ -122,7 +134,7 @@ const RecipePage: React.FC = () => {
           Jump to Recipe
         </JumpToRecipeButton>
       </ImageContainer>
-      <BlogDescription>{/* Existing blog description logic */}</BlogDescription>
+      <BlogDescription>{recipe.description}</BlogDescription>
       <RecipeCard id="recipe-card" {...recipe} />
       <CommentsSection>{/* Comments and rating section */}</CommentsSection>
     </PageContainer>
