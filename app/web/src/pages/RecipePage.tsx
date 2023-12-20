@@ -11,7 +11,11 @@ const PageContainer = styled.div`
   margin: auto;
 `;
 
-const ImageContainer = styled.div`
+interface ImageContainerProps {
+  imageUrl: string;
+}
+
+const ImageContainer = styled.div<ImageContainerProps>`
   position: relative;
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
