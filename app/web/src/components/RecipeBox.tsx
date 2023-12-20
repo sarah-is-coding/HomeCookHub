@@ -1,16 +1,22 @@
-// components/RecipeBox.tsx
-
 import React from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import StarRating from "./StarRating";
+import { Link } from "react-router-dom"; // Import Link
 
-const Box = styled.div`
+const Box = styled(Link)`
   background-color: ${theme.colors.white};
   border: 1px solid ${theme.colors.grey};
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
 `;
 
 const Image = styled.img`
@@ -33,8 +39,8 @@ interface RecipeBoxProps {
   title: string;
   description: string;
   image: string;
-  rating: number; // Actual rating out of 5
-  reviewers: string; // Number of reviewers, e.g., "5k"
+  rating: number;
+  reviewers: string;
 }
 
 const RecipeBox: React.FC<RecipeBoxProps> = ({
@@ -44,8 +50,12 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
   rating,
   reviewers,
 }) => {
+  const formattedTitle = encodeURIComponent(
+    title.replace(/\s+/g, "-").toLowerCase()
+  );
+
   return (
-    <Box>
+    <Box to={`/recipes/${formattedTitle}`}>
       <Image src={image} alt={title} />
       <Title>{title}</Title>
       <Description>{description}</Description>

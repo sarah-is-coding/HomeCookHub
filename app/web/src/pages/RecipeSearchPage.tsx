@@ -1,5 +1,3 @@
-// pages/RecipeSearchPage.tsx
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import theme from "../theme";
@@ -19,16 +17,16 @@ const Title = styled.h1`
   font-family: ${theme.fonts.title};
   text-align: center;
   font-size: 4rem;
-  margin-bottom: 2rem; /* Space between title and search bar */
+  margin-bottom: 2rem;
 `;
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr); // 4 columns
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding: 20px;
   width: 100%;
-  max-width: 1200px; // Adjust the max-width as needed
+  max-width: 1200px;
 `;
 
 const RecipeSearchPage: React.FC = () => {
@@ -36,7 +34,7 @@ const RecipeSearchPage: React.FC = () => {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    // search logic, such as filtering recipes
+    // Implement search logic here
   };
 
   return (
@@ -44,14 +42,16 @@ const RecipeSearchPage: React.FC = () => {
       <Title>Recipes</Title>
       <SearchBar onSearch={handleSearch} />
       <GridContainer>
-        {/* Sample Recipe Boxes */}
+        {/* Add RecipeBox components here */}
+        {/* Example: */}
         <RecipeBox
           title="Leftover Mashed Potato Bake"
           description="Delicious and easy to make"
-          image="/assets/mashed-potatoes.png" //access image from the public directory
+          image="/assets/mashed-potatoes.png"
           rating={4.5}
           reviewers="5k"
         />
+        {/* More RecipeBox components based on searchQuery */}
       </GridContainer>
     </RecipeSearchContainer>
   );
