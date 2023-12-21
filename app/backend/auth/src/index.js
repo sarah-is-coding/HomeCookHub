@@ -11,6 +11,8 @@ import {
 } from './ui'
 
 import { initializeApp } from 'firebase/app';
+import { getFirestore, connectFirestoreEmulator, doc, setDoc } from "firebase/firestore";
+
 import { 
   getAuth,
   onAuthStateChanged, 
@@ -43,7 +45,7 @@ const loginEmailPassword = async () => {
 const createAccount = async () => {
   const email = txtEmail.value
   const password = txtPassword.value
-
+  const name = email.split("@")[0]
   try {
     await createUserWithEmailAndPassword(auth, email, password)
   }
@@ -51,6 +53,19 @@ const createAccount = async () => {
     console.log(`There was an error: ${error}`)
     showLoginError(error)
   } 
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      setDoc(doc(db, "users", user.uid), {
+        name: name,
+        password: password,
+        email: email,
+        pantry_items: [],
+        created_recipes_fk: 0,
+        liked_recipes_fk: 0,
+        saved_meal_plans_fk: 0,
+        allergens: []});
+    }
+  })
 }
 
 // Monitor auth state
@@ -62,7 +77,6 @@ const monitorAuthState = async () => {
       showLoginState(user)
 
       hideLoginError()
-      hideLinkError()
     }
     else {
       showLoginForm()
@@ -82,5 +96,7 @@ btnLogout.addEventListener("click", logout)
 
 const auth = getAuth(firebaseApp);
 connectAuthEmulator(auth, "http://localhost:9099");
+const db = getFirestore();
+connectFirestoreEmulator(db, '127.0.0.1', 8080);
 
 monitorAuthState();
