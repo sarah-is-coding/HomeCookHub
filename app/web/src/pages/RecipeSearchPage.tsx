@@ -3,6 +3,8 @@ import styled from "styled-components";
 import theme from "../theme";
 import SearchBar from "../components/SearchBar";
 import RecipeBox from "../components/RecipeBox";
+import { doc, setDoc } from "firebase/firestore";
+import { calculateWordSimilarity } from "../SearchLogic";
 
 const RecipeSearchContainer = styled.div`
   display: flex;
@@ -33,8 +35,11 @@ const RecipeSearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = (query: string) => {
+
     setSearchQuery(query);
-    // Implement search logic here
+    var simularityScores = calculateWordSimilarity(query, ["a", "b"])
+    console.log(simularityScores)
+    return (query)
   };
 
   return (
@@ -42,16 +47,15 @@ const RecipeSearchPage: React.FC = () => {
       <Title>Recipes</Title>
       <SearchBar onSearch={handleSearch} />
       <GridContainer>
-        {/* Add RecipeBox components here */}
-        {/* Example: */}
         <RecipeBox
-          title="Leftover Mashed Potato Bake"
+
+          title={searchQuery}
           description="Delicious and easy to make"
           image="/assets/mashed-potatoes.png"
           rating={4.5}
           reviewers="5k"
         />
-        {/* More RecipeBox components based on searchQuery */}
+                {/* More RecipeBox components based on searchQuery */}
       </GridContainer>
     </RecipeSearchContainer>
   );
