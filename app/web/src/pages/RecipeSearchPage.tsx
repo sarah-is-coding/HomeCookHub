@@ -33,13 +33,16 @@ const GridContainer = styled.div`
 
 const RecipeSearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [recipes, setRecipes] = useState<any[]>([]);
 
   const handleSearch = (query: string) => {
-
     setSearchQuery(query);
-    var simularityScores = calculateWordSimilarity(query, ["a", "b"])
-    console.log(simularityScores)
-    return (query)
+    var simularityScores = calculateWordSimilarity(query, [
+      "green beans",
+      "mashed potatoes",
+      "baked potatoes",
+    ]);
+    setRecipes(simularityScores);
   };
 
   return (
@@ -47,15 +50,15 @@ const RecipeSearchPage: React.FC = () => {
       <Title>Recipes</Title>
       <SearchBar onSearch={handleSearch} />
       <GridContainer>
-        <RecipeBox
-
-          title={searchQuery}
-          description="Delicious and easy to make"
-          image="/assets/mashed-potatoes.png"
-          rating={4.5}
-          reviewers="5k"
-        />
-                {/* More RecipeBox components based on searchQuery */}
+        {recipes.map((recipe) => (
+          <RecipeBox
+            title={recipe.title}
+            description={recipe.score}
+            image="/assets/mashed-potatoes.png"
+            rating={4.5}
+            reviewers="5k"
+          />
+        ))}
       </GridContainer>
     </RecipeSearchContainer>
   );
