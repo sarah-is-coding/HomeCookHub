@@ -11,6 +11,12 @@ const theme = {
     grey: '#737865',
     lightGrey: '#D3D3D3',
   },
+  hover: {
+    background: '#F2E0D5',
+    text: '#6D7278',
+  },
+  shadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+  accent: '#C97B63',
 };
 
 export default theme;
