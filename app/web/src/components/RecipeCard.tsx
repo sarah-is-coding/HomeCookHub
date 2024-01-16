@@ -1,17 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import theme from "../theme";
-
-// Additional components and styles
-import { FaClock, FaUtensils } from "react-icons/fa";
+import { FaClock, FaUtensils, FaStar } from "react-icons/fa";
+// save recipe or add to calender option in recipe page
 
 const CardContainer = styled.div`
   background: ${theme.colors.white};
   padding: 20px;
   margin-top: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: ${theme.shadow};
   font-family: ${theme.fonts.primary};
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 const CardTitle = styled.h2`
@@ -34,6 +38,10 @@ const RecipeInfoItem = styled.div`
   display: flex;
   align-items: center;
   font-size: 0.9rem;
+  svg {
+    margin-right: 5px;
+    color: ${theme.colors.primary};
+  }
 `;
 
 const IngredientList = styled.ul`
@@ -45,6 +53,10 @@ const InstructionList = styled.ol`
 `;
 
 const NutritionInfo = styled.div`
+  background-color: ${theme.colors.light};
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 8px;
   // Existing nutrition info styles
 `;
 
