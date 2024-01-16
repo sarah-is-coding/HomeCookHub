@@ -22,17 +22,43 @@ const Database = firestore.getFirestore(app)
 const recipeRef = firestore.collection(Database, 'recipes')
 
 router.get("/", function(req, res, next) {
-    var myQuery = firestore.query(recipeRef, firestore.limit(10))
+    var myQuery = firestore.query(recipeRef)
 
     firestore.getDocs(myQuery).then((snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-        
-        res.send(data);
+        if(!snapshot.empty){
+          const data = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          
+          res.send(data);
+        }
+        else{
+          res.status(404)
+        }
     });
-    
+
 });
+
+router.get("/:recipeID", function(req, res, next) {
+  docRef = firestore.doc(Database, 'recipes', req.params["recipeID"])
+
+  try{
+
+    firestore.getDoc(docRef).then((snapshot) =>{
+      if(snapshot.exists()){
+        res.send(snapshot.data())
+      }
+      else{
+        res.status(404)
+        res.send("404: Recipe not found")
+      }
+    })
+  }
+  catch(error){
+    console.log(error)
+  }
+});
+
 
 module.exports = router;
