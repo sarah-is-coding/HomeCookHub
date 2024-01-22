@@ -136,3 +136,17 @@ Note that some of these categories may be inappropriate for your project and may
 - **Blackbox/Whitebox:** Black Box
 - **Functional/Performance:** Functional
 
+| Test ID | Normal/Abnormal | Blackbox/Whitebox | Functional/Performance | Unit/Integration |
+|---------|-----------------|-------------------|------------------------|------------------|
+| R01     | Normal          | Black Box         | Functional             | Integration      |
+| R02     | Normal          | Black Box         | Functional             | Integration      |
+| R03     | Normal          | Black Box         | Functional             | Integration      |
+| R04     | Normal          | Black Box         | Functional             | Integration      |
+| R05     | Abnormal        | Black Box         | Functional             | Integration      |
+| R06     | Normal          | White Box         | Functional             | Integration      |
+| R07     | Normal          | Black Box         | Functional             | Unit             |
+| R08     | Normal          | Black Box         | Functional             | Integration      |
+| R09     | Normal          | Black Box         | Functional             | Unit             |
+| R010    | Normal          | Black Box         | Functional             | Unit             |
+| R11     | Normal          | Black Box         | Functional             | Integration      |
+| R12     | Normal          | Black Box         | Functional             | Unit             |
