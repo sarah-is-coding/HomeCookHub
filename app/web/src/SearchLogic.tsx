@@ -19,9 +19,8 @@ function getCommonWords(arr1: string[], arr2: string[]): string[] {
 }
 
 function calculateSimilarityScore(commonWords: string[], inputWords: string[], strWords: string[]): number {
-  const commonWordCount: number = commonWords.length;
-  const totalWordCount: number = inputWords.length + strWords.length - commonWordCount;
+  const totalWordCount: number = inputWords.length + strWords.length - commonWords.length;
 
-  const similarityScore: number = commonWordCount / totalWordCount;
+  const similarityScore: number = commonWords.length / totalWordCount;
   return similarityScore;
 }
