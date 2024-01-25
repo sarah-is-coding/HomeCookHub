@@ -42,6 +42,7 @@ interface RecipeBoxProps {
   image: string;
   rating: number;
   reviewers: string;
+  recipeID: string;
 }
 
 const RecipeBox: React.FC<RecipeBoxProps> = ({
@@ -50,17 +51,16 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
   image,
   rating,
   reviewers,
+  recipeID,
 }) => {
-  const formattedTitle = encodeURIComponent(
-    title.replace(/\s+/g, "-").toLowerCase()
-  );
+  const encodedID = encodeURIComponent(recipeID);
 
   // Prepend PUBLIC_URL to the image path
   const imagePath = `${process.env.PUBLIC_URL}${image}`;
 
   return (
-    <Box to={`/recipes/${formattedTitle}`}>
-      <Image src={imagePath} alt={title} />
+    <Box to={`/recipes/${encodedID}`}>
+      <Image src={image} alt={title} />
       <Title>{title}</Title>
       <Description>{description}</Description>
       <StarRating rating={rating} reviewers={reviewers} />

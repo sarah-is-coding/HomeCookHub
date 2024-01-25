@@ -61,7 +61,7 @@ const NutritionInfo = styled.div`
 `;
 
 interface RecipeCardProps {
-  id: string;
+  RecipeId: string;
   title: string;
   servings: number;
   prepTime: number;
@@ -72,7 +72,7 @@ interface RecipeCardProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = (props) => {
   return (
-    <CardContainer id={props.id}>
+    <CardContainer id={props.RecipeId}>
       <CardTitle>{props.title}</CardTitle>
       <StarRating>{/* Star rating component */}</StarRating>
       <RecipeInfo>
