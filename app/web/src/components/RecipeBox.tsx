@@ -55,9 +55,12 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
     title.replace(/\s+/g, "-").toLowerCase()
   );
 
+  // Prepend PUBLIC_URL to the image path
+  const imagePath = `${process.env.PUBLIC_URL}${image}`;
+
   return (
     <Box to={`/recipes/${formattedTitle}`}>
-      <Image src={image} alt={title} />
+      <Image src={imagePath} alt={title} />
       <Title>{title}</Title>
       <Description>{description}</Description>
       <StarRating rating={rating} reviewers={reviewers} />

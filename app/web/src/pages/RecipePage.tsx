@@ -152,9 +152,12 @@ const RecipePage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  // Prepend PUBLIC_URL to the image path
+  const imageUrl = `${process.env.PUBLIC_URL}${recipe.image}`;
+
   return (
     <PageContainer>
-      <ImageContainer imageUrl={recipe.image}>
+      <ImageContainer imageUrl={imageUrl}>
         <ImageOverlay />
         <TitleOnImage>{recipe.title}</TitleOnImage>
         <StarRating>

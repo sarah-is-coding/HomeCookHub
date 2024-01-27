@@ -40,7 +40,8 @@ const ImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 60vh; // This makes the image container cover half of the viewport height
-  background-image: url("/assets/backgroundImage.png"); // Access image from the public/assets directory
+  background-image: url(${process.env
+    .PUBLIC_URL}/assets/backgroundImage.png); // Use PUBLIC_URL
   background-size: cover;
   background-position: center;
   display: flex;
