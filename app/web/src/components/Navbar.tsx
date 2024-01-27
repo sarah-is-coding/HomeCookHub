@@ -31,7 +31,7 @@ const NavItems = styled.div`
   }
 `;
 
-const NavItem = styled.a`
+const NavItem = styled(Link)`
   font-family: ${theme.fonts.primary};
   color: ${theme.colors.black};
   text-decoration: none;
@@ -40,7 +40,7 @@ const NavItem = styled.a`
   transition: color 0.3s ease;
 
   &:hover {
-    color: ${theme.colors.light}; // Use a highlight color on hover
+    color: ${theme.colors.light};
   }
 `;
 
@@ -77,18 +77,18 @@ const Navbar: React.FC = () => {
       {/* Logo will link to the home page */}
       <NavLogo to="/">
         <img
-          src="./logo.svg"
+          src={`${process.env.PUBLIC_URL}/logo.svg`}
           alt="Company Logo"
           style={{ marginRight: "10px", width: "200px", height: "auto" }}
         />
       </NavLogo>
       {/* Navigation items */}
       <NavItems>
-        <NavItem href="/recipes">Recipes</NavItem>
-        <NavItem href="/meal-planning">Meal Planning</NavItem>
-        <NavItem href="/grocery-list">Grocery List</NavItem>
-        <NavItem href="/tutorials">Tutorials</NavItem>
-        <NavItem href="/community">Community</NavItem>
+        <NavItem to="/recipes">Recipes</NavItem>
+        <NavItem to="/meal-planning">Meal Planning</NavItem>
+        <NavItem to="/grocery-list">Grocery List</NavItem>
+        <NavItem to="/tutorials">Tutorials</NavItem>
+        <NavItem to="/community">Community</NavItem>
       </NavItems>
       {/* Mobile menu icon for smaller screens */}
       <MobileMenuIcon>
@@ -101,7 +101,7 @@ const Navbar: React.FC = () => {
       {/* User profile icon */}
       <UserIcon>
         {/* Link to the user profile */}
-        <NavItem href="/user-profile">
+        <NavItem to="/user-profile">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
