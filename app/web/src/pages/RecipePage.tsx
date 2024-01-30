@@ -110,12 +110,15 @@ interface RecipeDetails {
   title: string;
   image: string;
   description: string;
+  ingredients: [string];
+  quantities: [number];
+  units: [string];
+  steps: [string];
   rating: number;
   reviewers: string;
-  servings: number;
-  prepTime: number;
-  cookTime: number;
-  totalTime: number;
+  serving_size: number;
+  prep_time: number;
+  cook_time: number;
   id: string;
 }
 

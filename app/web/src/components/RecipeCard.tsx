@@ -63,10 +63,9 @@ const NutritionInfo = styled.div`
 interface RecipeCardProps {
   RecipeId: string;
   title: string;
-  servings: number;
-  prepTime: number;
-  cookTime: number;
-  totalTime: number;
+  serving_size: number;
+  prep_time: number;
+  cook_time: number;
   // Other props like image, ingredients, etc.
 }
 
@@ -77,16 +76,16 @@ const RecipeCard: React.FC<RecipeCardProps> = (props) => {
       <StarRating>{/* Star rating component */}</StarRating>
       <RecipeInfo>
         <RecipeInfoItem>
-          <FaUtensils /> {props.servings} servings
+          <FaUtensils /> {props.serving_size} servings
         </RecipeInfoItem>
         <RecipeInfoItem>
-          <FaClock /> Prep: {props.prepTime}
+          <FaClock /> Prep: {props.prep_time} min
         </RecipeInfoItem>
         <RecipeInfoItem>
-          <FaClock /> Cook: {props.cookTime}
+          <FaClock /> Cook: {props.cook_time} min
         </RecipeInfoItem>
         <RecipeInfoItem>
-          <FaClock /> Total: {props.totalTime}
+          <FaClock /> Total: {props.prep_time + props.cook_time} min
         </RecipeInfoItem>
       </RecipeInfo>
       <IngredientList>{/* Ingredients */}</IngredientList>
