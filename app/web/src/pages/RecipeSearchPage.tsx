@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import SearchBar from "../components/SearchBar";
@@ -31,6 +31,7 @@ const GridContainer = styled.div`
 `;
 
 const RecipeSearchPage: React.FC = () => {
+  const [recipes, setRecipes] = useState(recipesData) //Initialized with hard-coded data
   const [searchQuery, setSearchQuery] = useState(""); // Initialized with an empty string
 
   const handleSearch = (query: string) => {
@@ -38,12 +39,27 @@ const RecipeSearchPage: React.FC = () => {
   };
 
   const filteredRecipes = searchQuery
-    ? recipesData.filter(
+    ? recipes.filter(
         (recipe) =>
           recipe.title.toLowerCase().includes(searchQuery) ||
           recipe.description.toLowerCase().includes(searchQuery)
       )
-    : recipesData;
+    : recipes;
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try{
+        const response = await fetch('http://localhost:9000/recipes/');
+        const data = await response.json();
+        setRecipes(data);
+      }
+      catch(error){
+        console.log(error)
+      }
+    };
+
+    fetchRecipes();
+  }, []);
 
   return (
     <RecipeSearchContainer>
@@ -52,12 +68,13 @@ const RecipeSearchPage: React.FC = () => {
       <GridContainer>
         {filteredRecipes.map((recipe) => (
           <RecipeBox
-            key={recipe.title}
-            title={recipe.title}
-            description={recipe.description}
-            image={recipe.image}
-            rating={recipe.rating}
-            reviewers={recipe.reviewers}
+            key={recipe.id}
+            title={recipe.title || ""}
+            description={recipe.description || ""}
+            image={recipe.image || '/assets/default.jpg'}
+            rating={recipe.rating || 0}
+            reviewers={recipe.reviewers || "0"}
+            recipeID={recipe.id || "0"}
           />
         ))}
       </GridContainer>

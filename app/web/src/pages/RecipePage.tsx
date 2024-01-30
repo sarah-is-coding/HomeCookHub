@@ -5,6 +5,7 @@ import styled from "styled-components";
 import theme from "../theme";
 import { FaStar, FaArrowDown } from "react-icons/fa";
 import recipesData from "../components/recipesData";
+import { decode } from "punycode";
 // save recipe or add to calender option in recipe page
 
 const PageContainer = styled.div`
@@ -109,19 +110,44 @@ interface RecipeDetails {
   title: string;
   image: string;
   description: string;
+  ingredients: [string];
+  quantities: [number];
+  units: [string];
+  steps: [string];
   rating: number;
   reviewers: string;
-  servings: number;
-  prepTime: number;
-  cookTime: number;
-  totalTime: number;
+  serving_size: number;
+  prep_time: number;
+  cook_time: number;
+  id: string;
 }
 
 const RecipePage: React.FC = () => {
-  const [recipe, setRecipe] = useState<RecipeDetails | null>(null);
+  const [recipe, setRecipe] = useState(recipesData[0]);
   const params = useParams<{ title?: string }>();
 
   useEffect(() => {
+    const fetchRecipe = async () => {
+      try{
+        if(params.title){
+          var fetchURL = 'http://localhost:9000/recipes/' + decodeURIComponent(params.title);
+          const response = await fetch(fetchURL);
+          const recipeData = await response.json();
+          setRecipe(recipeData);
+        }
+        else{
+          console.log("RECIPE ID ERROR")
+        }
+        
+      }
+      catch(error){
+        console.log(error);
+      }
+    };
+
+      fetchRecipe();
+    
+    /*
     if (params.title) {
       const normalizedTitle = decodeURIComponent(
         params.title.replace(/-/g, " ")
@@ -139,6 +165,7 @@ const RecipePage: React.FC = () => {
         console.error("Recipe not found");
       }
     }
+    */
   }, [params.title]);
 
   const scrollToRecipeCard = () => {
@@ -157,9 +184,9 @@ const RecipePage: React.FC = () => {
 
   return (
     <PageContainer>
-      <ImageContainer imageUrl={imageUrl}>
+      <ImageContainer imageUrl={recipe.image || '/assets/default.jpg'}>
         <ImageOverlay />
-        <TitleOnImage>{recipe.title}</TitleOnImage>
+        <TitleOnImage>{recipe.title || ''}</TitleOnImage>
         <StarRating>
           {[...Array(5)].map((star, index) => {
             const ratingValue = index + 1;
@@ -167,18 +194,18 @@ const RecipePage: React.FC = () => {
               <FaStar
                 key={index}
                 size={24}
-                color={ratingValue <= recipe.rating ? "#ffc107" : "#e4e5e9"}
+                color={ratingValue <= recipe.rating || 0 ? "#ffc107" : "#e4e5e9"}
               />
             );
           })}
-          <span>({recipe.reviewers})</span>
+          <span>({recipe.reviewers || '0'})</span>
         </StarRating>
         <JumpToRecipeButton onClick={scrollToRecipeCard}>
           Jump to Recipe <FaArrowDown />
         </JumpToRecipeButton>
       </ImageContainer>
-      <BlogDescription>{recipe.description}</BlogDescription>
-      <RecipeCard id="recipe-card" {...recipe} />
+      <BlogDescription>{recipe.description || ''}</BlogDescription>
+      <RecipeCard RecipeId="recipe-card" {...recipe} />
       <CommentsSection>{/* Comments and rating section */}</CommentsSection>
     </PageContainer>
   );
