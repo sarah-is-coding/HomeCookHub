@@ -17,12 +17,15 @@
     display: flex;
     justify-content: space-around;
     margin-top: 20px; /* Add some margin at the top */
+    width: 90%;
+    margin-left: 5%;
   }
   
   .meal-card {
     width: 30%;
-    min-height: 300px;
-    border: 1px solid black;
+    min-height: 200px;
+    border-radius: 10px;
+    background-color: #ecc47e;
     margin: 0 10px; /* Add margin on both sides for better spacing */
     overflow: hidden; /* Hide overflowing content */
     transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
