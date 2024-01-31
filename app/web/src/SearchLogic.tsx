@@ -1,4 +1,4 @@
-function WordSimilarityFunction(input: string, json: JSON): { title: string; score: number }[] {
+function WordSimilarityFunction(input: string, json: {}[]): { title: string; score: number }[] {
   const inputWords: string[] = input.toLowerCase().split(/\s+/);
   const scores: { title: string; score: number }[] = [];
 
@@ -8,7 +8,7 @@ function WordSimilarityFunction(input: string, json: JSON): { title: string; sco
   
   var stringDescription: StringDescription = {};
 
-  const addToStringSet = (json: JSON) => {
+  const addToStringSet = (json: {}[]) => {
     for (const key in json) {
         if (json.hasOwnProperty(key)) {
             const value = json[key as keyof typeof json];
@@ -48,17 +48,9 @@ function calculateSimilarityScore(commonWords: string[], inputWords: string[], s
   return similarityScore;
 }
 
-export async function calculateWordSimilarity(input: string): Promise<{ title: string; score: number; }[]> {
+export async function calculateWordSimilarity(input: string, recipes: {}[]): Promise<{ title: string; score: number; }[]> {
 
-  const json_promise = fetch('http://localhost:9000/recipes')
-  .then((response: { json: () => any; }) => response.json())
-  .then((json: any) => { 
-      return json})
-  .catch((error: { message: string; }) => console.log(error.message));
 
-  const score = json_promise.then((json: any) => {
-      const scores = WordSimilarityFunction(input, json)
-      return scores
-    });
-  return score
+    const scores = WordSimilarityFunction(input, recipes)
+    return scores
 }

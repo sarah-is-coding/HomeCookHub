@@ -37,7 +37,7 @@ const RecipeSearchPage: React.FC = () => {
   const [recipeScore, setRecipeScores] = useState<any[]>([]);
 
   const handleSearch = (query: string) => {
-    var simularityScores = calculateWordSimilarity(query);
+    var simularityScores = calculateWordSimilarity(query, recipes);
 
     simularityScores.then((scores: any) => {
       var merged = [];
@@ -48,7 +48,7 @@ const RecipeSearchPage: React.FC = () => {
         });
       }
 
-      setRecipeScores(merged.sort((a, b) => a.sort - b.sort).slice(0, 20));
+      setRecipeScores(merged.sort((a, b) => b.score - a.score).slice(0, 20));
     });
   };
 
@@ -58,7 +58,6 @@ const RecipeSearchPage: React.FC = () => {
         const response = await fetch("http://localhost:9000/recipes/");
         const data = await response.json();
         setRecipes(data);
-        handleSearch("");
       } catch (error) {
         console.log(error);
       }
@@ -77,9 +76,9 @@ const RecipeSearchPage: React.FC = () => {
             key={recipe.id}
             title={recipe.title || ""}
             description={recipe.description || ""}
-            image={recipe.image || '/assets/default.jpg'}
-            rating={recipe.rating || 0}
-            reviewers={recipe.reviewers || "0"}
+            image={recipe.image || ""}
+            rating={recipe.score || 0}
+            reviewers={recipe.score || "0"}
             recipeID={recipe.id || "0"}
           />
         ))}
