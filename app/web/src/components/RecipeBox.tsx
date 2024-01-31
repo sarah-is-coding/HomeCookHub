@@ -13,7 +13,7 @@ const Box = styled(Link)`
   text-align: center;
   text-decoration: none;
   color: inherit;
-
+  max-width: 100%;
   &:hover {
     text-decoration: none;
     color: inherit;
@@ -21,7 +21,7 @@ const Box = styled(Link)`
 `;
 
 const Image = styled.img`
-  width: 100%;
+  max-width: 100%;
   height: auto;
   border-radius: 8px;
   margin-bottom: 10px;

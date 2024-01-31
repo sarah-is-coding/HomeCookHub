@@ -1,0 +1,53 @@
+
+.meal-planning {
+    text-align: center;
+    padding: 20px; /* Add some padding for better spacing */
+  }
+  
+  .calendar {
+
+    display: flex;
+    justify-content: center;
+    margin: 20px auto; /* Center the calendar */
+  }
+  .react-calendar{
+    width: 400px !important;
+  }
+  .meals {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px; /* Add some margin at the top */
+    width: 90%;
+    margin-left: 5%;
+  }
+  
+  .meal-card {
+    width: 30%;
+    min-height: 200px;
+    border-radius: 10px;
+    background-color: #ecc47e;
+    margin: 0 10px; /* Add margin on both sides for better spacing */
+    overflow: hidden; /* Hide overflowing content */
+    transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
+  }
+  
+  .meal-card:hover {
+    transform: scale(1.05); /* Enlarge the card on hover */
+  }
+  
+  .meal-card > div {
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .meals {
+      flex-direction: column; /* Stack cards vertically on smaller screens */
+    }
+  
+    .meal-card {
+      width: 100%;
+      margin: 0 0 20px 0; /* Adjust margin for better spacing on smaller screens */
+    }
+  }
