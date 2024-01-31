@@ -104,10 +104,10 @@ const ProfilePage: React.FC = () => {
         {activeTab === "SavedRecipes" && (
         <div id="SavedRecipes" className="savedRecipes">
             <GridContainer>
-                <RecipeBox title={savedRecipeArray[0].title} description={savedRecipeArray[0].description} image={savedRecipeArray[0].image} rating={savedRecipeArray[0].rating} reviewers={savedRecipeArray[0].reviewers}></RecipeBox>
-                <RecipeBox title={savedRecipeArray[1].title} description={savedRecipeArray[1].description} image={savedRecipeArray[1].image} rating={savedRecipeArray[1].rating} reviewers={savedRecipeArray[1].reviewers}></RecipeBox>
-                <RecipeBox title={savedRecipeArray[2].title} description={savedRecipeArray[2].description} image={savedRecipeArray[2].image} rating={savedRecipeArray[2].rating} reviewers={savedRecipeArray[2].reviewers}></RecipeBox>
-                <RecipeBox title={savedRecipeArray[3].title} description={savedRecipeArray[3].description} image={savedRecipeArray[3].image} rating={savedRecipeArray[3].rating} reviewers={savedRecipeArray[3].reviewers}></RecipeBox>
+                <RecipeBox recipeID="20" title={savedRecipeArray[0].title} description={savedRecipeArray[0].description} image={savedRecipeArray[0].image} rating={savedRecipeArray[0].rating} reviewers={savedRecipeArray[0].reviewers}></RecipeBox>
+                <RecipeBox recipeID="20" title={savedRecipeArray[1].title} description={savedRecipeArray[1].description} image={savedRecipeArray[1].image} rating={savedRecipeArray[1].rating} reviewers={savedRecipeArray[1].reviewers}></RecipeBox>
+                <RecipeBox recipeID="20" title={savedRecipeArray[2].title} description={savedRecipeArray[2].description} image={savedRecipeArray[2].image} rating={savedRecipeArray[2].rating} reviewers={savedRecipeArray[2].reviewers}></RecipeBox>
+                <RecipeBox recipeID="20" title={savedRecipeArray[3].title} description={savedRecipeArray[3].description} image={savedRecipeArray[3].image} rating={savedRecipeArray[3].rating} reviewers={savedRecipeArray[3].reviewers}></RecipeBox>
             </GridContainer>
         </div>
         )}
