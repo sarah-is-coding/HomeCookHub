@@ -1,5 +1,4 @@
 function WordSimilarityFunction(input: string, json: {}[]): { title: string; score: number }[] {
-  const inputWords: string[] = input.toLowerCase().split(/\s+/);
   const scores: { title: string; score: number }[] = [];
 
   interface StringDescription {
@@ -14,43 +13,64 @@ function WordSimilarityFunction(input: string, json: {}[]): { title: string; sco
             const value = json[key as keyof typeof json];
             const description = value['description' as keyof typeof value]
             const name = value['title' as keyof typeof value]
-            stringDescription[name] = "".concat(name, " ", description)
+            stringDescription[name] = description
         }
     }
     return stringDescription
   }
   
   stringDescription = addToStringSet(json)
-
+  console.log(stringDescription)
   for (const key in stringDescription) {
-    const str = stringDescription[key]
-    const strWords: string[] = str.toLowerCase().split(/\s+/);
-    const commonWords: string[] = getCommonWords(inputWords, strWords);
-    const SimilarityScore: number = calculateSimilarityScore(commonWords, inputWords, strWords);
-
-    if (key !== "undefined") {
-      scores.push({ title: key, score: SimilarityScore });
+    var title = key
+    var description = stringDescription[key]
+    if (key !== undefined || key !== 'undefined') {
+      const combinedString = title.toLowerCase()
+      const levenshteinScore = calculateLevenshteinScore(input, combinedString);
+      scores.push({ title, score: levenshteinScore });
     }
   }
-
-  scores.sort((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0))
-  return scores.slice(0, 20);
+  return scores
 }
 
-function getCommonWords(arr1: string[], arr2: string[]): string[] {
-  return arr1.filter(word => arr2.includes(word));
+function calculateLevenshteinScore(input: string, str: string): number {
+    const maxLength = Math.max(input.length, str.length);
+    const distance = levenshteinDistance(input, str);
+    return 1 - distance / maxLength;
 }
 
-function calculateSimilarityScore(commonWords: string[], inputWords: string[], strWords: string[]): number {
-  const totalWordCount: number = inputWords.length + strWords.length - commonWords.length;
+function levenshteinDistance(s1: string, s2: string): number {
+    const len1 = s1.length;
+    const len2 = s2.length;
+    const matrix: number[][] = [];
 
-  const similarityScore: number = commonWords.length / totalWordCount;
-  return similarityScore;
+    for (let i = 0; i <= len1; i++) {
+        matrix[i] = [i];
+    }
+
+    for (let j = 0; j <= len2; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= len1; i++) {
+        for (let j = 1; j <= len2; j++) {
+            const cost = s1.charAt(i - 1) === s2.charAt(j - 1) ? 0 : 1;
+            matrix[i][j] = Math.min(
+                matrix[i - 1][j] + 1,
+                matrix[i][j - 1] + 1,
+                matrix[i - 1][j - 1] + cost
+            );
+        }
+    }
+
+    return matrix[len1][len2];
 }
 
 export async function calculateWordSimilarity(input: string, recipes: {}[]): Promise<{ title: string; score: number; }[]> {
 
-
     const scores = WordSimilarityFunction(input, recipes)
+    console.log("Scores")
+    console.log(scores)
+    console.log("e")
     return scores
 }

@@ -37,19 +37,25 @@ const RecipeSearchPage: React.FC = () => {
   const [recipeScore, setRecipeScores] = useState<any[]>([]);
 
   const handleSearch = (query: string) => {
-    var simularityScores = calculateWordSimilarity(query, recipes);
+    try {
+      console.log("new")
+      var simularityScores = calculateWordSimilarity(query, recipes);
 
-    simularityScores.then((scores: any) => {
-      var merged = [];
-      for (let i = 0; i < recipes.length; i++) {
-        merged.push({
-          ...recipes[i],
-          ...scores.find((score: any) => score.title === recipes[i].title),
-        });
-      }
+      simularityScores.then((scores: any) => {
+        var merged = [];
+        for (let i = 0; i < recipes.length; i++) {
+          if (recipes[i].title !== undefined) {
+            merged.push({
+              ...recipes[i],
+              ...scores.find((score: any) => score.title === recipes[i].title),
+            });
+          }
+        }
 
-      setRecipeScores(merged.sort((a, b) => b.score - a.score).slice(0, 20));
-    });
+        setRecipeScores(merged.sort((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)).slice(0, 20));
+      });
+    } catch(error) {
+      console.log(error);}
   };
 
   useEffect(() => {
