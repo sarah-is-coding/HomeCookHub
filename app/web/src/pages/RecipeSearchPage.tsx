@@ -33,7 +33,6 @@ const GridContainer = styled.div`
 
 const RecipeSearchPage: React.FC = () => {
   const [recipes, setRecipes] = useState(recipesData); //Initialized with hard-coded data
-  const [searchQuery, setSearchQuery] = useState(""); // Initialized with an empty string
   const [recipeScore, setRecipeScores] = useState<any[]>([]);
 
   const handleSearch = (query: string) => {
@@ -82,8 +81,8 @@ const RecipeSearchPage: React.FC = () => {
             title={recipe.title || ""}
             description={recipe.description || ""}
             image={recipe.image || ""}
-            rating={recipe.score || 0}
-            reviewers={recipe.score || "0"}
+            rating={recipe.rating || 0}
+            reviewers={recipe.reviewers || "0"}
             recipeID={recipe.id || "0"}
           />
         ))}
