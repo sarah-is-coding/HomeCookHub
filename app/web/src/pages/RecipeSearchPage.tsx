@@ -38,7 +38,6 @@ const RecipeSearchPage: React.FC = () => {
 
   const handleSearch = (query: string) => {
     try {
-      console.log("new")
       var simularityScores = calculateWordSimilarity(query, recipes);
 
       simularityScores.then((scores: any) => {

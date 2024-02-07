@@ -20,7 +20,6 @@ function WordSimilarityFunction(input: string, json: {}[]): { title: string; sco
   }
   
   stringDescription = addToStringSet(json)
-  console.log(stringDescription)
   for (const key in stringDescription) {
     var title = key
     var description = stringDescription[key]
@@ -69,8 +68,5 @@ function levenshteinDistance(s1: string, s2: string): number {
 export async function calculateWordSimilarity(input: string, recipes: {}[]): Promise<{ title: string; score: number; }[]> {
 
     const scores = WordSimilarityFunction(input, recipes)
-    console.log("Scores")
-    console.log(scores)
-    console.log("e")
     return scores
 }
