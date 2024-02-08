@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
 import styled from "styled-components";
 import theme from "../theme";
-import { FaStar, FaArrowDown } from "react-icons/fa";
+import { FaStar, FaArrowDown, FaBookmark } from "react-icons/fa";
+
 import recipesData from "../components/recipesData";
-import { decode } from "punycode";
-// save recipe or add to calender option in recipe page
+// save recipe or add to calendar option in recipe page
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -45,7 +45,7 @@ const ImageOverlay = styled.div`
 const TitleOnImage = styled.h1`
   position: relative;
   margin-left: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   color: white;
   font-family: ${theme.fonts.title};
   font-size: 2rem;
@@ -54,8 +54,8 @@ const TitleOnImage = styled.h1`
 
 const StarRating = styled.div`
   position: absolute;
-  top: 10px;
-  right: 20px;
+  top: 180px; // Adjusted positioning
+  right: 30px;
   color: white;
 
   svg {
@@ -66,9 +66,28 @@ const StarRating = styled.div`
   }
 `;
 
+const SaveRecipeButton = styled.button`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+
+  svg {
+    font-size: 24px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+`;
+
 const JumpToRecipeButton = styled.button`
   position: absolute;
-  bottom: 10px;
+  bottom: 30px; // Adjusted margin for better visibility
   right: 20px;
   background: ${theme.colors.primary};
   color: white;
@@ -103,7 +122,6 @@ const CommentsSection = styled.div`
   background-color: ${theme.colors.lightGrey};
   padding: 15px;
   border-radius: 8px;
-  // Additional styles for comments
 `;
 
 interface RecipeDetails {
@@ -128,44 +146,22 @@ const RecipePage: React.FC = () => {
 
   useEffect(() => {
     const fetchRecipe = async () => {
-      try{
-        if(params.title){
-          var fetchURL = 'http://localhost:9000/recipes/' + decodeURIComponent(params.title);
+      try {
+        if (params.title) {
+          var fetchURL =
+            "http://localhost:9000/recipes/" + decodeURIComponent(params.title);
           const response = await fetch(fetchURL);
           const recipeData = await response.json();
           setRecipe(recipeData);
+        } else {
+          console.log("RECIPE ID ERROR");
         }
-        else{
-          console.log("RECIPE ID ERROR")
-        }
-        
-      }
-      catch(error){
+      } catch (error) {
         console.log(error);
       }
     };
 
-      fetchRecipe();
-    
-    /*
-    if (params.title) {
-      const normalizedTitle = decodeURIComponent(
-        params.title.replace(/-/g, " ")
-      );
-
-      // Find the recipe in recipesData using the normalized title
-      const recipeDetails = recipesData.find(
-        (r) => r.title.toLowerCase() === normalizedTitle.toLowerCase()
-      );
-
-      if (recipeDetails) {
-        setRecipe(recipeDetails);
-      } else {
-        // Handle the case where the recipe is not found
-        console.error("Recipe not found");
-      }
-    }
-    */
+    fetchRecipe();
   }, [params.title]);
 
   const scrollToRecipeCard = () => {
@@ -179,14 +175,21 @@ const RecipePage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  const handleSaveRecipe = () => {
+    // Implement the save functionality here
+  };
+
   // Prepend PUBLIC_URL to the image path
   const imageUrl = `${process.env.PUBLIC_URL}${recipe.image}`;
 
   return (
     <PageContainer>
-      <ImageContainer imageUrl={recipe.image || '/assets/default.jpg'}>
+      <ImageContainer imageUrl={imageUrl || "/assets/default.jpg"}>
         <ImageOverlay />
-        <TitleOnImage>{recipe.title || ''}</TitleOnImage>
+        <SaveRecipeButton onClick={handleSaveRecipe}>
+          <FaBookmark />
+        </SaveRecipeButton>
+        <TitleOnImage>{recipe.title || ""}</TitleOnImage>
         <StarRating>
           {[...Array(5)].map((star, index) => {
             const ratingValue = index + 1;
@@ -194,17 +197,17 @@ const RecipePage: React.FC = () => {
               <FaStar
                 key={index}
                 size={24}
-                color={ratingValue <= recipe.rating || 0 ? "#ffc107" : "#e4e5e9"}
+                color={ratingValue <= recipe.rating ? "#ffc107" : "#e4e5e9"}
               />
             );
           })}
-          <span>({recipe.reviewers || '0'})</span>
+          <span>({recipe.reviewers || "0"})</span>
         </StarRating>
         <JumpToRecipeButton onClick={scrollToRecipeCard}>
           Jump to Recipe <FaArrowDown />
         </JumpToRecipeButton>
       </ImageContainer>
-      <BlogDescription>{recipe.description || ''}</BlogDescription>
+      <BlogDescription>{recipe.description || ""}</BlogDescription>
       <RecipeCard RecipeId="recipe-card" {...recipe} />
       <CommentsSection>{/* Comments and rating section */}</CommentsSection>
     </PageContainer>
