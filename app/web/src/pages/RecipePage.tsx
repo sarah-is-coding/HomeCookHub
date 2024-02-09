@@ -5,7 +5,6 @@ import styled from "styled-components";
 import theme from "../theme";
 import { FaStar, FaArrowDown } from "react-icons/fa";
 import recipesData from "../components/recipesData";
-import { decode } from "punycode";
 // save recipe or add to calender option in recipe page
 
 const PageContainer = styled.div`
@@ -110,10 +109,10 @@ interface RecipeDetails {
   title: string;
   image: string;
   description: string;
-  ingredients: [string];
-  quantities: [number];
-  units: [string];
-  steps: [string];
+  ingredients: Object;
+  quantities: Object;
+  units: Object;
+  steps: Object;
   rating: number;
   reviewers: string;
   serving_size: number;
