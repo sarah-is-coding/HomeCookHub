@@ -7,9 +7,9 @@ interface IngredientListProps {
 }
 
 const IngredientList: React.FC<IngredientListProps> = (props) => {
-    const ingredientMap = new Map(Object.entries(props.ingredients))
-    const quantityMap = new Map(Object.entries(props.quantities))
-    const unitMap = new Map(Object.entries(props.units))
+    const ingredientMap = new Map(Object.entries(props.ingredients));
+    const quantityMap = new Map(Object.entries(props.quantities));
+    const unitMap = new Map(Object.entries(props.units));
 
     return(
     <div>

@@ -5,7 +5,7 @@ interface InstructionListProps {
 }
 
 const InstructionList: React.FC<InstructionListProps> = (props) => {
-    const stepMap = new Map(Object.entries(props.steps))
+    const stepMap = new Map(Object.entries(props.steps));
 
     return(
     <div>
