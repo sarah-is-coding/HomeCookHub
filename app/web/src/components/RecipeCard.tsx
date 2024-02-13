@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import { FaClock, FaUtensils, FaStar } from "react-icons/fa";
+import IngredientList from "./IngredientList";
+import InstructionList from "./InstructionList";
 // save recipe or add to calender option in recipe page
 
 const CardContainer = styled.div`
@@ -44,14 +46,6 @@ const RecipeInfoItem = styled.div`
   }
 `;
 
-const IngredientList = styled.ul`
-  // Existing ingredient list styles
-`;
-
-const InstructionList = styled.ol`
-  // Existing instruction list styles
-`;
-
 const NutritionInfo = styled.div`
   background-color: ${theme.colors.light};
   padding: 10px;
@@ -66,6 +60,10 @@ interface RecipeCardProps {
   serving_size: number;
   prep_time: number;
   cook_time: number;
+  ingredients: Object;
+  quantities: Object;
+  units: Object;
+  steps: Object;
   // Other props like image, ingredients, etc.
 }
 
@@ -88,8 +86,8 @@ const RecipeCard: React.FC<RecipeCardProps> = (props) => {
           <FaClock /> Total: {props.prep_time + props.cook_time} min
         </RecipeInfoItem>
       </RecipeInfo>
-      <IngredientList>{/* Ingredients */}</IngredientList>
-      <InstructionList>{/* Cooking instructions */}</InstructionList>
+      <IngredientList {...props}></IngredientList>
+      <InstructionList {...props}>{/* Cooking instructions */}</InstructionList>
       <NutritionInfo>{/* Nutrition information */}</NutritionInfo>
     </CardContainer>
   );

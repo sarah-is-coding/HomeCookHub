@@ -83,20 +83,20 @@ const PlanningPage: React.FC = () => {
             <div className="meal-card"> 
               <div>Breakfast</div> 
               <GridContainer>
-                <RecipeBox title={currentDayPlan.breakfast.title} description={currentDayPlan.breakfast.description} image={currentDayPlan.breakfast.image} rating={currentDayPlan.breakfast.rating} reviewers={currentDayPlan.breakfast.reviewers} recipeID={""}></RecipeBox>
+                <RecipeBox recipeID="20" title={currentDayPlan.breakfast.title} description={currentDayPlan.breakfast.description} image={currentDayPlan.breakfast.image} rating={currentDayPlan.breakfast.rating} reviewers={currentDayPlan.breakfast.reviewers}></RecipeBox>
               </GridContainer>
       
             </div>
             <div className="meal-card"> 
               <div>Lunch</div> 
               <GridContainer>
-                <RecipeBox title={currentDayPlan.lunch.title} description={currentDayPlan.lunch.description} image={currentDayPlan.lunch.image} rating={currentDayPlan.lunch.rating} reviewers={currentDayPlan.lunch.reviewers} recipeID={""}></RecipeBox>
+                <RecipeBox recipeID="20" title={currentDayPlan.lunch.title} description={currentDayPlan.lunch.description} image={currentDayPlan.lunch.image} rating={currentDayPlan.lunch.rating} reviewers={currentDayPlan.lunch.reviewers}></RecipeBox>
               </GridContainer>
             </div>
             <div className="meal-card"> 
               <div>Dinner</div> 
               <GridContainer>
-                <RecipeBox title={currentDayPlan.dinner.title} description={currentDayPlan.dinner.description} image={currentDayPlan.dinner.image} rating={currentDayPlan.dinner.rating} reviewers={currentDayPlan.dinner.reviewers} recipeID={""}></RecipeBox>
+                <RecipeBox recipeID="20" title={currentDayPlan.dinner.title} description={currentDayPlan.dinner.description} image={currentDayPlan.dinner.image} rating={currentDayPlan.dinner.rating} reviewers={currentDayPlan.dinner.reviewers}></RecipeBox>
               </GridContainer>
             </div>
         </div>
