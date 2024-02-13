@@ -4,6 +4,7 @@ import theme from "../theme";
 import SearchBar from "../components/SearchBar";
 import RecipeBox from "../components/RecipeBox";
 import recipesData from "../components/recipesData";
+import { calculateWordSimilarity } from "../SearchLogic";
 
 const RecipeSearchContainer = styled.div`
   display: flex;
@@ -31,30 +32,38 @@ const GridContainer = styled.div`
 `;
 
 const RecipeSearchPage: React.FC = () => {
-  const [recipes, setRecipes] = useState(recipesData) //Initialized with hard-coded data
-  const [searchQuery, setSearchQuery] = useState(""); // Initialized with an empty string
+  const [recipes, setRecipes] = useState(recipesData); //Initialized with hard-coded data
+  const [recipeScore, setRecipeScores] = useState<any[]>([]);
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query.toLowerCase());
-  };
+    try {
+      var simularityScores = calculateWordSimilarity(query, recipes);
 
-  const filteredRecipes = searchQuery
-    ? recipes.filter(
-        (recipe) =>
-          recipe.title.toLowerCase().includes(searchQuery) ||
-          recipe.description.toLowerCase().includes(searchQuery)
-      )
-    : recipes;
+      simularityScores.then((scores: any) => {
+        var merged = [];
+        for (let i = 0; i < recipes.length; i++) {
+          if (recipes[i].title !== undefined) {
+            merged.push({
+              ...recipes[i],
+              ...scores.find((score: any) => score.title === recipes[i].title),
+            });
+          }
+        }
+
+        setRecipeScores(merged.sort((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)).slice(0, 20));
+      });
+    } catch(error) {
+      console.log(error);}
+  };
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      try{
-        const response = await fetch('http://localhost:9000/recipes/');
+      try {
+        const response = await fetch("http://localhost:9000/recipes/");
         const data = await response.json();
         setRecipes(data);
-      }
-      catch(error){
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
     };
 
@@ -66,12 +75,12 @@ const RecipeSearchPage: React.FC = () => {
       <Title>Recipes</Title>
       <SearchBar onSearch={handleSearch} />
       <GridContainer>
-        {filteredRecipes.map((recipe) => (
+        {recipeScore.map((recipe) => (
           <RecipeBox
             key={recipe.id}
             title={recipe.title || ""}
             description={recipe.description || ""}
-            image={recipe.image || '/assets/default.jpg'}
+            image={recipe.image || ""}
             rating={recipe.rating || 0}
             reviewers={recipe.reviewers || "0"}
             recipeID={recipe.id || "0"}

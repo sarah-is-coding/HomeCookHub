@@ -6,6 +6,7 @@ import RecipeSearchPage from "./pages/RecipeSearchPage";
 import RecipePage from "./pages/RecipePage";
 import ProfilePage from "./pages/ProfilePage";
 import PlanningPage from "./pages/PlanningPage";
+import "./loginUser";
 
 // Importing HashRouter, Routes, and Route components from react-router-dom
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
