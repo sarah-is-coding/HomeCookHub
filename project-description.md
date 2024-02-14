@@ -62,15 +62,11 @@ Our team is founded on the principle of collaboration and leveraging the strengt
 
 **Prototyping:** Design a prototype of the app and get feedback from potential users. Iterate based on this feedback.
 
-**Development:** Split the team based on expertise. While one subgroup focuses on backend and database management, another will focus on front-end development. Parallelly, another subgroup will address the mobile app development.
+**Development:** Split the team based on expertise. While one subgroup focuses on backend and database management, another will focus on front-end development.
 
 **Testing:** Conduct rigorous testing for bugs, user experience, and also performance under scale.
 
 **Deployment and Feedback Loop:** Once launched, establish a feedback loop with the early users to continuously refine and improve the application.
-
-**Sustainability:** An integral part of our vision is to focus on sustainability. A dedicated team will work on integrating features that promote sustainable cooking and eating habits.
-
-**Monetization:** Explore avenues for revenue without compromising on user experience. This could involve partnerships, affiliate marketing, and premium subscriptions.
 
 By pooling our diverse set of skills and maintaining a laser-focused approach on user experience and sustainability, we aim to make HomeCookHub the go-to solution for all cooking enthusiasts, from the novice to the expert.
 
