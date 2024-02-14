@@ -6,6 +6,7 @@ import RecipeSearchPage from "./pages/RecipeSearchPage";
 import RecipePage from "./pages/RecipePage";
 import ProfilePage from "./pages/ProfilePage";
 import PlanningPage from "./pages/PlanningPage";
+import TutorialsPage from "./pages/TutorialsPage";
 import "./loginUser";
 
 // Importing HashRouter, Routes, and Route components from react-router-dom
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/recipes" element={<RecipeSearchPage />} />
         <Route path="/recipes/:title" element={<RecipePage />} />
+        <Route path="/tutorials" element={<TutorialsPage />} />
         <Route
           path="/meal-planning"
           element={<PlanningPage></PlanningPage>}
