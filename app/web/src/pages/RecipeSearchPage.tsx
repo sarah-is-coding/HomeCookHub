@@ -49,7 +49,7 @@ const RecipeSearchPage: React.FC = () => {
             });
           }
         }
-
+        console.log(merged)
         setRecipeScores(merged.sort((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)).slice(0, 20));
       });
     } catch(error) {
@@ -80,7 +80,7 @@ const RecipeSearchPage: React.FC = () => {
             key={recipe.id}
             title={recipe.title || ""}
             description={recipe.description || ""}
-            image={recipe.image || ""}
+            image={recipe.image || '/assets/default.jpg'}
             rating={recipe.rating || 0}
             reviewers={recipe.reviewers || "0"}
             recipeID={recipe.id || "0"}
