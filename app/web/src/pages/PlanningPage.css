@@ -1,11 +1,58 @@
 
 .meal-planning {
     text-align: center;
-    padding: 20px; /* Add some padding for better spacing */
+
+     /* Add some padding for better spacing */
   }
-  
+  .calendar-plus-cards{
+
+    border-radius: 20px;
+
+  }
+  /* .grid{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .mini-grid{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 1200px;
+  } */
+  .add-recipe{
+    text-align: center;
+  }
+  .meal-choice-selection{
+    margin:auto;
+    width: 33%;
+  }
+  .meal-choice-selection:hover{
+    background-color: #9B2D2B;
+    border-radius: 50px;
+    color: white;
+    height: 100%;
+  }
+  .meal-choice{
+
+    border-radius: 50px;
+    background-color: #ebebeb;
+    text-align: center;
+    width: 90%;
+    margin-left: 5%;
+  }
+  .calendar-with-tags{
+
+    padding-bottom: 1%;
+    padding-top: 1%;
+  }
   .calendar {
-    background-color: gray;
+    
     display: flex;
     justify-content: center;
     margin: 20px auto; /* Center the calendar */
@@ -19,13 +66,31 @@
     margin-top: 20px; /* Add some margin at the top */
     width: 90%;
     margin-left: 5%;
+    padding-bottom: 4%;
   }
-  
+  .add-button:hover{
+    color: white;
+    background-color: #9B2D2B;
+    border-radius: 25px;
+    width: 7%;
+    margin-left: 47.5%;
+  }
+  .add-button{
+    color: #9B2D2B;
+    background-color: white;
+    border: 2px solid #9B2D2B;
+    border-radius: 25px;
+    width: 7%;
+    margin-left: 47.5%;
+  }
+  .card-title{
+    color: white;
+  }
   .meal-card {
     width: 30%;
     min-height: 200px;
     border-radius: 10px;
-    background-color: #ecc47e;
+    background-color: #9B2D2B;
     margin: 0 10px; /* Add margin on both sides for better spacing */
     overflow: hidden; /* Hide overflowing content */
     transition: transform 0.3s ease-in-out; /* Add a smooth transition effect */
