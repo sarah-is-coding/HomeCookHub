@@ -5,10 +5,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testAPIRouter = require("./routes/test");
-var recipesRouter = require("./routes/recipes");
+var indexRouter = require('./routes/index.ts');
+var usersRouter = require('./routes/users.js');
+var testAPIRouter = require("./routes/test.ts");
+var recipesRouter = require("./routes/recipes.ts");
 
 var app = express();
 

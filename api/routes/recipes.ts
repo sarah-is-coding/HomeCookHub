@@ -1,10 +1,12 @@
-const firebase = require('firebase/app')
-const firestore = require('firebase/firestore')
+//Note: _r suffix required to avoid typescript errors
+const firebase_r = require('firebase/app')
+const firestore_r = require('firebase/firestore')
 
 var express = require('express');
 var router = express.Router();
 
-const firebaseConfig = {
+
+const firebaseConfig_r = {
 
   apiKey: "AIzaSyDGgxcZliGnzZa_K2PZ4sc5bdrOjPAu5Ro",
   authDomain: "homecookhub-0.firebaseapp.com",
@@ -16,15 +18,16 @@ const firebaseConfig = {
 
 };
 
-const app = firebase.initializeApp(firebaseConfig)
-const Database = firestore.getFirestore(app)
 
-const recipeRef = firestore.collection(Database, 'recipes')
+const app_r = firebase_r.initializeApp(firebaseConfig_r)
+const Database_r = firestore_r.getFirestore(app_r)
+
+const recipeRef = firestore_r.collection(Database_r, 'recipes')
 
 router.get("/", function(req, res, next) {
-    var myQuery = firestore.query(recipeRef)
+    var myQuery = firestore_r.query(recipeRef)
 
-    firestore.getDocs(myQuery).then((snapshot) => {
+    firestore_r.getDocs(myQuery).then((snapshot) => {
         if(!snapshot.empty){
           const data = snapshot.docs.map((doc) => ({
             id: doc.id,
@@ -41,11 +44,11 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/:recipeID", function(req, res, next) {
-  docRef = firestore.doc(Database, 'recipes', req.params["recipeID"])
+  let docRef = firestore_r.doc(Database_r, 'recipes', req.params["recipeID"])
 
   try{
 
-    firestore.getDoc(docRef).then((snapshot) =>{
+    firestore_r.getDoc(docRef).then((snapshot) =>{
       if(snapshot.exists()){
         res.send(snapshot.data())
       }
