@@ -6,7 +6,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/:myNum(\\d+)", function(req, res, next){
-    retString = "Your number is " + String(req.params["myNum"])
+    let retString = "Your number is " + String(req.params["myNum"])
     res.send(retString)
 });
 
