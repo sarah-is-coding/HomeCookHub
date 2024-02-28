@@ -50,7 +50,7 @@ interface Recipe {
   id: string;
   title: string;
   description: string;
-  image: string;
+  imageURL: string;
   rating: number;
   reviewers: string;
 }

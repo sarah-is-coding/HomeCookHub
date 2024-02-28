@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import StarRating from "./StarRating";
+import FirebaseImage from "./FirebaseImage";
 import { Link } from "react-router-dom"; // Import Link
 // save recipe or add to calender option in recipe page
 
@@ -57,10 +58,11 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
 
   // Prepend PUBLIC_URL to the image path
   const imagePath = `${process.env.PUBLIC_URL}${image}`;
+  console.log(image);
 
   return (
     <Box to={`/recipes/${encodedID}`}>
-      <Image src={image} alt={title} />
+      <FirebaseImage imagePath={image} alt={title} />
       <Title>{title}</Title>
       <Description>{description}</Description>
       <StarRating rating={rating} reviewers={reviewers} />

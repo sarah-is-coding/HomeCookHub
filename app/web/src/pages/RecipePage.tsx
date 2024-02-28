@@ -127,25 +127,23 @@ const RecipePage: React.FC = () => {
 
   useEffect(() => {
     const fetchRecipe = async () => {
-      try{
-        if(params.title){
-          var fetchURL = 'http://localhost:9000/recipes/' + decodeURIComponent(params.title);
+      try {
+        if (params.title) {
+          var fetchURL =
+            "http://localhost:9000/recipes/" + decodeURIComponent(params.title);
           const response = await fetch(fetchURL);
           const recipeData = await response.json();
           setRecipe(recipeData);
+        } else {
+          console.log("RECIPE ID ERROR");
         }
-        else{
-          console.log("RECIPE ID ERROR")
-        }
-        
-      }
-      catch(error){
+      } catch (error) {
         console.log(error);
       }
     };
 
-      fetchRecipe();
-    
+    fetchRecipe();
+
     /*
     if (params.title) {
       const normalizedTitle = decodeURIComponent(
@@ -183,9 +181,9 @@ const RecipePage: React.FC = () => {
 
   return (
     <PageContainer>
-      <ImageContainer imageUrl={recipe.image || '/assets/default.jpg'}>
+      <ImageContainer imageUrl={recipe.image || "/assets/default.jpg"}>
         <ImageOverlay />
-        <TitleOnImage>{recipe.title || ''}</TitleOnImage>
+        <TitleOnImage>{recipe.title || ""}</TitleOnImage>
         <StarRating>
           {[...Array(5)].map((star, index) => {
             const ratingValue = index + 1;
@@ -193,17 +191,19 @@ const RecipePage: React.FC = () => {
               <FaStar
                 key={index}
                 size={24}
-                color={ratingValue <= recipe.rating || 0 ? "#ffc107" : "#e4e5e9"}
+                color={
+                  ratingValue <= recipe.rating || 0 ? "#ffc107" : "#e4e5e9"
+                }
               />
             );
           })}
-          <span>({recipe.reviewers || '0'})</span>
+          <span>({recipe.reviewers || "0"})</span>
         </StarRating>
         <JumpToRecipeButton onClick={scrollToRecipeCard}>
           Jump to Recipe <FaArrowDown />
         </JumpToRecipeButton>
       </ImageContainer>
-      <BlogDescription>{recipe.description || ''}</BlogDescription>
+      <BlogDescription>{recipe.description || ""}</BlogDescription>
       <RecipeCard RecipeId="recipe-card" {...recipe} />
       <CommentsSection>{/* Comments and rating section */}</CommentsSection>
     </PageContainer>
