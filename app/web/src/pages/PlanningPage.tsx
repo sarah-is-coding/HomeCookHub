@@ -74,6 +74,7 @@ const PlanningPage: React.FC = () => {
           </div>
         </div>
       </>
+      
     );
     let [currentDayPlan, setCurrentDayPlan] = useState({
       lunch: emptyRecipeCard,
