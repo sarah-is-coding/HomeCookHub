@@ -1,0 +1,60 @@
+.dropdown-control {
+    &:active {
+      pointer-events: none; /* Disable pointer events on the active state */
+    }
+  }
+.Ingredient{
+    padding-left: 10%;
+    width: 40%;
+    float: left;
+}
+.Quantity{
+    padding-left: 10%;
+    width: 40%;
+    float: right;
+}
+.IngredientRow{
+    margin-bottom: 7px;
+    height: 30px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.close-button{
+    margin-top: 20px;
+}
+.add-button:hover{
+    color: white;
+    background-color: #9B2D2B;
+    border-radius: 25px;
+    width: 15%;
+    margin-left: 43%;
+    margin-top: 20px;
+  }
+.add-button{
+    color: #9B2D2B;
+    background-color: white;
+    border: 2px solid #9B2D2B;
+    border-radius: 25px;
+    width: 15%;
+    margin-left: 43%;
+    margin-top: 20px;
+}
+.custom-input{
+    height: 42px;
+    width: 90%;
+}
+.name-select{
+    width: 30%;
+}
+.amount-select{
+    width: 30%;
+}
+.unit-select{
+    width: 30%;
+}
+.popup{
+    text-align: center;
+    width: 100%
+}
+.add-ingredient{
+    text-align: center;
+}
