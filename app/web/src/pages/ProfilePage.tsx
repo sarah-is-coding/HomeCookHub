@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import RecipeBox from "../components/RecipeBox";
@@ -103,37 +103,45 @@ const InfoHeader = styled.h2`
 
 const ProfilePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("ProfileInfo");
+  const [recipes, setRecipes] = useState<any[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState({} as any)
+  const [user, setCurrentUser] = useState({} as any)
 
-  const savedRecipes: RecipeBoxObject[] = [
-    {
-      title: "Cereal",
-      rating: 4,
-      description: "Fried Chicken",
-      reviewers: "",
-      image: "/assets/mashed-potatoes.png",
-    },
-    {
-      title: "Cereal",
-      rating: 2,
-      description: "Lucky Charms with oat milk",
-      reviewers: "",
-      image: "/assets/mashed-potatoes.png",
-    },
-    {
-      title: "Cereal",
-      rating: 5,
-      description: "Chicken Alfredo",
-      reviewers: "",
-      image: "/assets/mashed-potatoes.png",
-    },
-    {
-      title: "Chocolate Cake",
-      rating: 1,
-      description: "Cake that's chocolate",
-      reviewers: "",
-      image: "/assets/mashed-potatoes.png",
-    },
-  ];
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/recipes/");
+        const data = await response.json();
+        setRecipes(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/users/Test_User");
+        const data = await response.json();
+        setCurrentUser(data);
+        setSavedRecipes([])
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchRecipes();
+    fetchCurrentUser();
+  }, []);
+
+    if (user.Saved_Recipes && recipes) {
+        user.Saved_Recipes.forEach((saved_recipe: any) => {
+            recipes.forEach(recipe => {
+              if (recipe.id === saved_recipe.recipe_id) {
+                if (!savedRecipes.includes(recipe))
+                savedRecipes.push(recipe)}
+            })
+        })
+    }
+    console.log(savedRecipes)
 
   return (
     <ProfilePageContainer>
@@ -176,10 +184,10 @@ const ProfilePage: React.FC = () => {
       )}
       {activeTab === "SavedRecipes" && (
         <GridContainer>
-          {savedRecipes.map((recipe, index) => (
+          {savedRecipes.map((recipe: { title: string; description: string; image: string; rating: number; reviewers: string; id: string;}, index: React.Key) => (
             <RecipeBox
-              key={index}
-              recipeID={index.toString()}
+              key={recipe.id}
+              recipeID={recipe.id}
               title={recipe.title}
               description={recipe.description}
               image={recipe.image}

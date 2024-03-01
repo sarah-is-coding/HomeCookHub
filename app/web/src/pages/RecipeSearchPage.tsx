@@ -49,7 +49,6 @@ const RecipeSearchPage: React.FC = () => {
             });
           }
         }
-        console.log(merged)
         setRecipeScores(merged.sort((a,b) => (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0)).slice(0, 20));
       });
     } catch(error) {

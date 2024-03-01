@@ -129,9 +129,11 @@ const RecipePage: React.FC = () => {
     const fetchRecipe = async () => {
       try{
         if(params.title){
+          console.log(params.title)
           var fetchURL = 'http://localhost:9000/recipes/' + decodeURIComponent(params.title);
           const response = await fetch(fetchURL);
           const recipeData = await response.json();
+          console.log(recipeData)
           setRecipe(recipeData);
         }
         else{
