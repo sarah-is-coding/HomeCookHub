@@ -4,6 +4,7 @@ import theme from "../theme";
 import SearchBar from "../components/SearchBar";
 import RecipeBox from "../components/RecipeBox";
 import recipesData from "../components/recipesData";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import { calculateWordSimilarity } from "../SearchLogic";
 
 const RecipeSearchContainer = styled.div`
@@ -15,11 +16,28 @@ const RecipeSearchContainer = styled.div`
 `;
 
 const Title = styled.h1`
+color: ${theme.colors.black};
+font-family: ${theme.fonts.title};
+text-align: center;
+font-size: 4rem;
+margin-bottom: 2rem;
+`;
+
+const AddRecipeButton = styled(Link)`
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 50px;
+  background-color: white;
+  border-radius: 10%;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
   color: ${theme.colors.black};
-  font-family: ${theme.fonts.title};
-  text-align: center;
-  font-size: 4rem;
-  margin-bottom: 2rem;
+  font-size: 1.5rem;
 `;
 
 const GridContainer = styled.div`
@@ -30,6 +48,7 @@ const GridContainer = styled.div`
   width: 100%;
   max-width: 1200px;
 `;
+
 
 const RecipeSearchPage: React.FC = () => {
   const [recipes, setRecipes] = useState(recipesData); //Initialized with hard-coded data
@@ -80,6 +99,7 @@ const RecipeSearchPage: React.FC = () => {
   return (
     <RecipeSearchContainer>
       <Title>Recipes</Title>
+      <AddRecipeButton to="/add-recipe">Add Recipe</AddRecipeButton>
       <SearchBar onSearch={handleSearch} />
       <GridContainer>
         {recipeScore.map((recipe) => (
