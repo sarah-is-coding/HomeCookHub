@@ -1,3 +1,4 @@
+//theme.ts
 const theme = {
   fonts: {
     primary: "'DM Sans', sans-serif",
@@ -10,6 +11,8 @@ const theme = {
     light: '#FFF4E1',
     grey: '#737865',
     lightGrey: '#D3D3D3',
+    accent: '#C97B63',
+    accentLight: '#D3A181'
   },
   hover: {
     background: '#F2E0D5',
