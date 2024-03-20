@@ -20,9 +20,9 @@ const PopupContent: React.FC<{ onSave: (name: string, amount: number, unit: stri
   const [tempName, setTempName] = useState('');
   const [tempUnit, setTempUnit] = useState('');
   const [tempAmount, setTempAmount] = useState(0);
-  const dropdownOptions = [{ name: 'number', value: '' }, { name: 'ounces', value: 'oz' }, { name: 'pounds', value: 'lbs' }];
+  const dropdownOptions = [{ name: 'No Unit', value: '' }, { name: 'ounces', value: 'oz' }, { name: 'pounds', value: 'lbs' }];
   const defaultOption = dropdownOptions[0].name;
-
+  
   const handleTempNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTempName(e.target.value);
   };
@@ -67,7 +67,7 @@ const PopupContent: React.FC<{ onSave: (name: string, amount: number, unit: stri
           <Dropdown
             className="custom-dropdown"
             options={dropdownOptions.map(option => ({ value: option.value, label: option.name }))}
-            value={{ value: tempUnit, label: tempUnit !== '' ? tempUnit : 'number' }}
+            value={{ value: tempUnit, label: tempUnit !== '' ? tempUnit : 'No Unit' }}
             onChange={handleTempUnitChange}
           />
         </div>
@@ -84,6 +84,16 @@ const PopupContent: React.FC<{ onSave: (name: string, amount: number, unit: stri
 
 const GroceryPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("PantryInfo");
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [unit, setUnit] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [showDateRangePicker, setShowDateRangePicker] = useState(false);
+
+  const handleRangeButtonClick = () => {
+    setShowDateRangePicker(!showDateRangePicker);
+  };
   interface GroceryTabProps {
     isActive: boolean;
   }
@@ -141,38 +151,24 @@ const GroceryPage: React.FC = () => {
     color: ${theme.colors.primary};
     margin-bottom: 10px;
   `;
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  }
-  const handleSelect = (ranges: any) =>{
-    console.log(ranges);
-    // {
-    //   selection: {
-    //     startDate: [native Date Object],
-    //     endDate: [native Date Object],
-    //   }
-    // }
-  }
-  const [name, setName] = useState('');
-  const [amount, setAmount] = useState(0);
-  const [unit, setUnit] = useState('');
+
   // insert back end call here to populate original ingredient list
   const [ingredientList, setIngredient] = useState([
-    { unit: "oz", name: "Milk1", amount: 24 },
+    { unit: "oz", name: "Milk", amount: 24 },
     { unit: "", name: "Carrots", amount: 4 },
-    { unit: "lbs", name: "Chicken", amount: 1 }
+    { unit: "lbs", name: "Chicken", amount: 1 },
+    { unit: "oz", name: "Chicken Broth", amount: 20 },
+    { unit: "", name: "Green Onions", amount: 1 },
   ]);
   const [MealPlanList, setMealPlan] = useState([
-    { unit: "oz", name: "Milk2", amount: 24 },
-    { unit: "", name: "Carrots", amount: 4 },
-    { unit: "lbs", name: "Chicken", amount: 1 }
+    { unit: "oz", name: "Milk", amount: 34 },
+    { unit: "", name: "Carrots", amount: 2 },
+    { unit: "lbs", name: "Beef", amount: 1 },
+    { unit: "oz", name: "Honey", amount: 1 },
+    { unit: "", name: "Eggs", amount: 3 }
   ]);
   const [GroceryList, setGrocery] = useState([
-    { unit: "oz", name: "Milk3", amount: 24 },
-    { unit: "", name: "Carrots", amount: 4 },
-    { unit: "lbs", name: "Chicken", amount: 1 }
+    { unit: "", name: "", amount: 0}
   ]);
   const handlePopupSave = (tempName: string, tempAmount: number, tempUnit: string) => {
     setName(tempName);
@@ -206,12 +202,47 @@ const GroceryPage: React.FC = () => {
   };
   useEffect(() => {
   }, [name, amount, unit]);
+  const todaysDate = new Date();
+  const selectionRange = {
+    startDate,
+    endDate,
+    key: 'selection',
+  };
+  const createGroceryList = () => {
+    // Creates grocery list by subtracting meal plan list from your pantry
+    const pantryIngredientQuantities = new Map(
+      ingredientList.map((ingredient) => [ingredient.name.toUpperCase(), ingredient.amount])
+    );
+
+    const newGroceryList = MealPlanList.map((mealPlanIngredient) => {
+      const pantryQuantity = pantryIngredientQuantities.get(mealPlanIngredient.name.toUpperCase()) || 0;
+      const remainingQuantity = Math.max(0, mealPlanIngredient.amount - pantryQuantity);
+
+      return {
+        name: mealPlanIngredient.name,
+        amount: remainingQuantity,
+        unit: mealPlanIngredient.unit,
+      };
+    }).filter((ingredient) => ingredient.amount > 0);
+
+    setGrocery(newGroceryList);
+
+  }
+  const handleRangeSelect = (ranges: any) => {
+    console.log(ranges);
+    setStartDate(ranges.selection.startDate);
+    setEndDate(ranges.selection.endDate);
+  }
+
   return (
     <GroceryPageContainer>
       <GroceryTabContainer>
         <GroceryTab
           isActive={activeTab === "PantryInfo"}
-          onClick={() => setActiveTab("PantryInfo")}
+          onClick={() => {
+            setActiveTab("PantryInfo");
+            setShowDateRangePicker(false); // Reset state when switching tabs
+          }}
         >
           Your Pantry
         </GroceryTab>
@@ -223,7 +254,11 @@ const GroceryPage: React.FC = () => {
         </GroceryTab>
         <GroceryTab
           isActive={activeTab === "Groceries"}
-          onClick={() => setActiveTab("Groceries")}
+          onClick={() => {
+            setActiveTab("Groceries");
+            setShowDateRangePicker(false); // Reset state when switching tabs
+            createGroceryList();
+          }}
         >
           Groceries
         </GroceryTab>
@@ -253,6 +288,7 @@ const GroceryPage: React.FC = () => {
       {activeTab === "MealPlan" && (
         <GroceryInfo>
           <InfoHeader>Ingredients: </InfoHeader>
+          
           <div>
             {MealPlanList.map((ingredient, index) => (
               <div key={index} className="IngredientRow">
@@ -265,10 +301,21 @@ const GroceryPage: React.FC = () => {
               </div>
             ))}
           </div>
-          <DateRangePicker
-            ranges={[selectionRange]}
-            onChange={handleSelect}
-          />
+          <div className="range-button">
+            {!showDateRangePicker && (
+              <button className="date-button" onClick={handleRangeButtonClick}>Edit Date Range</button>
+            )}
+            {showDateRangePicker && (
+              <button className="date-button" onClick={handleRangeButtonClick}>Close Range Picker</button>
+            )}
+          </div>
+          {showDateRangePicker && (
+            <DateRangePicker
+              ranges={[selectionRange]}
+              onChange={handleRangeSelect}
+            />
+          )}
+          <div className="current-range"> <b>Current Date Range:</b> {startDate.toDateString()} - {endDate.toDateString()} </div>
         </GroceryInfo>
       )}
       {activeTab === "Groceries" && (
