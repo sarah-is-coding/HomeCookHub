@@ -153,7 +153,7 @@ router.put('/save_recipe/:username', function(req, res, next) {
         recipe_title: String(req.body['recipe_title']),
         saved_date: firestore_u.Timestamp.fromDate(new Date()),
         serving_size: Number(req.body['serving_size'])
-      }
+      };
       
       console.log(recipe);
 
@@ -164,10 +164,10 @@ router.put('/save_recipe/:username', function(req, res, next) {
       }).then(() => {
         res.status(200).send(`Recipe ${String(req.body['recipe_id'])} saved to ${req.params["username"]}`);
       });
-  }
-  else{
-    res.status(400).send("One or more required inputs is not defined");
-  }  
+    }
+    else{
+      res.status(400).send("One or more required inputs is not defined");
+    }  
 
   }
   catch(error){

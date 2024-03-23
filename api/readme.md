@@ -10,6 +10,40 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
  - **Inputs**:
    - **ID**: The string ID of recipe to retrieve
 
+### recipes/add_recipe
+ - **Purpose**: This POST request adds a new recipe to the database.
+ - **Body**:
+   - **title**: The title of the recipe.
+   - **author**: The username of the user who uploaded the recipe.
+   - **serving_size**: The number of servings in the recipe. This must be a number.
+   - **cook_time**: The cook time of the recipe. This must be a number.
+   - **prep_time**: The prep time of the recipe. This must be a number.
+   - **ingredients**: The list of ingredients. This must a string formatted in JSON format. Ex:
+   `{
+    '1': 'Ingredient1',
+    '2': 'Ingredient2',
+    ...
+   }`
+    - **quantities**: The list of quantities for each ingredient. The order of the quantities must match the order of the ingredients. This must be a string in JSON fromat similar to the ingredients input. Additionally, the quantities must be numbers. Ex:
+  `{
+    '1': 0.5,
+    '2': 1,
+    ...
+  }`
+   - **units**: The list of units for each ingredient and quantity. This should be formatted similarly to the ingredients and quantities inputs. The order should match the order of the ingredients and quantities. Ex:
+   `{
+      '1': 'tsp',
+      '2': 'lb,
+      ...
+    }`
+   - **steps**: The list of steps for the recipe. This must be formatted similarly to the ingrediets, units, and quantities. Ex:
+  `{
+    '1': 'This is the first step.',
+    '2': 'This is the second step.',
+    ...
+  }`
+   - **tags**: The tags associated with the recipe. This must be in the form of a string formatted as an array. Ex: `"['gluten free', 'vegetarian']"`.
+
 ## Users
 
 ### users/[USERNAME]
