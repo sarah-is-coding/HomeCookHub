@@ -1,6 +1,8 @@
 import {useState} from "react";
+import { getAuth } from "firebase/auth";
 import styled from "styled-components";
 import theme from "../theme";
+import axios from "axios"
 
 const PageContainer = styled.div`
     display: flex;
@@ -54,7 +56,6 @@ const Body = styled.h1`
   font-size: 2rem;
   padding-top: 100px
 `;
-
 
 const TitleBody = styled(Body) `
   top: 40%;`
@@ -160,84 +161,115 @@ interface Steps {
   step: string;
 }
 
-interface Recipe {
-  id: number;
-  imageURL: string;
-  author: string;
-  cook_time: number;
-  serving_size: number;
-  date: string;
-  prep_time: number;
-  tags: string[];
-  ingredients: { [key: string]: string };
-  steps: { [key: string]: string };
-  title: string;
-}
-
 const TutorialsPage = () => {
-  // const [id, setID] = useState<number>(0)
   // const [imageURL, setImageURL] = useState<string>("")
-  // const [author, setAuthor] = useState<string>("")
-  // const [cookTime, setcookTime] = useState<number>(0)
-  // const [servingSize, setServingSize]  = useState<number>(0)
-  // const [date, setDate] = useState<string>("")
-  // const [prepTime, setPrepTime] = useState<number>(0)
+  const [cookTime, setCookTime] = useState<number>(0)
+  const [servingSize, setServingSize]  = useState<number>(0)
+  const [prepTime, setPrepTime] = useState<number>(0)
   // const [tags, setTags] = useState<string>("")
   const [leftContainerHeight, setLeftContainerHeight] = useState(215); // Initial height
   const [rightContainerHeight, setRightContainerHeight] = useState(215); 
-  const [ingredients, setIngredients] = useState<Ingredient[]>([{ ingredient: "", quantity: "", unit: "" }]);
-  const [steps, setSteps] = useState<Steps[]>([{step: ""}]);
-  // const [title, setTitle] = useState<string>("")
-  const [recipes, setRecipes] = useState<Recipe[]>([{
-    id: 0,
-    imageURL: "",
-    author: "", 
-    cook_time: 0,
-    serving_size: 0,
-    date: "",
-    prep_time: 0,
-    tags: [],
-    ingredients: { ingredient: "", quantity: "", unit: "" },
-    steps: {step: ""},
-    title: ""
-  }])
+  const [recipeIngredients, setIngredients] = useState<Ingredient[]>([{ ingredient: "", quantity: "", unit: "" }]);
+  const [recipeSteps, setSteps] = useState<Steps[]>([{step: ""}]);
+  const [newTitle, setTitle] = useState<string>("")
 
   const handleAddStep = () => {
-    setSteps([...steps, { step: "" }]);
+    setSteps([...recipeSteps, { step: "" }]);
     setLeftContainerHeight(leftContainerHeight + 7);
     setRightContainerHeight(rightContainerHeight + 7);
   };
 
   const handleRemoveStep = () => {
-    setSteps(steps.splice(0, steps.length - 1));
+    setSteps(recipeSteps.splice(0, recipeSteps.length - 1));
     setLeftContainerHeight(leftContainerHeight - 7);
     setRightContainerHeight(rightContainerHeight - 7);
   };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, { ingredient: "", quantity: "", unit: "" }]);
+    setIngredients([...recipeIngredients, { ingredient: "", quantity: "", unit: "" }]);
     setLeftContainerHeight(leftContainerHeight + 6);
     setRightContainerHeight(rightContainerHeight + 6);
   };
 
   const handleRemoveIngredient = () => {
-    setIngredients(ingredients.splice(0, ingredients.length - 1));
+    setIngredients(recipeIngredients.splice(0, recipeIngredients.length - 1));
     setLeftContainerHeight(leftContainerHeight - 6);
     setRightContainerHeight(rightContainerHeight - 6);
   };
 
   const handleIngredientChange = (index: number, key: keyof Ingredient, value: string) => {
-    const newIngredients: Ingredient[] = [...ingredients]; // Explicitly define the type of newIngredients
+    const newIngredients: Ingredient[] = [...recipeIngredients]; // Explicitly define the type of newIngredients
     newIngredients[index][key] = value;
-    console.log(newIngredients)
     setIngredients(newIngredients);
   };
 
   const handleStepChange = (index: number, key: keyof Steps, value: string) => {
-    const newSteps: Steps[] = [...steps]; // Explicitly define the type of newIngredients
+    const newSteps: Steps[] = [...recipeSteps]; // Explicitly define the type of newIngredients
     newSteps[index][key] = value;
     setSteps(newSteps);
   };
+
+  const handleTitleChange = (value: string) => {
+    setTitle(value);
+  };
+
+  const handleCookTimeChange = (value: string) => {
+    setCookTime(Number(value));
+  };
+
+  const handlePrepTimeChange = (value: string) => {
+    setPrepTime(Number(value));
+  };
+
+  const handleServingSizeChange = (value: string) => {
+    setServingSize(Number(value));
+  };
+
+  const AddRecipe = () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      var ingredientsDict: { [id: string] : string} = {}
+      var quantitiesDict: { [id: string] : string} = {}
+      var unitsDict: { [id: string] : string} = {}
+      var stepsDict: { [id: string] : string} = {}
+      for (let i = 0; i < recipeIngredients.length; i++) {
+        ingredientsDict[i.toString()] = recipeIngredients[i]["ingredient"]
+        quantitiesDict[i.toString()] = recipeIngredients[i]["quantity"]
+        unitsDict[i.toString()] = recipeIngredients[i]["unit"]
+      }
+      for (let i = 0; i < recipeSteps.length; i++) {
+        stepsDict[i.toString()] = recipeSteps[i]["step"]
+      }
+
+      if (user) {
+        const newRecipe = {
+          'author': user["email"]?.split("@")[0],
+          'cook_time': cookTime,
+          'prep_time': prepTime,
+          'serving_size': servingSize,
+          'title': newTitle,
+          'ingredients': ingredientsDict,
+          'quantities': quantitiesDict,
+          'units': unitsDict,
+          'steps': stepsDict,
+          'tags': []
+        }
+
+        const postRecipe = async() => {
+          await axios.post('http://localhost:9000/recipes/add_recipe', newRecipe)
+            .then(function (response: any) {
+              console.log(response.json()); // Response from the server
+            })
+            .catch(function (error: any) {
+              console.error('Error making POST request:', error);
+            });
+        }
+        postRecipe()
+      }
+      else {
+        console.log("user has not been found!")
+      }
+  }
 
   return (
       <PageContainer>
@@ -245,16 +277,16 @@ const TutorialsPage = () => {
           <FormContainer>
             <Title>Add Your Own Recipe</Title>
             <TitleBody>Recipe Title:</TitleBody>
-            <Input type="text" placeholder="ex: Chicken Cassarolle"/>
+            <Input type="text" placeholder="ex: Chicken Cassarolle" onChange={(e) => handleTitleChange(e.target.value)}/>
 
             <CookBody>Cook Time:</CookBody>
-            <NumberInput type="number" placeholder="ex: 5 (minutes)"/>
+            <NumberInput type="number" placeholder="ex: 5 (minutes)" onChange={(e) => handleCookTimeChange(e.target.value)}/>
 
             <PrepBody>Prep Time:</PrepBody>
-            <NumberInput type="number" placeholder="ex: 20 (minutes)"/>
+            <NumberInput type="number" placeholder="ex: 20 (minutes)" onChange={(e) => handlePrepTimeChange(e.target.value)}/>
 
             <ServingBody>Serving Size:</ServingBody>
-            <NumberInput type="number" placeholder="ex: 4 (people)"/>
+            <NumberInput type="number" placeholder="ex: 4 (people)" onChange={(e) => handleServingSizeChange(e.target.value)}/>
 
             <IngredientsBody>Ingredients:</IngredientsBody>
             <ImageButton onClick={handleAddIngredient}>+</ImageButton>
@@ -266,7 +298,7 @@ const TutorialsPage = () => {
                   <IngrediantText>Quantity</IngrediantText>
                   <IngrediantText>Units</IngrediantText>
               </IngrediantRow>
-              {ingredients.map((ingredient, index) => (
+              {recipeIngredients.map((ingredient, index) => (
                 <IngrediantRow key={index}>
                     <IngrediantInput
                       type="text"
@@ -303,7 +335,7 @@ const TutorialsPage = () => {
             <StepsBody>Steps:</StepsBody>
             <ImageButton onClick={handleAddStep}>+</ImageButton>
             <ImageButton onClick={handleRemoveStep}>-</ImageButton>
-            {steps.map((step, index) => (
+            {recipeSteps.map((step, index) => (
             <StepsContainer key={index}>
               <span>Step {index + 1}:    </span>
               <Input 
@@ -316,7 +348,7 @@ const TutorialsPage = () => {
             <TagsBody>Tags:</TagsBody>
             <Input type="text" placeholder="ex: Gluten Free"/>
             <br/><br/><br/><br/><br/><br/>
-            <AddRecipeButton>Add Recipe</AddRecipeButton>
+            <AddRecipeButton onClick={AddRecipe}>Add Recipe</AddRecipeButton>
           </FormContainer>
           <RightContainer height={rightContainerHeight}></RightContainer>
     </PageContainer>
