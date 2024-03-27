@@ -85,22 +85,16 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
  - **Inputs**:
    - **USERNAME**: The username of the desired user. Note that this is case sensitive.
  - **BODY**: The following inputs are required to be included in the request body.
-   - **cook_time**: (Number) The cook time of the recipe.
-   - **prep_time**: (Number) The prep time for the recipe.
    - **recipe_id**: The id of the recipe.
    - **recipe_title**: The title of the recipe.
-   - **serving_size**: (Number) The number of servings the recipe yields.
 
 ### users/remove_recipe/:username
  - **Purpose**: This PUT request removes a recipe from the user's saved recipes.
  - **Inputs**:
    - **USERNAME**: The username of the desired user. Note that this is case sensitive.
  - **BODY**: The following inputs are required to be included in the request body.
-   - **cook_time**: (Number) The cook time of the recipe.
-   - **prep_time**: (Number) The prep time for the recipe.
    - **recipe_id**: The id of the recipe.
    - **recipe_title**: The title of the recipe.
-   - **serving_size**: (Number) The number of servings the recipe yields.
    - **saved_sec**: (Number) The number of seconds in the saved_date timestamp.
    - **saved_nanosec**: (Number) The number of nanoseconds in the saved_date timestamp.
  - NOTE: All values must be exact matches or else the saved recipe will not be removed.
@@ -110,13 +104,10 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
  - **Inputs**:
    - **USERNAME**: The username of the desired user. Note that this is case sensitive.
  - **BODY**: The following inputs are required to be included in the request body.
-   - **cook_time**: (Number) The cook time of the recipe.
    - **day**: The day the recipe is saved to. This should be in the form of a string of the format "YYYY/MM/DD".
    - **meal**: The meal the recipe is scheduled for. Should be "Breakfast", "Lunch", or "Dinner".
-   - **prep_time**: (Number) The prep time for the recipe.
    - **recipe_id**: The id of the recipe.
    - **recipe_title**: The title of the recipe.
-   - **serving_size**: (Number) The number of servings the recipe yields.
    
 ### users/add_grocery/[USERNAME]
  - **Purpose**: This PUT request adds an item to the user's grocery list.
