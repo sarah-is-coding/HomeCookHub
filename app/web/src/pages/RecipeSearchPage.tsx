@@ -91,6 +91,10 @@ const RecipeSearchPage: React.FC = () => {
             rating={recipe.rating || 0}
             reviewers={recipe.reviewers || "0"}
             recipeID={recipe.id || "0"}
+            cookTime={recipe.cookTime || 0}
+            prepTime={recipe.prepTime || 0}
+            servingSize={recipe.servingSize || 1}
+            showSaveButton={true}
           />
         ))}
       </GridContainer>

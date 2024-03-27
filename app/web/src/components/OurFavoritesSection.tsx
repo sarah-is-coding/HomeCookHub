@@ -50,6 +50,9 @@ interface Recipe {
   imageURL: string; // Updated to match expected field
   rating: number;
   reviewers: string;
+  cookTime: number; // Added
+  prepTime: number; // Added
+  servingSize: number; // Added
 }
 
 interface OurFavoritesSectionProps {
@@ -83,6 +86,10 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
               rating={recipes[0].rating}
               reviewers={recipes[0].reviewers}
               recipeID={recipes[0].id}
+              cookTime={recipes[0].cookTime} // Pass the new props
+              prepTime={recipes[0].prepTime}
+              servingSize={recipes[0].servingSize}
+              showSaveButton={true}
             />
           </FeaturedRecipe>
           <SmallRecipesContainer>
@@ -92,9 +99,13 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
                   title={recipe.title}
                   description={recipe.description}
                   image={recipe.imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
-                  rating={recipe.rating}
-                  reviewers={recipe.reviewers}
-                  recipeID={recipe.id}
+                  rating={recipes[0].rating}
+                  reviewers={recipes[0].reviewers}
+                  recipeID={recipes[0].id}
+                  cookTime={recipes[0].cookTime} // Pass the new props
+                  prepTime={recipes[0].prepTime}
+                  servingSize={recipes[0].servingSize}
+                  showSaveButton={true}
                 />
               </SmallRecipe>
             ))}

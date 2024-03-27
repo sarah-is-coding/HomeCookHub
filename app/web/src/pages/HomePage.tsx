@@ -52,7 +52,10 @@ interface Recipe {
   description: string;
   imageURL: string;
   rating: number;
-  reviewers: string;
+  reviewers: string; // Made optional
+  cookTime: number; // Added
+  prepTime: number; // Added
+  servingSize: number; // Added
 }
 
 const HomePage = () => {

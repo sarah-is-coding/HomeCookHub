@@ -89,8 +89,11 @@ router.get('/:username/:month(\\d\\d)/:day(\\d\\d)/:year(\\d\\d\\d\\d)/:month2(\
         console.log(error);
     }
 });
-//PUT: Add a recipe to a user's saved recipes
 router.put('/save_recipe/:username', function (req, res, next) {
+    if (!Number.isInteger(Number(req.body['cook_time'])) || !Number.isInteger(Number(req.body['prep_time'])) || !req.body['recipe_id'] || !req.body['recipe_title'] || !Number.isInteger(Number(req.body['serving_size']))) {
+        return res.status(400).send("Invalid input data");
+      }
+      
     try {
         //check that all required inputs are submitted
         if (Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
@@ -105,7 +108,7 @@ router.put('/save_recipe/:username', function (req, res, next) {
             };
             console.log(recipe);
             var userRecipeRef = firestore_u.doc(Database_u, "users", req.params['username']);
-            firestore_u.updateDoc(userRecipeRef, {
+                        firestore_u.updateDoc(userRecipeRef, {
                 Saved_Recipes: (0, firestore_1.arrayUnion)(recipe)
             }).then(function () {
                 res.status(200).send("Recipe ".concat(String(req.body['recipe_id']), " saved to ").concat(req.params["username"]));
@@ -120,7 +123,6 @@ router.put('/save_recipe/:username', function (req, res, next) {
         res.status(400).send('Error: Recipe could not be saved');
     }
 });
-//PUT: Remove a recipe from a user's saved recipes
 router.put('/remove_recipe/:username', function (req, res, next) {
     try {
         //check that all required inputs are submitted
@@ -137,7 +139,7 @@ router.put('/remove_recipe/:username', function (req, res, next) {
             };
             console.log(recipe);
             var userRecipeRef = firestore_u.doc(Database_u, "users", req.params['username']);
-            firestore_u.updateDoc(userRecipeRef, {
+                        firestore_u.updateDoc(userRecipeRef, {
                 Saved_Recipes: (0, firestore_1.arrayRemove)(recipe)
             }).then(function () {
                 res.status(200).send("Recipe ".concat(String(req.body['recipe_id']), " removed from ").concat(req.params["username"]));
