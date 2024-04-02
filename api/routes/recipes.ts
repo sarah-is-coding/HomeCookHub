@@ -129,7 +129,7 @@ router.post("/add_recipe", function(req, res, next){
     }
     else{
       console.log('Required inputs for recipe image not inputted.');
-      image_url = "";
+      image_url = "gs://homecookhub-0.appspot.com/default.jpg";
     }
       
     if(req.body['author'] && Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
