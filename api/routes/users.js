@@ -34,16 +34,15 @@ var Database_u = firestore_u.getFirestore(app_u);
 var userRef = firestore_u.collection(Database_u, 'users');
 //GET user data
 router.get('/:username', function (req, res, next) {
-    var myQuery = firestore_u.query(userRef, firestore_u.where("Username", "==", req.params["username"]));
+    var userRef = firestore_u.doc(Database_u, "users", req.params['username']);
     try {
-        firestore_u.getDocs(myQuery).then(function (snapshot) {
-            if (!snapshot.empty) {
-                var data = snapshot.docs.map(function (doc) { return (__assign({}, doc.data())); });
-                res.send(data);
+        firestore_u.getDoc(userRef).then(function (snapshot) {
+            if (snapshot.exists()) {
+                res.send(snapshot.data());
             }
             else {
                 res.status(404);
-                res.send("404: User not found");
+                res.send("404: Recipe not found");
             }
         });
     }
