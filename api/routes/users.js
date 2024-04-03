@@ -96,15 +96,11 @@ router.put('/save_recipe/:username', function (req, res, next) {
       
     try {
         //check that all required inputs are submitted
-        if (Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
-            && req.body['recipe_id'] && req.body['recipe_title'] && Number.isInteger(Number(req.body['serving_size']))) {
+        if (req.body['recipe_id'] && req.body['recipe_title']) {
             var recipe = {
-                cook_time: Number(req.body['cook_time']),
-                prep_time: Number(req.body['prep_time']),
                 recipe_id: String(req.body['recipe_id']),
                 recipe_title: String(req.body['recipe_title']),
                 saved_date: firestore_u.Timestamp.fromDate(new Date()),
-                serving_size: Number(req.body['serving_size'])
             };
             console.log(recipe);
             var userRecipeRef = firestore_u.doc(Database_u, "users", req.params['username']);
@@ -126,16 +122,12 @@ router.put('/save_recipe/:username', function (req, res, next) {
 router.put('/remove_recipe/:username', function (req, res, next) {
     try {
         //check that all required inputs are submitted
-        if (Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
-            && req.body['recipe_id'] && req.body['recipe_title'] && Number.isInteger(Number(req.body['serving_size']))
-            && Number.isInteger(Number(req.body['saved_sec'])) && Number.isInteger(Number(req.body['saved_nanosec']))) {
+        if (req.body['recipe_id'] && req.body['recipe_title'] && Number.isInteger(Number(req.body['saved_sec']))
+            && Number.isInteger(Number(req.body['saved_nanosec']))) {
             var recipe = {
-                cook_time: Number(req.body['cook_time']),
-                prep_time: Number(req.body['prep_time']),
                 recipe_id: String(req.body['recipe_id']),
                 recipe_title: String(req.body['recipe_title']),
                 saved_date: new firestore_u.Timestamp(Number(req.body['saved_sec']), Number(req.body['saved_nanosec'])),
-                serving_size: Number(req.body['serving_size'])
             };
             console.log(recipe);
             var userRecipeRef = firestore_u.doc(Database_u, "users", req.params['username']);
@@ -157,17 +149,12 @@ router.put('/remove_recipe/:username', function (req, res, next) {
 //POST: Add a recipe to a user's meal plan
 router.post('/save_meal/:username', function (req, res, next) {
     try {
-        if (Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
-            && req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['recipe_title'] &&
-            Number.isInteger(Number(req.body['serving_size']))) {
+        if (req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['recipe_title']) {
             var recipe = {
-                cook_time: Number(req.body['cook_time']),
-                prep_time: Number(req.body['prep_time']),
                 day: firestore_u.Timestamp.fromDate(new Date(req.body['day'])),
                 meal: String(req.body['meal']),
                 recipe_id: String(req.body['recipe_id']),
-                recipe_title: String(req.body['recipe_title']),
-                serving_size: Number(req.body['serving_size'])
+                recipe_title: String(req.body['recipe_title'])
             };
             console.log(recipe);
             firestore_u.addDoc(firestore_u.collection(Database_u, 'users', req.params["username"], 'mealplans'), recipe).then(function () {
