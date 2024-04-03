@@ -50,12 +50,54 @@ const PlanningPage: React.FC = () => {
       }
     }
     .reactjs-popup-overlay {
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px); // Blurs the background for focus on the popup
+      background-color: rgba(0, 0, 0, 0.5); // Semi-transparent background
     }
     .reactjs-popup-content {
-      border-radius: 15px;
-      border: none;
+      border-radius: 15px; // Rounded corners
+      padding: 20px; // Inner spacing
+      background-color: ${theme.colors.white}; // Background color from the theme
+      box-shadow: ${theme.shadow}; // Box shadow from the theme
+      max-width: 600px; // Maximum width of the popup content
+      width: auto; // Adjust width based on content
+      margin: 0 auto; // Center the popup content horizontally
     }
+    .close-button button {
+      color: ${theme.colors.primary}; // Button text color
+      background-color: ${theme.colors.white}; // Button background color
+      border: 2px solid ${theme.colors.primary}; // Button border
+      border-radius: 25px; // Rounded corners for the button
+      padding: 10px 20px; // Padding inside the button
+      cursor: pointer; // Pointer cursor on hover
+      transition: background-color 0.3s, color 0.3s; // Transition for hover effects
+    }
+    .close-button button:hover {
+      color: ${theme.colors.white}; // Button text color on hover
+      background-color: ${theme.colors.primary}; // Button background color on hover
+    }
+    .meal-choice-selection {
+      display: inline-block; // Ensures proper spacing and alignment
+      margin: 10px 20px; // Adds some space around each meal choice
+      padding: 10px 20px; // Makes the clickable area larger
+      border-radius: 20px; // Rounded corners for a modern look
+      background-color: ${theme.colors.light}; // Default background
+      color: ${theme.colors.accent}; // Default text color
+      font-weight: bold; // Makes the text stand out
+      cursor: pointer; // Changes cursor to indicate clickable
+      transition: background-color 0.3s, color 0.3s; // Smooth transition for feedback
+    
+      &:hover, &:focus {
+        background-color: ${theme.colors.primary}; // Highlight on hover/focus
+        color: ${theme.colors.white}; // Text color contrast on hover/focus
+      }
+    }
+    
+    .meal-choice-selected {
+      background-color: ${theme.colors.primary}; // Active state background
+      color: ${theme.colors.white}; // Active state text color
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); // Slight shadow for depth
+    }
+    
   `;
   // Styled-components for layout and UI elements
   const MealPlanning = styled.div`
@@ -152,13 +194,16 @@ const PlanningPage: React.FC = () => {
     description: "",
     reviewers: "",
     image: "",
+    cook_time: 0, // Default or placeholder value
+    prep_time: 0, // Default or placeholder value
+    serving_size: 0, // Default or placeholder value
   };
   type PopupChildFunction = (close: () => void) => React.ReactNode;
   const popupContent: PopupChildFunction = (close) => (
     <>
       <div className="add-recipe">
         <div className="content">
-          <div>Select a saved recipe to add to your meal plan:</div>
+          <div>Select a saved recipe to add to your meal plan!</div>
         </div>
         <div>
           <PopupGridContainer className="grid">
@@ -171,6 +216,9 @@ const PlanningPage: React.FC = () => {
                 image={recipe.image}
                 rating={recipe.rating}
                 reviewers={recipe.reviewers}
+                cook_time={recipe.cook_time} // Ensure these fields are now included in RecipeBoxObject
+                prep_time={recipe.prep_time}
+                serving_size={recipe.serving_size}
               />
             ))}
           </PopupGridContainer>
@@ -196,32 +244,45 @@ const PlanningPage: React.FC = () => {
     {
       title: "Cereal",
       rating: 4,
-      description: "Fried Chicken",
+      description: "Quick and easy breakfast",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/cereal.png",
+      cook_time: 0, // Cereal doesn't need cooking
+      prep_time: 5, // Time to pour cereal and milk
+      serving_size: 1,
     },
     {
-      title: "Cereal",
+      title: "Lucky Charms with Oat Milk",
       rating: 2,
-      description: "Lucky Charms with oat milk",
+      description: "Lucky Charms cereal with a twist of oat milk",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/lucky-charms.png",
+      cook_time: 0,
+      prep_time: 5,
+      serving_size: 1,
     },
     {
-      title: "Cereal",
+      title: "Chicken Alfredo",
       rating: 5,
-      description: "Chicken Alfredo",
+      description: "Creamy Alfredo pasta with succulent chicken pieces",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/chicken-alfredo.png",
+      cook_time: 30, // Assuming it includes pasta cooking and sauce preparation
+      prep_time: 15, // Prep for chicken and other ingredients
+      serving_size: 4,
     },
     {
       title: "Chocolate Cake",
       rating: 1,
-      description: "Cake that's chocolate",
+      description: "Rich and moist chocolate cake",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/chocolate-cake.png",
+      cook_time: 45, // Baking time
+      prep_time: 20, // Mixing and preparing the batter
+      serving_size: 8, // Standard cake size
     },
   ];
+
   const getCurrentDayPlan = (value: Date | Date[] | null) => {
     // This would be where the backend is called to get current recipe card information
     const breakfastRecipeCard: RecipeBoxObject = {
@@ -229,22 +290,34 @@ const PlanningPage: React.FC = () => {
       rating: 2,
       description: "Lucky Charms with oat milk",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/cereal.png",
+      cook_time: 0,
+      prep_time: 5,
+      serving_size: 1,
     };
+
     const lunchRecipeCard: RecipeBoxObject = {
       title: "Fried Chicken",
       rating: 4,
       description: "Garlic crusted fried chicken",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/fried-chicken.png",
+      cook_time: 40, // Assuming frying and preparation
+      prep_time: 20, // Marinating and breading
+      serving_size: 4,
     };
+
     const dinnerRecipeCard: RecipeBoxObject = {
       title: "Fettucine Alfredo",
       rating: 5,
       description: "White sauce pasta with grilled chicken",
       reviewers: "",
-      image: "/assets/mashed-potatoes.png",
+      image: "/assets/fettucine-alfredo.png",
+      cook_time: 30,
+      prep_time: 15,
+      serving_size: 4,
     };
+
     setCurrentDayPlan({
       breakfast: breakfastRecipeCard,
       lunch: lunchRecipeCard,
@@ -299,6 +372,9 @@ const PlanningPage: React.FC = () => {
                 image={currentDayPlan.breakfast.image}
                 rating={currentDayPlan.breakfast.rating}
                 reviewers={currentDayPlan.breakfast.reviewers}
+                cook_time={currentDayPlan.breakfast.cook_time} // Assuming these fields are now part of RecipeBoxObject
+                prep_time={currentDayPlan.breakfast.prep_time}
+                serving_size={currentDayPlan.breakfast.serving_size}
               />
             </GridContainer>
           </MealCard>
@@ -312,6 +388,9 @@ const PlanningPage: React.FC = () => {
                 image={currentDayPlan.lunch.image}
                 rating={currentDayPlan.lunch.rating}
                 reviewers={currentDayPlan.lunch.reviewers}
+                cook_time={currentDayPlan.lunch.cook_time} // Assuming these fields are now part of RecipeBoxObject
+                prep_time={currentDayPlan.lunch.prep_time}
+                serving_size={currentDayPlan.lunch.serving_size}
               />
             </GridContainer>
           </MealCard>
@@ -325,6 +404,9 @@ const PlanningPage: React.FC = () => {
                 image={currentDayPlan.dinner.image}
                 rating={currentDayPlan.dinner.rating}
                 reviewers={currentDayPlan.dinner.reviewers}
+                cook_time={currentDayPlan.dinner.cook_time} // Assuming these fields are now part of RecipeBoxObject
+                prep_time={currentDayPlan.dinner.prep_time}
+                serving_size={currentDayPlan.dinner.serving_size}
               />
             </GridContainer>
           </MealCard>

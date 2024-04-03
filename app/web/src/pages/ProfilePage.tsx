@@ -106,32 +106,45 @@ const ProfilePage: React.FC = () => {
 
   const savedRecipes: RecipeBoxObject[] = [
     {
-      title: "Cereal",
+      title: "Classic Cereal",
       rating: 4,
-      description: "Fried Chicken",
-      reviewers: "",
+      description: "A quick and easy breakfast option. Just add milk!",
+      reviewers: "100",
       image: "/assets/mashed-potatoes.png",
+      cook_time: 0, // No cooking required
+      prep_time: 2, // Just pour it out and enjoy
+      serving_size: 1,
     },
     {
-      title: "Cereal",
+      title: "Lucky Charms with Oat Milk",
       rating: 2,
-      description: "Lucky Charms with oat milk",
-      reviewers: "",
+      description:
+        "A modern twist on a classic cereal with the creaminess of oat milk.",
+      reviewers: "50",
       image: "/assets/mashed-potatoes.png",
+      cook_time: 0,
+      prep_time: 2,
+      serving_size: 1,
     },
     {
-      title: "Cereal",
+      title: "Chicken Alfredo",
       rating: 5,
-      description: "Chicken Alfredo",
-      reviewers: "",
+      description: "Creamy Alfredo sauce over tender chicken and pasta.",
+      reviewers: "150",
       image: "/assets/mashed-potatoes.png",
+      cook_time: 25,
+      prep_time: 15,
+      serving_size: 4,
     },
     {
       title: "Chocolate Cake",
       rating: 1,
-      description: "Cake that's chocolate",
-      reviewers: "",
+      description: "Rich, moist chocolate cake for any occasion.",
+      reviewers: "200",
       image: "/assets/mashed-potatoes.png",
+      cook_time: 45,
+      prep_time: 20,
+      serving_size: 8,
     },
   ];
 
@@ -185,6 +198,10 @@ const ProfilePage: React.FC = () => {
               image={recipe.image}
               rating={recipe.rating}
               reviewers={recipe.reviewers}
+              showSaveButton={false}
+              cook_time={recipe.cook_time || 0}
+              prep_time={recipe.prep_time || 0}
+              serving_size={recipe.serving_size || 1}
             />
           ))}
         </GridContainer>
