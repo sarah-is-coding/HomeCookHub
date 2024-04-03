@@ -47,31 +47,47 @@ const SaveButton = styled.button`
 
 interface RecipeBoxProps {
   title: string;
-  description: string;
+  description?: string; // Make optional fields explicitly optional
   image: string;
-  rating: number;
-  reviewers: string;
+  rating?: number;
+  reviewers?: string;
   recipeID: string;
-  cookTime: number;
-  prepTime: number;
-  servingSize: number;
+  cook_time?: number;
+  prep_time?: number;
+  serving_size?: number;
   showSaveButton?: boolean;
 }
 
 const RecipeBox: React.FC<RecipeBoxProps> = ({
   title,
-  description,
+  description = "", // Default value if description is undefined
   image,
-  rating,
-  reviewers,
-  recipeID,
-  cookTime,
-  prepTime,
-  servingSize,
-  showSaveButton = false,
+  rating = 0, // Default value if rating is undefined
+  reviewers = "0", // Default value if reviewers is undefined
+  recipeID = "0",
+  cook_time = 0, // Default value if cook_time is undefined
+  prep_time = 10, // Default value for prep_time if it's undefined
+  serving_size = 8, // Default value for serving_size if it's undefined
+  showSaveButton = false, // Default to false if showSaveButton is undefined
 }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const recipeIDString = recipeID.toString();
+  // Log the props each time they change
+  useEffect(() => {
+    console.log("RecipeBox Props:", {
+      title,
+      description,
+      image,
+      rating,
+      reviewers,
+      recipeID,
+      cook_time,
+      prep_time,
+      serving_size,
+      showSaveButton,
+    });
+  }, [title, description, image, rating, reviewers, recipeID, showSaveButton]);
 
   useEffect(() => {
     const auth = getAuth();
@@ -92,16 +108,16 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
 
     try {
       const response = await fetch(
-        `http://localhost:9000/save_recipe/${encodeURIComponent(userId)}`,
+        `http://localhost:9000/users/save_recipe/${encodeURIComponent(userId)}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            cook_time: cookTime,
-            prep_time: prepTime,
-            recipe_id: recipeID,
+            cook_time: cook_time,
+            prep_time: prep_time,
+            recipe_id: recipeIDString,
             recipe_title: title,
-            serving_size: servingSize,
+            serving_size: serving_size,
           }),
         }
       );

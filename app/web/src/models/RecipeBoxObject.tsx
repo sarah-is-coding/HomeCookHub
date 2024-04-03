@@ -4,7 +4,7 @@ export interface RecipeBoxObject {
   description: string;
   image: string;
   reviewers: string;
-  cookTime: number; // New property for cooking time
-  prepTime: number; // New property for preparation time
-  servingSize: number; // New property for the number of servings
+  cook_time: number; // New property for cooking time
+  prep_time: number; // New property for preparation time
+  serving_size: number; // New property for the number of servings
 }

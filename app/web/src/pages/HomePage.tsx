@@ -53,9 +53,9 @@ interface Recipe {
   imageURL: string;
   rating: number;
   reviewers: string; // Made optional
-  cookTime: number; // Added
-  prepTime: number; // Added
-  servingSize: number; // Added
+  cook_time: number; // Added
+  prep_time: number; // Added
+  serving_size: number; // Added
 }
 
 const HomePage = () => {
@@ -65,6 +65,9 @@ const HomePage = () => {
     const fetchRecipes = async () => {
       const response = await fetch("http://localhost:9000/recipes/");
       const data = await response.json();
+      console.log("Fetched Recipes:", data); // Log all fetched recipes
+      console.log("First 4 Favorites (pre-filter):", data.slice(0, 4)); // Log the first 4 recipes that will be used as favorites
+
       setRecipes(data);
     };
 

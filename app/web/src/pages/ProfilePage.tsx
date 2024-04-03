@@ -111,9 +111,9 @@ const ProfilePage: React.FC = () => {
       description: "A quick and easy breakfast option. Just add milk!",
       reviewers: "100",
       image: "/assets/mashed-potatoes.png",
-      cookTime: 0, // No cooking required
-      prepTime: 2, // Just pour it out and enjoy
-      servingSize: 1,
+      cook_time: 0, // No cooking required
+      prep_time: 2, // Just pour it out and enjoy
+      serving_size: 1,
     },
     {
       title: "Lucky Charms with Oat Milk",
@@ -122,9 +122,9 @@ const ProfilePage: React.FC = () => {
         "A modern twist on a classic cereal with the creaminess of oat milk.",
       reviewers: "50",
       image: "/assets/mashed-potatoes.png",
-      cookTime: 0,
-      prepTime: 2,
-      servingSize: 1,
+      cook_time: 0,
+      prep_time: 2,
+      serving_size: 1,
     },
     {
       title: "Chicken Alfredo",
@@ -132,9 +132,9 @@ const ProfilePage: React.FC = () => {
       description: "Creamy Alfredo sauce over tender chicken and pasta.",
       reviewers: "150",
       image: "/assets/mashed-potatoes.png",
-      cookTime: 25,
-      prepTime: 15,
-      servingSize: 4,
+      cook_time: 25,
+      prep_time: 15,
+      serving_size: 4,
     },
     {
       title: "Chocolate Cake",
@@ -142,9 +142,9 @@ const ProfilePage: React.FC = () => {
       description: "Rich, moist chocolate cake for any occasion.",
       reviewers: "200",
       image: "/assets/mashed-potatoes.png",
-      cookTime: 45,
-      prepTime: 20,
-      servingSize: 8,
+      cook_time: 45,
+      prep_time: 20,
+      serving_size: 8,
     },
   ];
 
@@ -199,9 +199,9 @@ const ProfilePage: React.FC = () => {
               rating={recipe.rating}
               reviewers={recipe.reviewers}
               showSaveButton={false}
-              cookTime={recipe.cookTime || 0}
-              prepTime={recipe.prepTime || 0}
-              servingSize={recipe.servingSize || 1}
+              cook_time={recipe.cook_time || 0}
+              prep_time={recipe.prep_time || 0}
+              serving_size={recipe.serving_size || 1}
             />
           ))}
         </GridContainer>

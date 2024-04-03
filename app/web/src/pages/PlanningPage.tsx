@@ -194,9 +194,9 @@ const PlanningPage: React.FC = () => {
     description: "",
     reviewers: "",
     image: "",
-    cookTime: 0, // Default or placeholder value
-    prepTime: 0, // Default or placeholder value
-    servingSize: 0, // Default or placeholder value
+    cook_time: 0, // Default or placeholder value
+    prep_time: 0, // Default or placeholder value
+    serving_size: 0, // Default or placeholder value
   };
   type PopupChildFunction = (close: () => void) => React.ReactNode;
   const popupContent: PopupChildFunction = (close) => (
@@ -216,9 +216,9 @@ const PlanningPage: React.FC = () => {
                 image={recipe.image}
                 rating={recipe.rating}
                 reviewers={recipe.reviewers}
-                cookTime={recipe.cookTime} // Ensure these fields are now included in RecipeBoxObject
-                prepTime={recipe.prepTime}
-                servingSize={recipe.servingSize}
+                cook_time={recipe.cook_time} // Ensure these fields are now included in RecipeBoxObject
+                prep_time={recipe.prep_time}
+                serving_size={recipe.serving_size}
               />
             ))}
           </PopupGridContainer>
@@ -247,9 +247,9 @@ const PlanningPage: React.FC = () => {
       description: "Quick and easy breakfast",
       reviewers: "",
       image: "/assets/cereal.png",
-      cookTime: 0, // Cereal doesn't need cooking
-      prepTime: 5, // Time to pour cereal and milk
-      servingSize: 1,
+      cook_time: 0, // Cereal doesn't need cooking
+      prep_time: 5, // Time to pour cereal and milk
+      serving_size: 1,
     },
     {
       title: "Lucky Charms with Oat Milk",
@@ -257,9 +257,9 @@ const PlanningPage: React.FC = () => {
       description: "Lucky Charms cereal with a twist of oat milk",
       reviewers: "",
       image: "/assets/lucky-charms.png",
-      cookTime: 0,
-      prepTime: 5,
-      servingSize: 1,
+      cook_time: 0,
+      prep_time: 5,
+      serving_size: 1,
     },
     {
       title: "Chicken Alfredo",
@@ -267,9 +267,9 @@ const PlanningPage: React.FC = () => {
       description: "Creamy Alfredo pasta with succulent chicken pieces",
       reviewers: "",
       image: "/assets/chicken-alfredo.png",
-      cookTime: 30, // Assuming it includes pasta cooking and sauce preparation
-      prepTime: 15, // Prep for chicken and other ingredients
-      servingSize: 4,
+      cook_time: 30, // Assuming it includes pasta cooking and sauce preparation
+      prep_time: 15, // Prep for chicken and other ingredients
+      serving_size: 4,
     },
     {
       title: "Chocolate Cake",
@@ -277,9 +277,9 @@ const PlanningPage: React.FC = () => {
       description: "Rich and moist chocolate cake",
       reviewers: "",
       image: "/assets/chocolate-cake.png",
-      cookTime: 45, // Baking time
-      prepTime: 20, // Mixing and preparing the batter
-      servingSize: 8, // Standard cake size
+      cook_time: 45, // Baking time
+      prep_time: 20, // Mixing and preparing the batter
+      serving_size: 8, // Standard cake size
     },
   ];
 
@@ -291,9 +291,9 @@ const PlanningPage: React.FC = () => {
       description: "Lucky Charms with oat milk",
       reviewers: "",
       image: "/assets/cereal.png",
-      cookTime: 0,
-      prepTime: 5,
-      servingSize: 1,
+      cook_time: 0,
+      prep_time: 5,
+      serving_size: 1,
     };
 
     const lunchRecipeCard: RecipeBoxObject = {
@@ -302,9 +302,9 @@ const PlanningPage: React.FC = () => {
       description: "Garlic crusted fried chicken",
       reviewers: "",
       image: "/assets/fried-chicken.png",
-      cookTime: 40, // Assuming frying and preparation
-      prepTime: 20, // Marinating and breading
-      servingSize: 4,
+      cook_time: 40, // Assuming frying and preparation
+      prep_time: 20, // Marinating and breading
+      serving_size: 4,
     };
 
     const dinnerRecipeCard: RecipeBoxObject = {
@@ -313,9 +313,9 @@ const PlanningPage: React.FC = () => {
       description: "White sauce pasta with grilled chicken",
       reviewers: "",
       image: "/assets/fettucine-alfredo.png",
-      cookTime: 30,
-      prepTime: 15,
-      servingSize: 4,
+      cook_time: 30,
+      prep_time: 15,
+      serving_size: 4,
     };
 
     setCurrentDayPlan({
@@ -372,9 +372,9 @@ const PlanningPage: React.FC = () => {
                 image={currentDayPlan.breakfast.image}
                 rating={currentDayPlan.breakfast.rating}
                 reviewers={currentDayPlan.breakfast.reviewers}
-                cookTime={currentDayPlan.breakfast.cookTime} // Assuming these fields are now part of RecipeBoxObject
-                prepTime={currentDayPlan.breakfast.prepTime}
-                servingSize={currentDayPlan.breakfast.servingSize}
+                cook_time={currentDayPlan.breakfast.cook_time} // Assuming these fields are now part of RecipeBoxObject
+                prep_time={currentDayPlan.breakfast.prep_time}
+                serving_size={currentDayPlan.breakfast.serving_size}
               />
             </GridContainer>
           </MealCard>
@@ -388,9 +388,9 @@ const PlanningPage: React.FC = () => {
                 image={currentDayPlan.lunch.image}
                 rating={currentDayPlan.lunch.rating}
                 reviewers={currentDayPlan.lunch.reviewers}
-                cookTime={currentDayPlan.lunch.cookTime} // Assuming these fields are now part of RecipeBoxObject
-                prepTime={currentDayPlan.lunch.prepTime}
-                servingSize={currentDayPlan.lunch.servingSize}
+                cook_time={currentDayPlan.lunch.cook_time} // Assuming these fields are now part of RecipeBoxObject
+                prep_time={currentDayPlan.lunch.prep_time}
+                serving_size={currentDayPlan.lunch.serving_size}
               />
             </GridContainer>
           </MealCard>
@@ -404,9 +404,9 @@ const PlanningPage: React.FC = () => {
                 image={currentDayPlan.dinner.image}
                 rating={currentDayPlan.dinner.rating}
                 reviewers={currentDayPlan.dinner.reviewers}
-                cookTime={currentDayPlan.dinner.cookTime} // Assuming these fields are now part of RecipeBoxObject
-                prepTime={currentDayPlan.dinner.prepTime}
-                servingSize={currentDayPlan.dinner.servingSize}
+                cook_time={currentDayPlan.dinner.cook_time} // Assuming these fields are now part of RecipeBoxObject
+                prep_time={currentDayPlan.dinner.prep_time}
+                serving_size={currentDayPlan.dinner.serving_size}
               />
             </GridContainer>
           </MealCard>

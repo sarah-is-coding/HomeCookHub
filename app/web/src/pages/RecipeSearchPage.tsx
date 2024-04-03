@@ -68,6 +68,7 @@ const RecipeSearchPage: React.FC = () => {
       try {
         const response = await fetch("http://localhost:9000/recipes/");
         const data = await response.json();
+        console.log("Fetched Recipes Search Page:", data);
         setRecipes(data);
       } catch (error) {
         console.log(error);
@@ -91,9 +92,9 @@ const RecipeSearchPage: React.FC = () => {
             rating={recipe.rating || 0}
             reviewers={recipe.reviewers || "0"}
             recipeID={recipe.id || "0"}
-            cookTime={recipe.cookTime || 0}
-            prepTime={recipe.prepTime || 0}
-            servingSize={recipe.servingSize || 1}
+            cook_time={recipe.cook_time || 0}
+            prep_time={recipe.prep_time || 0}
+            serving_size={recipe.serving_size || 1}
             showSaveButton={true}
           />
         ))}
