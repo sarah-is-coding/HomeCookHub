@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/HomeCookHub/static/css/main.9b4e72de.css",
-    "main.js": "/HomeCookHub/static/js/main.ecf7e8d8.js",
+    "main.css": "/HomeCookHub/static/css/main.85b38d22.css",
+    "main.js": "/HomeCookHub/static/js/main.7e583dea.js",
     "static/js/787.d1d4a2c2.chunk.js": "/HomeCookHub/static/js/787.d1d4a2c2.chunk.js",
     "index.html": "/HomeCookHub/index.html",
-    "main.9b4e72de.css.map": "/HomeCookHub/static/css/main.9b4e72de.css.map",
-    "main.ecf7e8d8.js.map": "/HomeCookHub/static/js/main.ecf7e8d8.js.map",
+    "main.85b38d22.css.map": "/HomeCookHub/static/css/main.85b38d22.css.map",
+    "main.7e583dea.js.map": "/HomeCookHub/static/js/main.7e583dea.js.map",
     "787.d1d4a2c2.chunk.js.map": "/HomeCookHub/static/js/787.d1d4a2c2.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9b4e72de.css",
-    "static/js/main.ecf7e8d8.js"
+    "static/css/main.85b38d22.css",
+    "static/js/main.7e583dea.js"
   ]
 }
