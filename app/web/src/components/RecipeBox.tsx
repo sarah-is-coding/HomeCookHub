@@ -66,14 +66,14 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
   reviewers = "0", // Default value if reviewers is undefined
   recipeID = "0",
   cook_time = 0, // Default value if cook_time is undefined
-  prep_time = 10, // Default value for prep_time if it's undefined
-  serving_size = 8, // Default value for serving_size if it's undefined
+  prep_time = 0, // Default value for prep_time if it's undefined
+  serving_size = 0, // Default value for serving_size if it's undefined
   showSaveButton = false, // Default to false if showSaveButton is undefined
 }) => {
   const [isSaved, setIsSaved] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const recipeIDString = recipeID.toString();
-  // Log the props each time they change
+  //Log the props each time they change
   useEffect(() => {
     console.log("RecipeBox Props:", {
       title,
@@ -94,6 +94,7 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserId(user.uid);
+        // console.log("User ID:", user.uid);
       } else {
         setUserId(null);
       }
@@ -116,7 +117,7 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
             cook_time: cook_time,
             prep_time: prep_time,
             recipe_id: recipeIDString,
-            recipe_title: title,
+            title: title,
             serving_size: serving_size,
           }),
         }

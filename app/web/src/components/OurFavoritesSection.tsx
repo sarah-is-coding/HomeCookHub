@@ -100,12 +100,12 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
                   title={recipe.title}
                   description={recipe.description}
                   image={recipe.imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
-                  rating={recipes[0].rating}
-                  reviewers={recipes[0].reviewers}
-                  recipeID={recipes[0].id}
-                  cook_time={recipes[0].cook_time} // Pass the new props
-                  prep_time={recipes[0].prep_time}
-                  serving_size={recipes[0].serving_size}
+                  rating={recipe.rating}
+                  reviewers={recipe.reviewers}
+                  recipeID={recipe.id}
+                  cook_time={recipe.cook_time} // Pass the new props
+                  prep_time={recipe.prep_time}
+                  serving_size={recipe.serving_size}
                   showSaveButton={true}
                 />
               </SmallRecipe>

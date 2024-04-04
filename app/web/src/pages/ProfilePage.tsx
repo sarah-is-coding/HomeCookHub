@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import theme from "../theme";
 import RecipeBox from "../components/RecipeBox";
 import { RecipeBoxObject } from "../models/RecipeBoxObject";
 import "./ProfilePage.css";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 interface ProfileTabProps {
   isActive: boolean;
@@ -47,17 +48,16 @@ const ProfileTabContainer = styled.div`
   justify-content: center;
   gap: 20px;
   margin-bottom: 40px;
-  position: relative; /* Ensure the pseudo-element is relative to this container */
+  position: relative;
 
-  /* Adding a pseudo-element to create the underline */
   &:after {
     content: "";
     position: absolute;
-    bottom: 0; /* Align at the bottom of the tab container */
+    bottom: 0;
     left: 0;
     right: 0;
-    height: 3px; /* Thickness of the underline */
-    background-color: black; /* Color of the underline */
+    height: 3px;
+    background-color: black;
   }
 `;
 
@@ -103,59 +103,60 @@ const InfoHeader = styled.h2`
 
 const ProfilePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("ProfileInfo");
+  const [user, setUser] = useState<any>(null);
+  const [savedRecipes, setSavedRecipes] = useState<RecipeBoxObject[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  const savedRecipes: RecipeBoxObject[] = [
-    {
-      title: "Classic Cereal",
-      rating: 4,
-      description: "A quick and easy breakfast option. Just add milk!",
-      reviewers: "100",
-      image: "/assets/mashed-potatoes.png",
-      cook_time: 0, // No cooking required
-      prep_time: 2, // Just pour it out and enjoy
-      serving_size: 1,
-    },
-    {
-      title: "Lucky Charms with Oat Milk",
-      rating: 2,
-      description:
-        "A modern twist on a classic cereal with the creaminess of oat milk.",
-      reviewers: "50",
-      image: "/assets/mashed-potatoes.png",
-      cook_time: 0,
-      prep_time: 2,
-      serving_size: 1,
-    },
-    {
-      title: "Chicken Alfredo",
-      rating: 5,
-      description: "Creamy Alfredo sauce over tender chicken and pasta.",
-      reviewers: "150",
-      image: "/assets/mashed-potatoes.png",
-      cook_time: 25,
-      prep_time: 15,
-      serving_size: 4,
-    },
-    {
-      title: "Chocolate Cake",
-      rating: 1,
-      description: "Rich, moist chocolate cake for any occasion.",
-      reviewers: "200",
-      image: "/assets/mashed-potatoes.png",
-      cook_time: 45,
-      prep_time: 20,
-      serving_size: 8,
-    },
-  ];
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        console.log("User logged in:", currentUser.uid);
+        fetch(`http://localhost:9000/users/${currentUser.uid}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Fetched user data:", data);
+            setUser({
+              displayName: data.Username,
+              email: data.Email,
+              photoURL: currentUser.photoURL,
+            });
+            setSavedRecipes(
+              Array.isArray(data.Saved_Recipes) ? data.Saved_Recipes : []
+            );
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+            setSavedRecipes([]);
+          });
+      } else {
+        console.log("User is not logged in.");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // New useEffect for logging savedRecipes state after it's updated
+  useEffect(() => {
+    console.log("Saved recipes state after update:", savedRecipes);
+  }, [savedRecipes]);
 
   return (
     <ProfilePageContainer>
       <ProfileHeader>
         <ProfilePicture
-          src="https://th.bing.com/th/id/R.d995d728def36a40a261e36bab9f9bfe?rik=LDZuJgLPtIzgZw&riu=http%3a%2f%2fromanroadtrust.co.uk%2fwp-content%2fuploads%2f2018%2f01%2fprofile-icon-png-898.png&ehk=WfpwpBbTdOcQK51xzwmVamkbadbdbzi2tYDYnK8V2hM%3d&risl=&pid=ImgRaw&r=0"
+          src={
+            user?.photoURL ||
+            "https://th.bing.com/th/id/R.d995d728def36a40a261e36bab9f9bfe?rik=LDZuJgLPtIzgZw&riu=http%3a%2f%2fromanroadtrust.co.uk%2fwp-content%2fuploads%2f2018%2f01%2fprofile-icon-png-898.png&ehk=WfpwpBbTdOcQK51xzwmVamkbadbdbzi2tYDYnK8V2hM%3d&risl=&pid=ImgRaw&r=0"
+          }
           alt="Profile"
         />
-        <UserName>Preston Savey</UserName>
+        <UserName>{user?.displayName || "No Name Provided"}</UserName>
       </ProfileHeader>
       <ProfileTabContainer>
         <ProfileTab
@@ -175,35 +176,36 @@ const ProfilePage: React.FC = () => {
         <ProfileInfo>
           <InfoSection>
             <InfoHeader>Name:</InfoHeader>
-            Preston Savey
+            {user?.displayName || "No Name Provided"}
           </InfoSection>
           <InfoSection>
             <InfoHeader>Email:</InfoHeader>
-            email@gmail.com
+            {user?.email || "No Email Provided"}
           </InfoSection>
-          <InfoSection>
-            <InfoHeader>Phone Number:</InfoHeader>
-            123-456-7890
-          </InfoSection>
+          {/* Additional information sections can be added here */}
         </ProfileInfo>
       )}
       {activeTab === "SavedRecipes" && (
         <GridContainer>
-          {savedRecipes.map((recipe, index) => (
-            <RecipeBox
-              key={index}
-              recipeID={index.toString()}
-              title={recipe.title}
-              description={recipe.description}
-              image={recipe.image}
-              rating={recipe.rating}
-              reviewers={recipe.reviewers}
-              showSaveButton={false}
-              cook_time={recipe.cook_time || 0}
-              prep_time={recipe.prep_time || 0}
-              serving_size={recipe.serving_size || 1}
-            />
-          ))}
+          {savedRecipes.length > 0 ? (
+            savedRecipes.map((recipe, index) => (
+              <RecipeBox
+                key={index}
+                recipeID={index.toString()}
+                title={recipe.title}
+                description={recipe.description}
+                image={recipe.image}
+                rating={recipe.rating}
+                reviewers={recipe.reviewers}
+                cook_time={recipe.cook_time}
+                prep_time={recipe.prep_time}
+                serving_size={recipe.serving_size}
+                showSaveButton={false}
+              />
+            ))
+          ) : (
+            <div>No recipes found</div> // Simplified rendering
+          )}
         </GridContainer>
       )}
     </ProfilePageContainer>

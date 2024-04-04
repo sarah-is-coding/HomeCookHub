@@ -86,7 +86,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **USERNAME**: The username of the desired user. Note that this is case sensitive.
  - **BODY**: The following inputs are required to be included in the request body.
    - **recipe_id**: The id of the recipe.
-   - **recipe_title**: The title of the recipe.
+   - **title**: The title of the recipe.
 
 ### users/remove_recipe/:username
  - **Purpose**: This PUT request removes a recipe from the user's saved recipes.
@@ -94,7 +94,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **USERNAME**: The username of the desired user. Note that this is case sensitive.
  - **BODY**: The following inputs are required to be included in the request body.
    - **recipe_id**: The id of the recipe.
-   - **recipe_title**: The title of the recipe.
+   - **title**: The title of the recipe.
    - **saved_sec**: (Number) The number of seconds in the saved_date timestamp.
    - **saved_nanosec**: (Number) The number of nanoseconds in the saved_date timestamp.
  - NOTE: All values must be exact matches or else the saved recipe will not be removed.
@@ -107,7 +107,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **day**: The day the recipe is saved to. This should be in the form of a string of the format "YYYY/MM/DD".
    - **meal**: The meal the recipe is scheduled for. Should be "Breakfast", "Lunch", or "Dinner".
    - **recipe_id**: The id of the recipe.
-   - **recipe_title**: The title of the recipe.
+   - **title**: The title of the recipe.
    
 ### users/add_grocery/[USERNAME]
  - **Purpose**: This PUT request adds an item to the user's grocery list.

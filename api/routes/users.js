@@ -89,16 +89,16 @@ router.get('/:username/:month(\\d\\d)/:day(\\d\\d)/:year(\\d\\d\\d\\d)/:month2(\
     }
 });
 router.put('/save_recipe/:username', function (req, res, next) {
-    if (!Number.isInteger(Number(req.body['cook_time'])) || !Number.isInteger(Number(req.body['prep_time'])) || !req.body['recipe_id'] || !req.body['recipe_title'] || !Number.isInteger(Number(req.body['serving_size']))) {
+    if (!Number.isInteger(Number(req.body['cook_time'])) || !Number.isInteger(Number(req.body['prep_time'])) || !req.body['recipe_id'] || !req.body['title'] || !Number.isInteger(Number(req.body['serving_size']))) {
         return res.status(400).send("Invalid input data");
       }
       
     try {
         //check that all required inputs are submitted
-        if (req.body['recipe_id'] && req.body['recipe_title']) {
+        if (req.body['recipe_id'] && req.body['title']) {
             var recipe = {
                 recipe_id: String(req.body['recipe_id']),
-                recipe_title: String(req.body['recipe_title']),
+                title: String(req.body['title']),
                 saved_date: firestore_u.Timestamp.fromDate(new Date()),
             };
             console.log(recipe);
@@ -121,11 +121,11 @@ router.put('/save_recipe/:username', function (req, res, next) {
 router.put('/remove_recipe/:username', function (req, res, next) {
     try {
         //check that all required inputs are submitted
-        if (req.body['recipe_id'] && req.body['recipe_title'] && Number.isInteger(Number(req.body['saved_sec']))
+        if (req.body['recipe_id'] && req.body['title'] && Number.isInteger(Number(req.body['saved_sec']))
             && Number.isInteger(Number(req.body['saved_nanosec']))) {
             var recipe = {
                 recipe_id: String(req.body['recipe_id']),
-                recipe_title: String(req.body['recipe_title']),
+                title: String(req.body['title']),
                 saved_date: new firestore_u.Timestamp(Number(req.body['saved_sec']), Number(req.body['saved_nanosec'])),
             };
             console.log(recipe);
@@ -148,12 +148,12 @@ router.put('/remove_recipe/:username', function (req, res, next) {
 //POST: Add a recipe to a user's meal plan
 router.post('/save_meal/:username', function (req, res, next) {
     try {
-        if (req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['recipe_title']) {
+        if (req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['title']) {
             var recipe = {
                 day: firestore_u.Timestamp.fromDate(new Date(req.body['day'])),
                 meal: String(req.body['meal']),
                 recipe_id: String(req.body['recipe_id']),
-                recipe_title: String(req.body['recipe_title'])
+                title: String(req.body['title'])
             };
             console.log(recipe);
             firestore_u.addDoc(firestore_u.collection(Database_u, 'users', req.params["username"], 'mealplans'), recipe).then(function () {
