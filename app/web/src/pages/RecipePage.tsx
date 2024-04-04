@@ -106,7 +106,7 @@ const CommentsSection = styled.div`
 `;
 
 interface RecipeDetails {
-  recipe_title: string;
+  title: string;
   image: string;
   description: string;
   ingredients: Object;
@@ -183,7 +183,7 @@ const RecipePage: React.FC = () => {
     <PageContainer>
       <ImageContainer imageUrl={recipe.image || "/assets/default.jpg"}>
         <ImageOverlay />
-        <TitleOnImage>{recipe.recipe_title || ""}</TitleOnImage>
+        <TitleOnImage>{recipe.title || ""}</TitleOnImage>
         <StarRating>
           {[...Array(5)].map((star, index) => {
             const ratingValue = index + 1;

@@ -2,7 +2,7 @@
 // save recipe or add to calender
 const recipesData = [
   {
-    recipe_title: "Leftover Mashed Potato Bake",
+    title: "Leftover Mashed Potato Bake",
     description: "Delicious and easy to make",
     image: "/assets/mashed-potatoes.png",
     ingredients: {},

@@ -45,7 +45,7 @@ const SmallRecipe = styled.div`
 
 interface Recipe {
   id: string;
-  recipe_title: string;
+  title: string;
   description: string;
   imageURL: string; // Updated to match expected field
   rating: number;
@@ -81,7 +81,7 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
           <FeaturedRecipe>
             <RecipeBox
               key={recipes[0].id}
-              title={recipes[0].recipe_title}
+              title={recipes[0].title}
               description={recipes[0].description}
               image={recipes[0].imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
               rating={recipes[0].rating}
@@ -97,15 +97,15 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
             {recipes.slice(1).map((recipe, index) => (
               <SmallRecipe key={recipe.id}>
                 <RecipeBox
-                  title={recipe.recipe_title}
+                  title={recipe.title}
                   description={recipe.description}
                   image={recipe.imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
-                  rating={recipes[0].rating}
-                  reviewers={recipes[0].reviewers}
-                  recipeID={recipes[0].id}
-                  cook_time={recipes[0].cook_time} // Pass the new props
-                  prep_time={recipes[0].prep_time}
-                  serving_size={recipes[0].serving_size}
+                  rating={recipe.rating}
+                  reviewers={recipe.reviewers}
+                  recipeID={recipe.id}
+                  cook_time={recipe.cook_time} // Pass the new props
+                  prep_time={recipe.prep_time}
+                  serving_size={recipe.serving_size}
                   showSaveButton={true}
                 />
               </SmallRecipe>

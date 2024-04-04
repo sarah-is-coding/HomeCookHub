@@ -48,7 +48,7 @@ const SectionSpacing = styled.div`
 
 interface Recipe {
   id: string;
-  recipe_title: string;
+  title: string;
   description: string;
   imageURL: string;
   rating: number;

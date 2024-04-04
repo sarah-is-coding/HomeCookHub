@@ -1,6 +1,6 @@
 export interface RecipeBoxObject {
   rating: number;
-  recipe_title: string;
+  title: string;
   description: string;
   image: string;
   reviewers: string;

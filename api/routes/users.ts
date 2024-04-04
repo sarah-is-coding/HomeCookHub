@@ -22,7 +22,7 @@ const firebaseConfig_u = {
 
 interface savedRecipe {
   recipe_id: String,
-  recipe_title: String,
+  title: String,
   saved_date: any
 };
 
@@ -30,7 +30,7 @@ interface mealPlanEntry {
   day: any,
   meal: String,
   recipe_id: String,
-  recipe_title: String
+  title: String
 };
 
 interface ingredientInfo {
@@ -132,11 +132,11 @@ router.get('/:username/:month(\\d\\d)/:day(\\d\\d)/:year(\\d\\d\\d\\d)/:month2(\
 router.put('/save_recipe/:username', function(req, res, next) {
   try{
     //check that all required inputs are submitted
-    if(req.body['recipe_id'] && req.body['recipe_title']){
+    if(req.body['recipe_id'] && req.body['title']){
 
       const recipe: savedRecipe = {
         recipe_id: String(req.body['recipe_id']),
-        recipe_title: String(req.body['recipe_title']),
+        title: String(req.body['title']),
         saved_date: firestore_u.Timestamp.fromDate(new Date()),
       };
       
@@ -166,12 +166,12 @@ router.put('/save_recipe/:username', function(req, res, next) {
 router.put('/remove_recipe/:username', function(req, res, next) {
   try{
     //check that all required inputs are submitted
-    if( req.body['recipe_id'] && req.body['recipe_title'] && Number.isInteger(Number(req.body['saved_sec'])) 
+    if( req.body['recipe_id'] && req.body['title'] && Number.isInteger(Number(req.body['saved_sec'])) 
         && Number.isInteger(Number(req.body['saved_nanosec']))){
 
       const recipe: savedRecipe = {
         recipe_id: String(req.body['recipe_id']),
-        recipe_title: String(req.body['recipe_title']),
+        title: String(req.body['title']),
         saved_date: new firestore_u.Timestamp(Number(req.body['saved_sec']), Number(req.body['saved_nanosec'])),
       }
       
@@ -200,13 +200,13 @@ router.put('/remove_recipe/:username', function(req, res, next) {
 //POST: Add a recipe to a user's meal plan
 router.post('/save_meal/:username', function(req, res, next) {
   try{
-    if(req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['recipe_title']){
+    if(req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['title']){
 
       const recipe: mealPlanEntry = {
         day: firestore_u.Timestamp.fromDate(new Date(req.body['day'])),
         meal: String(req.body['meal']),
         recipe_id: String(req.body['recipe_id']),
-        recipe_title: String(req.body['recipe_title'])
+        title: String(req.body['title'])
       }
 
       console.log(recipe);

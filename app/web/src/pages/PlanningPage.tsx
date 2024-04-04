@@ -189,7 +189,7 @@ const PlanningPage: React.FC = () => {
 
   const DateInfo: number[][] = [];
   const emptyRecipeCard = {
-    recipe_title: "",
+    title: "",
     rating: 0,
     description: "",
     reviewers: "",
@@ -211,7 +211,7 @@ const PlanningPage: React.FC = () => {
               <RecipeBox
                 key={index}
                 recipeID={index.toString()}
-                title={recipe.recipe_title}
+                title={recipe.title}
                 description={recipe.description}
                 image={recipe.image}
                 rating={recipe.rating}
@@ -242,7 +242,7 @@ const PlanningPage: React.FC = () => {
   });
   const savedRecipes: RecipeBoxObject[] = [
     {
-      recipe_title: "Cereal",
+      title: "Cereal",
       rating: 4,
       description: "Quick and easy breakfast",
       reviewers: "",
@@ -252,7 +252,7 @@ const PlanningPage: React.FC = () => {
       serving_size: 1,
     },
     {
-      recipe_title: "Lucky Charms with Oat Milk",
+      title: "Lucky Charms with Oat Milk",
       rating: 2,
       description: "Lucky Charms cereal with a twist of oat milk",
       reviewers: "",
@@ -262,7 +262,7 @@ const PlanningPage: React.FC = () => {
       serving_size: 1,
     },
     {
-      recipe_title: "Chicken Alfredo",
+      title: "Chicken Alfredo",
       rating: 5,
       description: "Creamy Alfredo pasta with succulent chicken pieces",
       reviewers: "",
@@ -272,7 +272,7 @@ const PlanningPage: React.FC = () => {
       serving_size: 4,
     },
     {
-      recipe_title: "Chocolate Cake",
+      title: "Chocolate Cake",
       rating: 1,
       description: "Rich and moist chocolate cake",
       reviewers: "",
@@ -286,7 +286,7 @@ const PlanningPage: React.FC = () => {
   const getCurrentDayPlan = (value: Date | Date[] | null) => {
     // This would be where the backend is called to get current recipe card information
     const breakfastRecipeCard: RecipeBoxObject = {
-      recipe_title: "Cereal",
+      title: "Cereal",
       rating: 2,
       description: "Lucky Charms with oat milk",
       reviewers: "",
@@ -297,7 +297,7 @@ const PlanningPage: React.FC = () => {
     };
 
     const lunchRecipeCard: RecipeBoxObject = {
-      recipe_title: "Fried Chicken",
+      title: "Fried Chicken",
       rating: 4,
       description: "Garlic crusted fried chicken",
       reviewers: "",
@@ -308,7 +308,7 @@ const PlanningPage: React.FC = () => {
     };
 
     const dinnerRecipeCard: RecipeBoxObject = {
-      recipe_title: "Fettucine Alfredo",
+      title: "Fettucine Alfredo",
       rating: 5,
       description: "White sauce pasta with grilled chicken",
       reviewers: "",
@@ -323,7 +323,7 @@ const PlanningPage: React.FC = () => {
       lunch: lunchRecipeCard,
       dinner: dinnerRecipeCard,
     });
-    console.log("day plan changed: " + currentDayPlan.breakfast.recipe_title);
+    console.log("day plan changed: " + currentDayPlan.breakfast.title);
   };
   // called when calendar is clicked
   const handleDateChange = (
@@ -367,7 +367,7 @@ const PlanningPage: React.FC = () => {
             <GridContainer>
               <RecipeBox
                 recipeID="20"
-                title={currentDayPlan.breakfast.recipe_title}
+                title={currentDayPlan.breakfast.title}
                 description={currentDayPlan.breakfast.description}
                 image={currentDayPlan.breakfast.image}
                 rating={currentDayPlan.breakfast.rating}
@@ -383,7 +383,7 @@ const PlanningPage: React.FC = () => {
             <GridContainer>
               <RecipeBox
                 recipeID="21"
-                title={currentDayPlan.lunch.recipe_title}
+                title={currentDayPlan.lunch.title}
                 description={currentDayPlan.lunch.description}
                 image={currentDayPlan.lunch.image}
                 rating={currentDayPlan.lunch.rating}
@@ -399,7 +399,7 @@ const PlanningPage: React.FC = () => {
             <GridContainer>
               <RecipeBox
                 recipeID="22"
-                title={currentDayPlan.dinner.recipe_title}
+                title={currentDayPlan.dinner.title}
                 description={currentDayPlan.dinner.description}
                 image={currentDayPlan.dinner.image}
                 rating={currentDayPlan.dinner.rating}

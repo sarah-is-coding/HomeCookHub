@@ -42,12 +42,10 @@ const RecipeSearchPage: React.FC = () => {
       simularityScores.then((scores: any) => {
         var merged = [];
         for (let i = 0; i < recipes.length; i++) {
-          if (recipes[i].recipe_title !== undefined) {
+          if (recipes[i].title !== undefined) {
             merged.push({
               ...recipes[i],
-              ...scores.find(
-                (score: any) => score.title === recipes[i].recipe_title
-              ),
+              ...scores.find((score: any) => score.title === recipes[i].title),
             });
           }
         }
@@ -88,7 +86,7 @@ const RecipeSearchPage: React.FC = () => {
         {recipeScore.map((recipe) => (
           <RecipeBox
             key={recipe.id}
-            title={recipe.recipe_title || ""}
+            title={recipe.title || ""}
             description={recipe.description || ""}
             image={recipe.imageURL || "/assets/default.jpg"}
             rating={recipe.rating || 0}

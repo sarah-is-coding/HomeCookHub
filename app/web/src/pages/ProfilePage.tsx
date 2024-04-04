@@ -192,7 +192,7 @@ const ProfilePage: React.FC = () => {
               <RecipeBox
                 key={index}
                 recipeID={index.toString()}
-                title={recipe.recipe_title}
+                title={recipe.title}
                 description={recipe.description}
                 image={recipe.image}
                 rating={recipe.rating}
