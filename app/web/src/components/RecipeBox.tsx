@@ -74,26 +74,27 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
   const [userId, setUserId] = useState<string | null>(null);
   const recipeIDString = recipeID.toString();
   // Log the props each time they change
-  useEffect(() => {
-    console.log("RecipeBox Props:", {
-      title,
-      description,
-      image,
-      rating,
-      reviewers,
-      recipeID,
-      cook_time,
-      prep_time,
-      serving_size,
-      showSaveButton,
-    });
-  }, [title, description, image, rating, reviewers, recipeID, showSaveButton]);
+  // useEffect(() => {
+  //   console.log("RecipeBox Props:", {
+  //     title,
+  //     description,
+  //     image,
+  //     rating,
+  //     reviewers,
+  //     recipeID,
+  //     cook_time,
+  //     prep_time,
+  //     serving_size,
+  //     showSaveButton,
+  //   });
+  // }, [title, description, image, rating, reviewers, recipeID, showSaveButton]);
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUserId(user.uid);
+        // console.log("User ID:", user.uid);
       } else {
         setUserId(null);
       }
