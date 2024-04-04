@@ -45,7 +45,7 @@ const SmallRecipe = styled.div`
 
 interface Recipe {
   id: string;
-  title: string;
+  recipe_title: string;
   description: string;
   imageURL: string; // Updated to match expected field
   rating: number;
@@ -81,7 +81,7 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
           <FeaturedRecipe>
             <RecipeBox
               key={recipes[0].id}
-              title={recipes[0].title}
+              title={recipes[0].recipe_title}
               description={recipes[0].description}
               image={recipes[0].imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
               rating={recipes[0].rating}
@@ -97,7 +97,7 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
             {recipes.slice(1).map((recipe, index) => (
               <SmallRecipe key={recipe.id}>
                 <RecipeBox
-                  title={recipe.title}
+                  title={recipe.recipe_title}
                   description={recipe.description}
                   image={recipe.imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
                   rating={recipes[0].rating}

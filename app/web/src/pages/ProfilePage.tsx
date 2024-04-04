@@ -111,24 +111,40 @@ const ProfilePage: React.FC = () => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUserId(currentUser.uid); // Set the userId from the current user
-        fetch(`http://localhost:9000/users/${currentUser.uid}`) // Use userId to fetch user data
-          .then((response) => response.json())
-          .then((data) => {
-            setUser({
-              displayName: data.Username, // Adjust according to your backend data structure
-              email: data.Email, // Adjust according to your backend data structure
-              photoURL: currentUser.photoURL || "https://defaultimageurl.png",
-            });
-            setSavedRecipes(data.Saved_Recipe); // Adjust according to your backend data structure
+        console.log("User logged in:", currentUser.uid);
+        fetch(`http://localhost:9000/users/${currentUser.uid}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
           })
-          .catch((error) => console.error("Error fetching user data:", error));
+          .then((data) => {
+            console.log("Fetched user data:", data);
+            setUser({
+              displayName: data.Username,
+              email: data.Email,
+              photoURL: currentUser.photoURL,
+            });
+            setSavedRecipes(
+              Array.isArray(data.Saved_Recipes) ? data.Saved_Recipes : []
+            );
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+            setSavedRecipes([]);
+          });
       } else {
         console.log("User is not logged in.");
       }
     });
-    return () => unsubscribe(); // Cleanup subscription on unmount
+    return () => unsubscribe();
   }, []);
+
+  // New useEffect for logging savedRecipes state after it's updated
+  useEffect(() => {
+    console.log("Saved recipes state after update:", savedRecipes);
+  }, [savedRecipes]);
 
   return (
     <ProfilePageContainer>
@@ -171,21 +187,25 @@ const ProfilePage: React.FC = () => {
       )}
       {activeTab === "SavedRecipes" && (
         <GridContainer>
-          {savedRecipes.map((recipe, index) => (
-            <RecipeBox
-              key={index}
-              recipeID={index.toString()}
-              title={recipe.title}
-              description={recipe.description}
-              image={recipe.image}
-              rating={recipe.rating}
-              reviewers={recipe.reviewers}
-              cook_time={recipe.cook_time}
-              prep_time={recipe.prep_time}
-              serving_size={recipe.serving_size}
-              showSaveButton={false}
-            />
-          ))}
+          {savedRecipes.length > 0 ? (
+            savedRecipes.map((recipe, index) => (
+              <RecipeBox
+                key={index}
+                recipeID={index.toString()}
+                title={recipe.recipe_title}
+                description={recipe.description}
+                image={recipe.image}
+                rating={recipe.rating}
+                reviewers={recipe.reviewers}
+                cook_time={recipe.cook_time}
+                prep_time={recipe.prep_time}
+                serving_size={recipe.serving_size}
+                showSaveButton={false}
+              />
+            ))
+          ) : (
+            <div>No recipes found</div> // Simplified rendering
+          )}
         </GridContainer>
       )}
     </ProfilePageContainer>
