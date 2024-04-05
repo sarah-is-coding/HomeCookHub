@@ -66,11 +66,11 @@ router.post("/add_recipe", function (req, res, next) {
         console.log(req.body)
         //DATA PREPROCESSING
         var new_id_1;
-        var new_ingredients_1 = JSON.parse(req.body['ingredients']);
-        var new_quantities_1 = JSON.parse(req.body['quantities']);
-        var new_steps_1 = JSON.parse(req.body['steps']);
-        var new_tags_1 = JSON.parse(req.body['tags']);
-        var new_units_1 = JSON.parse(req.body['units']);
+        var new_ingredients_1 = req.body['ingredients'];
+        var new_quantities_1 = req.body['quantities'];
+        var new_steps_1 = req.body['steps'];
+        var new_tags_1 = req.body['tags'];
+        var new_units_1 = req.body['units'];
         firestore_r.getCountFromServer(firestore_r.collection(Database_r, 'recipes')).then(function (snapshot) {
             console.log(snapshot.data().count);
             new_id_1 = snapshot.data().count + 1;
