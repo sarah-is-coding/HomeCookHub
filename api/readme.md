@@ -87,6 +87,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
  - **BODY**: The following inputs are required to be included in the request body.
    - **recipe_id**: The id of the recipe.
    - **title**: The title of the recipe.
+   - **imageURL**: The image url of the recipe.
 
 ### users/remove_recipe/:username
  - **Purpose**: This PUT request removes a recipe from the user's saved recipes.
@@ -97,6 +98,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **title**: The title of the recipe.
    - **saved_sec**: (Number) The number of seconds in the saved_date timestamp.
    - **saved_nanosec**: (Number) The number of nanoseconds in the saved_date timestamp.
+   - **imageURL**: The image url of the recipe.
  - NOTE: All values must be exact matches or else the saved recipe will not be removed.
 
 ### users/save_meal/[USERNAME]
