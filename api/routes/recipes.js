@@ -64,69 +64,60 @@ router.get("/:recipeID", function (req, res, next) {
 //POST: Add a new recipe to the Database
 router.post("/add_recipe", function (req, res, next) {
     try {
+        console.log(req.body)
         //DATA PREPROCESSING
-        var image_url_1;
-        var new_ingredients = JSON.parse(req.body['ingredients']);
-        var new_quantities = JSON.parse(req.body['quantities']);
-        var new_steps = JSON.parse(req.body['steps']);
-        var new_tags = JSON.parse(req.body['tags']);
-        var new_units = JSON.parse(req.body['units']);
-        console.log(req.body['title']);
-        console.log(req.body['author']);
-        console.log(req.body['cook_time']);
-        console.log(req.body['prep_time']);
-        console.log(req.body['serving_size']);
-        console.log(req.body['ingredients']);
-        console.log(req.body['quantities']);
-        console.log(req.body['units']);
-        console.log(req.body['steps']);
-        console.log(req.body['tags']);
-        if (req.body['image'] && req.body['image_name']) {
-            //get the allocated storage
-            var pic_storage = firebase_storage.getStorage();
-            //create image reference
-            var pic_ref = firebase_storage.ref(pic_storage, req.body['image_name']);
-            //upload the image
-            firebase_storage.uploadBytes(pic_ref, req.body['image']).then(function (snapshot) {
-                console.log("Image ".concat(req.body['image_name'], " uploaded."));
-                //get the image url
-                firebase_storage.getDownloadURL(snapshot.ref).then(function (downloadURL) {
-                    image_url_1 = downloadURL;
-                    console.log("image url: ".concat(image_url_1));
+        var new_id_1;
+        var new_ingredients_1 = req.body['ingredients'];
+        var new_quantities_1 = req.body['quantities'];
+        var new_steps_1 = req.body['steps'];
+        var new_tags_1 = req.body['tags'];
+        var new_units_1 = req.body['units'];
+        firestore_r.getCountFromServer(firestore_r.collection(Database_r, 'recipes')).then(function (snapshot) {
+            console.log(snapshot.data().count);
+            new_id_1 = snapshot.data().count + 1;
+            console.log(new_id_1);
+            console.log(req.body['title']);
+            console.log(new_id_1);
+            console.log(req.body['author']);
+            console.log(req.body['cook_time']);
+            console.log(req.body['prep_time']);
+            console.log(req.body['serving_size']);
+            console.log(req.body['ingredients']);
+            console.log(req.body['quantities']);
+            console.log(req.body['units']);
+            console.log(req.body['steps']);
+            console.log(req.body['tags']);
+            if (req.body['author'] && Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
+                && Number.isInteger(Number(req.body['serving_size'])) && req.body['title'] && new_id_1
+                && req.body['ingredients'] && req.body['quantities'] && req.body['steps'] && req.body['tags']
+                && req.body['units']) {
+                var newRecipe = {
+                    author: String(req.body['author']),
+                    cook_time: Number(req.body['cook_time']),
+                    date: firestore_r.Timestamp.fromDate(new Date()),
+                    //id: new_id,
+                    ingredients: new_ingredients_1,
+                    prep_time: Number(req.body['prep_time']),
+                    quantities: new_quantities_1,
+                    serving_size: Number(req.body['serving_size']),
+                    steps: new_steps_1,
+                    tags: new_tags_1,
+                    title: String(req.body['title']),
+                    units: new_units_1
+                };
+                //let new_recipe_ref = firestore_r.doc(Database_r, 'recipes', String(new_id));
+                firestore_r.addDoc(firestore_r.collection(Database_r, 'recipes'), newRecipe).then(function () {
+                    res.status(200).send("Recipe saved to to database with id of ".concat(new_id_1));
                 });
-            });
-        }
-        else {
-            console.log('Required inputs for recipe image not inputted.');
-            image_url_1 = "gs://homecookhub-0.appspot.com/default.jpg";
-        }
-        if (req.body['author'] && Number.isInteger(Number(req.body['cook_time'])) && Number.isInteger(Number(req.body['prep_time']))
-            && Number.isInteger(Number(req.body['serving_size'])) && req.body['title'] && req.body['ingredients']
-            && req.body['quantities'] && req.body['steps'] && req.body['tags'] && req.body['units']) {
-            var newRecipe = {
-                author: String(req.body['author']),
-                cook_time: Number(req.body['cook_time']),
-                date: firestore_r.Timestamp.fromDate(new Date()),
-                ingredients: new_ingredients,
-                prep_time: Number(req.body['prep_time']),
-                quantities: new_quantities,
-                serving_size: Number(req.body['serving_size']),
-                steps: new_steps,
-                tags: new_tags,
-                title: String(req.body['title']),
-                units: new_units,
-                imageURL: image_url_1
-            };
-            firestore_r.addDoc(firestore_r.collection(Database_r, 'recipes'), newRecipe).then(function () {
-                res.status(200).send("Recipe saved to to database.");
-            });
-        }
-        else {
-            res.status(400).send("One or more required inputs is not defined");
-        }
+            }
+            else {
+                res.status(400).send("One or more required inputs is not defined");
+            }
+        });
     }
     catch (error) {
         console.log(error);
     }
 });
+
 module.exports = router;
