@@ -14,6 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //Note: _r suffix required to avoid typescript errors
 var firebase_r = require('firebase/app');
 var firestore_r = require('firebase/firestore');
+var firebase_storage = require('firebase/storage');
 var express = require('express');
 var router = express.Router();
 var firebaseConfig_r = {
@@ -118,4 +119,5 @@ router.post("/add_recipe", function (req, res, next) {
         console.log(error);
     }
 });
+
 module.exports = router;

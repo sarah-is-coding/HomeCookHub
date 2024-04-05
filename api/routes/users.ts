@@ -1,6 +1,6 @@
 //Note: _u suffix required to avoid typescrit errors
 
-import { arrayUnion, setDoc, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, setDoc, updateDoc } from "firebase/firestore";
 
 const firebase_u = require('firebase/app');
 const firestore_u = require('firebase/firestore');
@@ -21,23 +21,24 @@ const firebaseConfig_u = {
 };
 
 interface savedRecipe {
-  cook_time: Number,
-  prep_time: Number,
   recipe_id: String,
-  recipe_title: String,
-  saved_date: any,
-  serving_size: number
+  title: String,
+  imageURL: String,
+  saved_date: any
 };
 
 interface mealPlanEntry {
-  cook_time: Number,
-  prep_time: Number,
   day: any,
   meal: String,
   recipe_id: String,
-  recipe_title: String,
-  serving_size: Number
-}
+  title: String
+};
+
+interface ingredientInfo {
+  name: String,
+  quantity: Number,
+  unit: String
+};
 
 const app_u = firebase_u.initializeApp(firebaseConfig_u)
 const Database_u = firestore_u.getFirestore(app_u)
@@ -46,26 +47,21 @@ const userRef = firestore_u.collection(Database_u, 'users')
 
 //GET user data
 router.get('/:username', function(req, res, next) {
-  var myQuery = firestore_u.query(userRef, firestore_u.where("Username", "==", req.params["username"]))
+  var userRef = firestore_u.doc(Database_u, "users", req.params['username']);
 
   try{
-    firestore_u.getDocs(myQuery).then((snapshot) =>{
-      if(!snapshot.empty){
-        const data = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-        }))
-
-        res.send(data)
+    firestore_u.getDoc(userRef).then((snapshot) =>{
+      if(snapshot.exists()){
+        res.send(snapshot.data())
       }
       else{
         res.status(404)
-        res.send("404: User not found")
+        res.send("404: Recipe not found")
       }
-    })
-
+    });
   }
   catch(error){
-    console.log(error)
+    console.log(error);
   }
 });
 
@@ -137,17 +133,14 @@ router.get('/:username/:month(\\d\\d)/:day(\\d\\d)/:year(\\d\\d\\d\\d)/:month2(\
 router.put('/save_recipe/:username', function(req, res, next) {
   try{
     //check that all required inputs are submitted
-    if(req.body['cook_time'] && req.body['prep_time'] && req.body['recipe_id']
-        && req.body['recipe_title'] && req.body['serving_size']){
+    if(req.body['recipe_id'] && req.body['title'] && req.body['imageURL']){
 
       const recipe: savedRecipe = {
-        cook_time: Number(req.body['cook_time']),
-        prep_time: Number(req.body['prep_time']),
         recipe_id: String(req.body['recipe_id']),
-        recipe_title: String(req.body['recipe_title']),
+        title: String(req.body['title']),
+        imageURL: String(req.body['imageURL']),
         saved_date: firestore_u.Timestamp.fromDate(new Date()),
-        serving_size: Number(req.body['serving_size'])
-      }
+      };
       
       console.log(recipe);
 
@@ -158,10 +151,10 @@ router.put('/save_recipe/:username', function(req, res, next) {
       }).then(() => {
         res.status(200).send(`Recipe ${String(req.body['recipe_id'])} saved to ${req.params["username"]}`);
       });
-  }
-  else{
-    res.status(400).send("One or more required inputs is not defined");
-  }  
+    }
+    else{
+      res.status(400).send("One or more required inputs is not defined");
+    }  
 
   }
   catch(error){
@@ -171,21 +164,52 @@ router.put('/save_recipe/:username', function(req, res, next) {
 
 });
 
+//PUT: Remove a recipe from a user's saved recipes
+router.put('/remove_recipe/:username', function(req, res, next) {
+  try{
+    //check that all required inputs are submitted
+    if( req.body['recipe_id'] && req.body['title'] && Number.isInteger(Number(req.body['saved_sec'])) 
+        && Number.isInteger(Number(req.body['saved_nanosec'])) && req.body['imageURL']){
+
+      const recipe: savedRecipe = {
+        recipe_id: String(req.body['recipe_id']),
+        title: String(req.body['title']),
+        imageURL: String(req.body['imageURL']),
+        saved_date: new firestore_u.Timestamp(Number(req.body['saved_sec']), Number(req.body['saved_nanosec'])),
+      }
+      
+      console.log(recipe);
+
+      const userRecipeRef = firestore_u.doc(Database_u, "users", req.params['username']);
+
+      firestore_u.updateDoc(userRecipeRef, {
+        Saved_Recipes: arrayRemove(recipe)
+      }).then(() => {
+        res.status(200).send(`Recipe ${String(req.body['recipe_id'])} removed from ${req.params["username"]}`);
+      });
+  }
+  else{
+    res.status(400).send("One or more required inputs is not defined");
+  }  
+
+  }
+  catch(error){
+    console.log(error);
+    res.status(400).send('Error: Recipe could not be removed');
+  }
+
+});
+
 //POST: Add a recipe to a user's meal plan
 router.post('/save_meal/:username', function(req, res, next) {
   try{
-    if(req.body['cook_time'] && req.body['prep_time'] && req.body['day'] &&
-       req.body['meal'] && req.body['recipe_id'] && req.body['recipe_title'] &&
-       req.body['serving_size']){
+    if(req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['title']){
 
       const recipe: mealPlanEntry = {
-        cook_time: Number(req.body['cook_time']),
-        prep_time: Number(req.body['prep_time']),
         day: firestore_u.Timestamp.fromDate(new Date(req.body['day'])),
         meal: String(req.body['meal']),
         recipe_id: String(req.body['recipe_id']),
-        recipe_title: String(req.body['recipe_title']),
-        serving_size: Number(req.body['serving_size'])    
+        title: String(req.body['title'])
       }
 
       console.log(recipe);
@@ -203,6 +227,172 @@ router.post('/save_meal/:username', function(req, res, next) {
     console.log(error);
     res.status(400).send('Error: Meal Plan entry could not be saved');
   }
+});
+
+//DELETE: Remove a recipe from a user's meal plan
+router.delete('/remove_meal', function(req, res, next) {
+  const day = new Date(Number(req.body["year"]), Number(req.body["month"]) - 1, Number(req.body["day"]));
+  const endDay = new Date(Number(req.body["year"]), Number(req.body["month"]) - 1, Number(req.body["day"]) + 1);
+  
+  const startTimestamp = firestore_u.Timestamp.fromDate(day);
+  const endTimestamp = firestore_u.Timestamp.fromDate(endDay);
+
+  console.log(startTimestamp);
+  console.log(endTimestamp);
+
+  var myQuery = firestore_u.query(firestore_u.collection(Database_u, 'users', req.body["username"], 'mealplans'),
+                            firestore_u.where('day', '>=', startTimestamp),
+                            firestore_u.where('day', '<=', endTimestamp),
+                            firestore_u.where('recipe_id', '==', req.body["recipe_id"]),
+                            firestore_u.where('meal', '==', req.body["meal"]));
+  
+  try{
+    firestore_u.getDocs(myQuery).then((snapshot) => {
+      snapshot.forEach(doc => {
+        firestore_u.deleteDoc(doc.ref);
+      });
+    });
+
+    res.status(200).send(`${req.body["meal"]} entry with recipe id ${req.body["recipe_id"]} deleted from ${req.body["month"]}/${req.body["day"]}/${req.body["year"]}`);
+
+  }catch(error){
+    console.log(error);
+    res.status(400).send('Error: Meal Plan entry could not be deleted');
+  }
+});
+
+//PUT: Add pantry item
+router.put('/add_pantry/:username', function(req, res, next) {
+  try{
+    //check that all required inputs are submitted
+    if(req.body['name'] && Number.isInteger(Number(req.body['quantity'])) && req.body['unit']){
+
+      const item: ingredientInfo = {
+        name: String(req.body['name']),
+        quantity: Number(req.body['quantity']),
+        unit: String(req.body['unit'])
+      }
+      
+      console.log(item);
+
+      const userRef = firestore_u.doc(Database_u, "users", req.params['username']);
+
+      firestore_u.updateDoc(userRef, {
+        Pantry_Items: arrayUnion(item)
+      }).then(() => {
+        res.status(200).send(`${String(req.body['name'])} saved to ${req.params['username']}'s pantry items.`);
+      });
+  }
+  else{
+    res.status(400).send("One or more required inputs is not defined");
+  }  
+
+  }
+  catch(error){
+    console.log(error);
+    res.status(400).send('Error: Item could not be saved to the pantry.');
+  }
+});
+
+//PUT: Remove pantry item
+router.put('/remove_pantry/:username', function(req, res, next) {
+  try{
+    //check that all required inputs are submitted
+    if(req.body['name'] && Number.isInteger(Number(req.body['quantity'])) && req.body['unit']){
+
+      const item: ingredientInfo = {
+        name: String(req.body['name']),
+        quantity: Number(req.body['quantity']),
+        unit: String(req.body['unit'])
+      }
+      
+      console.log(item);
+
+      const userRef = firestore_u.doc(Database_u, "users", req.params['username']);
+
+      firestore_u.updateDoc(userRef, {
+        Pantry_Items: arrayRemove(item)
+      }).then(() => {
+        res.status(200).send(`${String(req.body['name'])} was removed ${req.params['username']}'s pantry items.`);
+      });
+  }
+  else{
+    res.status(400).send("One or more required inputs is not defined");
+  }  
+
+  }
+  catch(error){
+    console.log(error);
+    res.status(400).send('Error: Item could not be removed from pantry.');
+  }
+});
+
+//PUT: Add grocery list item
+router.put('/add_grocery/:username', function(req, res, next) {
+  try{
+    //check that all required inputs are submitted
+    if(req.body['name'] && Number.isInteger(Number(req.body['quantity'])) && req.body['unit']){
+
+      const item: ingredientInfo = {
+        name: String(req.body['name']),
+        quantity: Number(req.body['quantity']),
+        unit: String(req.body['unit'])
+      }
+      
+      console.log(item);
+
+      const userRef = firestore_u.doc(Database_u, "users", req.params['username']);
+
+      firestore_u.updateDoc(userRef, {
+        Grocery_List: arrayUnion(item)
+      }).then(() => {
+        res.status(200).send(`${String(req.body['name'])} saved to ${req.params["username"]}'s Grocery List.`);
+      });
+  }
+  else{
+    res.status(400).send("One or more required inputs is not defined");
+  }  
+
+  }
+  catch(error){
+    console.log(error);
+    res.status(400).send('Error: Item could not be saved to the Grocery List');
+  }
+
+});
+
+//PUT: Remove grocery list item
+router.put('/remove_grocery/:username', function(req, res, next) {
+  try{
+    //check that all required inputs are submitted
+    if(req.body['name'] && Number.isInteger(Number(req.body['quantity'])) && req.body['unit']){
+
+      const item: ingredientInfo = {
+        name: String(req.body['name']),
+        quantity: Number(req.body['quantity']),
+        unit: String(req.body['unit'])
+      }
+      
+      console.log(item);
+
+      const userRef = firestore_u.doc(Database_u, "users", req.params['username']);
+
+      firestore_u.updateDoc(userRef, {
+        Grocery_List: arrayRemove(item)
+      }).then(() => {
+        res.status(200).send(`${String(req.body['name'])} was removed from ${req.params["username"]}'s Grocery List.`);
+      });
+  }
+  else{
+    res.status(400).send("One or more required inputs is not defined");
+  }  
+
+  }
+  catch(error){
+    console.log(error);
+    res.status(400).send('Error: Item could not be removed from the Grocery List');
+  }
+
 });
 
 module.exports = router;

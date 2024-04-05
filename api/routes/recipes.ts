@@ -1,6 +1,9 @@
+import { collection } from "firebase/firestore";
+
 //Note: _r suffix required to avoid typescript errors
 const firebase_r = require('firebase/app')
 const firestore_r = require('firebase/firestore')
+const firebase_storage = require('firebase/storage')
 
 var express = require('express');
 var router = express.Router();
@@ -16,6 +19,21 @@ const firebaseConfig_r = {
   appId: "1:454367080500:web:214319e1e98d2405021a61",
   measurementId: "G-FNCPSCNPP8"
 
+};
+
+interface newRecipe {
+  author: String,
+  cook_time: Number,
+  date: any,
+  ingredients: any,
+  prep_time: Number,
+  quantities: any,
+  serving_size: Number,
+  steps: any,
+  tags: any,
+  title: string,
+  units: any,
+  imageURL: String
 };
 
 
