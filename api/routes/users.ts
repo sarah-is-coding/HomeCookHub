@@ -23,6 +23,7 @@ const firebaseConfig_u = {
 interface savedRecipe {
   recipe_id: String,
   title: String,
+  imageURL: String,
   saved_date: any
 };
 
@@ -132,11 +133,12 @@ router.get('/:username/:month(\\d\\d)/:day(\\d\\d)/:year(\\d\\d\\d\\d)/:month2(\
 router.put('/save_recipe/:username', function(req, res, next) {
   try{
     //check that all required inputs are submitted
-    if(req.body['recipe_id'] && req.body['title']){
+    if(req.body['recipe_id'] && req.body['title'] && req.body['imageURL']){
 
       const recipe: savedRecipe = {
         recipe_id: String(req.body['recipe_id']),
         title: String(req.body['title']),
+        imageURL: String(req.body['imageURL']),
         saved_date: firestore_u.Timestamp.fromDate(new Date()),
       };
       
@@ -167,11 +169,12 @@ router.put('/remove_recipe/:username', function(req, res, next) {
   try{
     //check that all required inputs are submitted
     if( req.body['recipe_id'] && req.body['title'] && Number.isInteger(Number(req.body['saved_sec'])) 
-        && Number.isInteger(Number(req.body['saved_nanosec']))){
+        && Number.isInteger(Number(req.body['saved_nanosec'])) && req.body['imageURL']){
 
       const recipe: savedRecipe = {
         recipe_id: String(req.body['recipe_id']),
         title: String(req.body['title']),
+        imageURL: String(req.body['imageURL']),
         saved_date: new firestore_u.Timestamp(Number(req.body['saved_sec']), Number(req.body['saved_nanosec'])),
       }
       
