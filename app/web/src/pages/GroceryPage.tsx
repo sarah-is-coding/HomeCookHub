@@ -16,29 +16,28 @@ import { IngredientObject } from "../models/IngredientObject";
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
-const PopupContent: React.FC<{ onSave: (name: string, amount: number, unit: string) => void }> = ({ onSave }) => {
+const PopupContent: React.FC<{ onSave: (name: string, quantity: number, unit: string) => void }> = ({ onSave }) => {
   const [tempName, setTempName] = useState('');
   const [tempUnit, setTempUnit] = useState('');
-  const [tempAmount, setTempAmount] = useState(0);
-  const dropdownOptions = [{ name: 'No Unit', value: '' }, { name: 'ounces', value: 'oz' }, { name: 'pounds', value: 'lbs' }];
+  const [tempQuantity, setTempQuantity] = useState(0);
+  const dropdownOptions = [{ name: 'No Unit', value: '' }, { name: 'ounces', value: 'oz' }, { name: 'pounds', value: 'lbs' }, {name: "cans", value: 'cans'}, {name: "teaspoons", value: "tsp"}, {name: "tablespoon", value: "tbsp"}];
   const defaultOption = dropdownOptions[0].name;
   
   const handleTempNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTempName(e.target.value);
   };
-  const handleTempAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTempAmount(parseFloat(e.target.value));
+  const handleTempQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTempQuantity(parseFloat(e.target.value));
   };
 
   const handleTempUnitChange = (selectedOption: { value: string }) => {
     setTempUnit(selectedOption.value);
   };
   const handleSave = () => {
-    console.log("popup name:", tempName);
-    console.log("popup amount:", tempAmount);
-    console.log("popup unit:", tempUnit);
-
-    onSave(tempName, tempAmount, tempUnit);
+    if(tempName !== ""){
+      onSave(tempName, tempQuantity, tempUnit);
+    }
+    
     // No need to close the popup here
   };
 
@@ -53,13 +52,13 @@ const PopupContent: React.FC<{ onSave: (name: string, amount: number, unit: stri
             onChange={handleTempNameChange}
           />
         </div>
-        <div className="amount-select">
-          <p>Enter Amount:</p>
+        <div className="quantity-select">
+          <p>Enter Quantity:</p>
           <input
             className="custom-input"
             type="number"
-            value={tempAmount}
-            onChange={handleTempAmountChange}
+            value={tempQuantity}
+            onChange={handleTempQuantityChange}
           />
         </div>
         <div className="unit-select">
@@ -85,14 +84,20 @@ const PopupContent: React.FC<{ onSave: (name: string, amount: number, unit: stri
 const GroceryPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState("PantryInfo");
   const [name, setName] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [quantity, setQuantity] = useState(0);
   const [unit, setUnit] = useState('');
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
   const [showDateRangePicker, setShowDateRangePicker] = useState(false);
-
+  const [showMoreIngredients, setShowMoreIngredients] = useState(false);
+  const [showMoreGroceries, setShowMoreGroceries] = useState(false);
+  
   const handleRangeButtonClick = () => {
     setShowDateRangePicker(!showDateRangePicker);
+  };
+  const handleSaveRangeButtonClick = () => {
+    setShowDateRangePicker(!showDateRangePicker);
+    fetchMealPlanList();
   };
   interface GroceryTabProps {
     isActive: boolean;
@@ -151,30 +156,128 @@ const GroceryPage: React.FC = () => {
     color: ${theme.colors.primary};
     margin-bottom: 10px;
   `;
+  useEffect(() => {
+    // API calls to populate all lists
+    const fetchPantryList = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/users/Test_User");
+        const data = await response.json();
+        const userPantry = data[0].Pantry_Items;
+        setIngredient(userPantry);
+       // setRecipes(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPantryList();
+    fetchMealPlanList();
+    
+  }, []);
+  const combineDuplicates = (aggregatedList: any[]) => {
+    const combinedList: any[] = [];
+    
+    // Create a map to keep track of quantities for each unique ingredient
+    const ingredientMap: { [key: string]: { quantity: number, unit: string } } = {};
+    
+    // Iterate over each ingredient in the aggregated list
+    aggregatedList.forEach((ingredient) => {
+      const key = `${ingredient.name}_${ingredient.unit}`; // Create a unique key for each ingredient
+      
+      // If the ingredient already exists in the map, add its quantity to the existing one
+      if (ingredientMap[key]) {
+        ingredientMap[key].quantity += ingredient.quantity;
+      } else {
+        // If the ingredient doesn't exist in the map, add it
+        ingredientMap[key] = { quantity: ingredient.quantity, unit: ingredient.unit };
+      }
+    });
+    
+    // Convert the ingredient map back to an array
+    for (const key in ingredientMap) {
+      if (Object.prototype.hasOwnProperty.call(ingredientMap, key)) {
+        const { quantity, unit } = ingredientMap[key];
+        const [name] = key.split('_'); // Split the key to get the name
+        combinedList.push({ name, quantity, unit });
+      }
+    }
+    
+    return combinedList;
+  };
+  const fetchMealPlanList = async () => {
+    try {
+      const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to get 1-indexed months
+      const startDay = startDate.getDate().toString().padStart(2, '0');
+      const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to get 1-indexed months
+      const endDay = endDate.getDate().toString().padStart(2, '0');
+      const url = `http://localhost:9000/users/Test_User/${startMonth}/${startDay}/${startDate.getFullYear()}/${endMonth}/${endDay}/${endDate.getFullYear()}`;
+      console.log(url);
+      const response = await fetch(url);
 
+      const data = await response.json();
+
+      
+      let aggregatedIngredients: any = []; // Array to store aggregated ingredients
+
+    // Iterate over each recipe ID and fetch ingredients
+    for (const item of data) {
+      const ingredients = await fetchIngredientByID(item.recipe_id);
+      aggregatedIngredients = aggregatedIngredients.concat(ingredients); // Concatenate fetched ingredients
+    }
+    console.log("pre combined: ", aggregatedIngredients);
+    aggregatedIngredients = combineDuplicates(aggregatedIngredients);
+    setMealPlan(aggregatedIngredients);
+    console.log("Final Aggregated Ingredients:", aggregatedIngredients);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const fetchIngredientByID = async (id: number) => {
+    console.log("enter fetch ingredient");
+    try {
+      
+      const url = `http://localhost:9000/recipes/${id}`;
+      console.log(url);
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log("fetch id:");
+      console.log(data);
+      let ingredientList: any[] = [];
+      for (const key in data.ingredients) {
+        if (Object.prototype.hasOwnProperty.call(data.ingredients, key)) {
+          // Construct each ingredient object
+          const tempIngredient: any = {
+            name: data.ingredients[key],
+            quantity: data.quantities[key],
+            unit: data.units[key]
+          };
+          ingredientList.push(tempIngredient);
+        }
+      }
+      console.log("ingredient list: " + JSON.stringify(ingredientList));
+      return ingredientList;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // insert back end call here to populate original ingredient list
   const [ingredientList, setIngredient] = useState([
-    { unit: "oz", name: "Milk", amount: 24 },
-    { unit: "", name: "Carrots", amount: 4 },
-    { unit: "lbs", name: "Chicken", amount: 1 },
-    { unit: "oz", name: "Chicken Broth", amount: 20 },
-    { unit: "", name: "Green Onions", amount: 1 },
+    { unit: "oz", name: "Milk", quantity: 24 },
   ]);
   const [MealPlanList, setMealPlan] = useState([
-    { unit: "oz", name: "Milk", amount: 34 },
-    { unit: "", name: "Carrots", amount: 2 },
-    { unit: "lbs", name: "Beef", amount: 1 },
-    { unit: "oz", name: "Honey", amount: 1 },
-    { unit: "", name: "Eggs", amount: 3 }
+    { unit: "oz", name: "Milk", quantity: 34 },
+    { unit: "", name: "Carrots", quantity: 2 },
+    { unit: "lbs", name: "Beef", quantity: 1 },
+    { unit: "oz", name: "Honey", quantity: 1 },
+    { unit: "", name: "Eggs", quantity: 3 }
   ]);
   const [GroceryList, setGrocery] = useState([
-    { unit: "", name: "", amount: 0}
+    { unit: "", name: "", quantity: 0}
   ]);
-  const handlePopupSave = (tempName: string, tempAmount: number, tempUnit: string) => {
+  const handlePopupSave = (tempName: string, tempQuantity: number, tempUnit: string) => {
     setName(tempName);
-    setAmount(prevAmount => prevAmount + tempAmount);
+    setQuantity(prevQuantity => prevQuantity + tempQuantity);
     setUnit(tempUnit);
-
+    
     let ingredientFound = false;
 
     setIngredient(prevIngredientList => {
@@ -184,7 +287,7 @@ const GroceryPage: React.FC = () => {
           ingredientFound = true;
           return {
             ...ingredient,
-            amount: ingredient.amount + tempAmount
+            quantity: ingredient.quantity + tempQuantity
           };
         }
         return ingredient;
@@ -193,7 +296,7 @@ const GroceryPage: React.FC = () => {
       if (!ingredientFound) {
         return [
           ...updatedIngredients,
-          { name: tempName, amount: tempAmount, unit: tempUnit }
+          { name: tempName, quantity: tempQuantity, unit: tempUnit }
         ];
       }
 
@@ -201,7 +304,7 @@ const GroceryPage: React.FC = () => {
     });
   };
   useEffect(() => {
-  }, [name, amount, unit]);
+  }, [name, quantity, unit]);
   const todaysDate = new Date();
   const selectionRange = {
     startDate,
@@ -211,29 +314,34 @@ const GroceryPage: React.FC = () => {
   const createGroceryList = () => {
     // Creates grocery list by subtracting meal plan list from your pantry
     const pantryIngredientQuantities = new Map(
-      ingredientList.map((ingredient) => [ingredient.name.toUpperCase(), ingredient.amount])
+      ingredientList.map((ingredient) => [ingredient.name.toUpperCase(), ingredient.quantity])
     );
 
     const newGroceryList = MealPlanList.map((mealPlanIngredient) => {
       const pantryQuantity = pantryIngredientQuantities.get(mealPlanIngredient.name.toUpperCase()) || 0;
-      const remainingQuantity = Math.max(0, mealPlanIngredient.amount - pantryQuantity);
+      const remainingQuantity = Math.max(0, mealPlanIngredient.quantity - pantryQuantity);
 
       return {
         name: mealPlanIngredient.name,
-        amount: remainingQuantity,
+        quantity: remainingQuantity,
         unit: mealPlanIngredient.unit,
       };
-    }).filter((ingredient) => ingredient.amount > 0);
+    }).filter((ingredient) => ingredient.quantity > 0);
 
     setGrocery(newGroceryList);
 
   }
+  const deletePantryIngredient = (ingredientName: string, ingredientQuantity: number, ingredientUnit: string) => {
+    setIngredient(prevIngredientList =>
+      prevIngredientList.filter(ingredient => ingredient.name !== ingredientName)
+    );
+  }
   const handleRangeSelect = (ranges: any) => {
-    console.log(ranges);
+    
     setStartDate(ranges.selection.startDate);
     setEndDate(ranges.selection.endDate);
-  }
 
+  }
   return (
     <GroceryPageContainer>
       <GroceryTabContainer>
@@ -265,15 +373,16 @@ const GroceryPage: React.FC = () => {
       </GroceryTabContainer>
       {activeTab === "PantryInfo" && (
         <GroceryInfo>
-          <InfoHeader>Ingredients: </InfoHeader>
+          <InfoHeader className="header">Ingredients: </InfoHeader>
           <div>
             {ingredientList.map((ingredient, index) => (
               <div key={index} className="IngredientRow">
+                <div className="delete-ingredient" onClick={() => deletePantryIngredient(ingredient.name, ingredient.quantity, ingredient.unit)}><p className="minus">-</p></div>
                 <div className="Ingredient">
                   {ingredient.name}
                 </div>
                 <div className="Quantity">
-                  {ingredient.amount} {ingredient.unit}
+                  {ingredient.quantity} {ingredient.unit !== '""' ? ingredient.unit : null}
                 </div>
               </div>
             ))}
@@ -286,53 +395,101 @@ const GroceryPage: React.FC = () => {
         </GroceryInfo>
       )}
       {activeTab === "MealPlan" && (
-        <GroceryInfo>
-          <InfoHeader>Ingredients: </InfoHeader>
-          
-          <div>
-            {MealPlanList.map((ingredient, index) => (
-              <div key={index} className="IngredientRow">
-                <div className="Ingredient">
-                  {ingredient.name}
-                </div>
-                <div className="Quantity">
-                  {ingredient.amount} {ingredient.unit}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="range-button">
-            {!showDateRangePicker && (
-              <button className="date-button" onClick={handleRangeButtonClick}>Edit Date Range</button>
-            )}
-            {showDateRangePicker && (
-              <button className="date-button" onClick={handleRangeButtonClick}>Close Range Picker</button>
-            )}
-          </div>
-          {showDateRangePicker && (
-            <DateRangePicker
-              ranges={[selectionRange]}
-              onChange={handleRangeSelect}
-            />
-          )}
-          <div className="current-range"> <b>Current Date Range:</b> {startDate.toDateString()} - {endDate.toDateString()} </div>
-        </GroceryInfo>
+  <GroceryInfo>
+    <div className="range-button">
+      {!showDateRangePicker && (
+        <button className="date-button" onClick={handleRangeButtonClick}>Edit Date Range</button>
       )}
+      {showDateRangePicker && (
+        <button className="date-button" onClick={handleSaveRangeButtonClick}>Save Date Range</button>
+      )}
+    </div>
+    {showDateRangePicker && (
+      <DateRangePicker
+        ranges={[selectionRange]}
+        onChange={handleRangeSelect}
+      />
+    )}
+    <InfoHeader className="header">Ingredients: </InfoHeader>
+    {MealPlanList.length === 0 && (
+      <p className="zero-ingredients">There are currently no ingredients in this date range. Please select a different range.</p>
+    )}
+    <div>
+      {MealPlanList.slice(0, 10).map((ingredient, index) => (
+        <div key={index} className="IngredientRow">
+          <div className="Ingredient">
+            {ingredient.name}
+          </div>
+          <div className="Quantity">
+            {ingredient.quantity} {ingredient.unit !== '""' ? ingredient.unit : null}
+          </div>
+        </div>
+      ))}
+    </div>
+    {showMoreIngredients && (
+      <div>
+        {MealPlanList.slice(10).map((ingredient, index) => (
+          <div key={index} className="IngredientRow">
+            <div className="Ingredient">
+              {ingredient.name}
+            </div>
+            <div className="Quantity">
+              {ingredient.quantity} {ingredient.unit !== '""' ? ingredient.unit : null}
+            </div>
+          </div>
+        ))}
+        <button className="date-button" onClick={() => setShowMoreIngredients(false)}>Show Less</button>
+      </div>
+    )}
+    {MealPlanList.length > 10 && !showMoreIngredients && (
+      <button className="date-button" onClick={() => setShowMoreIngredients(true)}>Show More</button>
+    )}
+    
+  
+    <div className="current-range"> <b>Current Date Range:</b> {startDate.toDateString()} - {endDate.toDateString()} </div>
+  </GroceryInfo>
+)}
       {activeTab === "Groceries" && (
         <GroceryInfo>
-          <InfoHeader>Ingredients: </InfoHeader>
+          <InfoHeader className="header">Ingredients: </InfoHeader>
+          {GroceryList.length === 0 && (
+            <p className="zero-ingredients">There are currently no ingredients in this date range. Please select a different range under the meal plan tab.</p>
+          )}
           <div>
-            {GroceryList.map((ingredient, index) => (
-              <div key={index} className="IngredientRow">
-                <div className="Ingredient">
-                  {ingredient.name}
+            {showMoreGroceries ? (
+              // Show all ingredients if showMoreGroceries is true
+              GroceryList.map((ingredient, index) => (
+                <div key={index} className="IngredientRow">
+                  <div className="Ingredient">
+                    {ingredient.name}
+                  </div>
+                  <div className="Quantity">
+                    {ingredient.quantity} {ingredient.unit !== '""' ? ingredient.unit : null}
+                  </div>
                 </div>
-                <div className="Quantity">
-                  {ingredient.amount} {ingredient.unit}
+              ))
+            ) : (
+              // Show only the first 10 ingredients if showMoreGroceries is false
+              GroceryList.slice(0, 10).map((ingredient, index) => (
+                <div key={index} className="IngredientRow">
+                  <div className="Ingredient">
+                    {ingredient.name}
+                  </div>
+                  <div className="Quantity">
+                    {ingredient.quantity} {ingredient.unit !== '""' ? ingredient.unit : null}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
+
+          {/* Show More / Show Less button */}
+          {GroceryList.length > 10 && (
+            <button className="date-button" onClick={() => setShowMoreGroceries(!showMoreGroceries)}>
+              {showMoreGroceries ? "Show Less" : "Show More"}
+            </button>
+          )}
+
         </GroceryInfo>
       )}
     </GroceryPageContainer>

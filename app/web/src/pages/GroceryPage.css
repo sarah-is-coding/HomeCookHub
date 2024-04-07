@@ -4,13 +4,49 @@
     }
   }
 .Ingredient{
-    padding-left: 10%;
-    width: 40%;
+    padding-left: 5%;
+    width: 60%;
     float: left;
+}
+.header{
+    padding-right: 80%;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.zero-ingredients{
+    border-radius: 10px;
+    color:#9B2D2B;
+    background-color: #FFF4E1;
+    height: 200px;
+    padding-top: 10%;
+}
+.minus {
+    margin-top: -26%;
+}
+.delete-ingredient{
+    border: 1px solid #9B2D2B;
+    border-radius: 100%;
+    color:#9B2D2B;
+    float:left;
+    width: 2%;
+    margin-left: 1%;
+    height: 60%;
+    margin-top: 0.7%;
+}
+.delete-ingredient:hover{
+    border: 1px solid #9B2D2B;
+    background-color: #9B2D2B;
+    border-radius: 100%;
+    color:white;
+    float:left;
+    width: 2%;
+    margin-left: 1%;
+    height: 60%;
+    margin-top: 0.7%;
 }
 .Quantity{
     padding-left: 10%;
-    width: 40%;
+    width: 20%;
     float: right;
 }
 .IngredientRow{
@@ -66,7 +102,7 @@
 .name-select{
     width: 30%;
 }
-.amount-select{
+.quantity-select{
     width: 30%;
 }
 .unit-select{
