@@ -148,12 +148,13 @@ router.put('/remove_recipe/:username', function (req, res, next) {
 //POST: Add a recipe to a user's meal plan
 router.post('/save_meal/:username', function (req, res, next) {
     try {
-        if (req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['title']) {
+        if (req.body['day'] && req.body['meal'] && req.body['recipe_id'] && req.body['title'] && req.body['imageURL']) {
             var recipe = {
                 day: firestore_u.Timestamp.fromDate(new Date(req.body['day'])),
                 meal: String(req.body['meal']),
                 recipe_id: String(req.body['recipe_id']),
-                title: String(req.body['title'])
+                title: String(req.body['title']),
+                imageURL: String(req.body['imageURL'])
             };
             console.log(recipe);
             firestore_u.addDoc(firestore_u.collection(Database_u, 'users', req.params["username"], 'mealplans'), recipe).then(function () {
@@ -161,6 +162,11 @@ router.post('/save_meal/:username', function (req, res, next) {
             });
         }
         else {
+            console.log(req.body['day']);
+            console.log(req.body['meal']);
+            console.log(req.body['recipe_id']);
+            console.log(req.body['title']);
+            console.log(req.body['imageURL']);
             res.status(400).send("One or more required inputs is not defined");
         }
     }

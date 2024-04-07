@@ -110,6 +110,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **meal**: The meal the recipe is scheduled for. Should be "Breakfast", "Lunch", or "Dinner".
    - **recipe_id**: The id of the recipe.
    - **title**: The title of the recipe.
+   - **imageURL**: The url of the recipe's picture.
    
 ### users/add_grocery/[USERNAME]
  - **Purpose**: This PUT request adds an item to the user's grocery list.
