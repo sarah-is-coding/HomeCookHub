@@ -110,6 +110,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **meal**: The meal the recipe is scheduled for. Should be "Breakfast", "Lunch", or "Dinner".
    - **recipe_id**: The id of the recipe.
    - **title**: The title of the recipe.
+   - **imageURL**: The url of the recipe's picture.
    
 ### users/add_grocery/[USERNAME]
  - **Purpose**: This PUT request adds an item to the user's grocery list.
@@ -139,7 +140,7 @@ Currently the api is run locally on localhost 9000. All urls should be proceeded
    - **quantity**: (Number) The quantity of the item to add.
    - **unit**: The unit of the item to add.
 
-### users/remove_grocery/[USERNAME]
+### users/remove_pantry/[USERNAME]
  - **Purpose**: This PUT request removes an item to the user's pantry items.
  - **Inputs**:
     - **USERNAME**: The username of the desired user. Note that this is case sensitive.
