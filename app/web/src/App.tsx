@@ -13,6 +13,14 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import GroceryPage from "./pages/GroceryPage";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
+if (process.env.NODE_ENV === "development") {
+  const originalWarn = console.warn.bind(console.warn);
+  console.warn = (msg) => {
+    if (msg.includes("has been created dynamically")) return;
+    originalWarn(msg);
+  };
+}
+
 function App() {
   useEffect(() => {
     const auth = getAuth();

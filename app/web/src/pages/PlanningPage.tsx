@@ -10,14 +10,203 @@ import styled, { createGlobalStyle } from "styled-components";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import theme from "../theme";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+interface FirestoreTimestamp {
+  seconds: number;
+  nanoseconds: number;
+}
+
+interface MealPlanEntry {
+  day: string | FirestoreTimestamp; // Adjust based on actual data
+  imageURL: string;
+  meal: string;
+  recipe_id: string;
+  title: string;
+}
+
+interface MealPlans {
+  [year: number]: {
+    [month: number]: MealPlanEntry[];
+  };
+}
 
 const PlanningPage: React.FC = () => {
   const [date, setDate] = useState(new Date());
+  const [savedRecipes, setSavedRecipes] = useState<RecipeBoxObject[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [mealPlans, setMealPlans] = useState<MealPlans>({});
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  const recipesPerPage = 4; // How many recipes you want to show per page
+  const totalPages = Math.ceil(savedRecipes.length / recipesPerPage); // Total number of pages
+
+  // Function to handle clicking the next arrow
+  const handleNext = () => {
+    setCurrentPage((prevCurrent) => (prevCurrent + 1) % totalPages);
+  };
+
+  // Function to handle clicking the previous arrow
+  const handlePrevious = () => {
+    setCurrentPage(
+      (prevCurrent) => (prevCurrent - 1 + totalPages) % totalPages
+    );
+  };
+
+  // Calculate the recipes to display based on the current page
+  const displayedRecipes = savedRecipes.slice(
+    currentPage * recipesPerPage,
+    (currentPage + 1) * recipesPerPage
+  );
+
+  const fetchAndCacheMealPlans = async (date: Date, userId: string) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const startDay = 1;
+    const endDay = new Date(year, month + 1, 0).getDate();
+
+    const baseUrl = "http://localhost:9000/users";
+    const url = `${baseUrl}/${userId}/${(month + 1)
+      .toString()
+      .padStart(2, "0")}/${startDay.toString().padStart(2, "0")}/${year}/${(
+      month + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${endDay.toString().padStart(2, "0")}/${year}`;
+
+    console.log(
+      `Attempting to fetch meal plans for userId: ${userId}, date range: ${startDay}-${endDay} of month ${
+        month + 1
+      }, year ${year}`
+    );
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const data: MealPlanEntry[] = await response.json();
+
+      console.log(`Fetched meal plans successfully:`, data);
+
+      setMealPlans((prev) => ({
+        ...prev,
+        [year]: {
+          ...prev[year],
+          [month]: data,
+        },
+      }));
+    } catch (error) {
+      console.error(
+        `Error fetching meal plans for userId: ${userId}, date: ${date.toISOString()}, URL: ${url}`,
+        error
+      );
+    }
+  };
+
+  const recipeIDtoRecipeBoxObject = async (
+    recipeId: string
+  ): Promise<RecipeBoxObject> => {
+    console.log(`Starting fetch for recipe ID: ${recipeId}`); // Log at start
+    const url = `http://localhost:9000/recipes/${recipeId}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(
+          `Network response was not ok for recipe ID ${recipeId}`
+        );
+      }
+      const data = await response.json();
+      console.log(`Fetched data for recipe ID ${recipeId}:`, data); // Log fetched data
+
+      // Prepare the object to be returned
+      const recipeBoxObject = {
+        title: data.title,
+        description: data.description,
+        image: data.imageURL, // Adjust according to actual returned field names
+        rating: data.rating,
+        reviewers: data.reviewers,
+        cook_time: data.cook_time,
+        prep_time: data.prep_time,
+        serving_size: data.serving_size,
+        recipeID: recipeId, // Note: Adjust if 'recipeID' should not be included
+      };
+
+      console.log(
+        `Returning mapped object for recipe ID ${recipeId}:`,
+        recipeBoxObject
+      ); // Log the object to be returned
+
+      return recipeBoxObject;
+    } catch (error) {
+      console.error("Error fetching recipe details:", error);
+      throw error; // Rethrow or handle as appropriate for further error handling
+    }
+  };
+
+  useEffect(() => {
+    console.log("Current meal plans state after update:", mealPlans);
+  }, [mealPlans]);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        console.log("User logged in:", currentUser.uid);
+        fetch(`http://localhost:9000/users/${currentUser.uid}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setSavedRecipes(
+              Array.isArray(data.Saved_Recipes) ? data.Saved_Recipes : []
+            );
+          })
+          .catch((error) => {
+            console.error("Error fetching saved recipes:", error);
+            setSavedRecipes([]);
+          });
+      } else {
+        console.log("User is not logged in.");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user);
+        console.log("User logged in:", user.uid);
+
+        // Move fetching logic here to ensure it executes after user login
+        await fetchAndCacheMealPlans(new Date(), user.uid)
+          .then(() => {
+            // Additional logic can go here if needed after fetching meal plans
+            console.log(`Meal plans fetched for user: ${user.uid}`);
+          })
+          .catch((error) => {
+            console.error("Error fetching meal plans:", error);
+          });
+
+        // Assuming handleDateChange does not depend on external state that isn't set yet
+        handleDateChange(new Date());
+      } else {
+        setCurrentUser(null);
+        console.log("User is not logged in.");
+        // Handle case where user logs out or is not logged in
+      }
+    });
+
+    return () => unsubscribe();
+  }, []); // This effect depends on component mounting and unmounting only.
+
   const GlobalStyle = createGlobalStyle`
     body {
       margin: 0;
       font-family: ${theme.fonts.primary};
-      background-color: ${theme.colors.light};
+      // background-color: ${theme.colors.light};
       color: ${theme.colors.black};
     }
     .react-calendar {
@@ -107,7 +296,7 @@ const PlanningPage: React.FC = () => {
     align-items: center; // Center the children vertically.
     text-align: center;
     color: ${theme.colors.black};
-    background-color: ${theme.colors.light};
+    // background-color: ${theme.colors.light};
     padding: 20px;
     height: 100vh; // Ensure the container takes the full height of the viewport.
   `;
@@ -167,7 +356,7 @@ const PlanningPage: React.FC = () => {
     &:hover {
       color: ${theme.colors.white};
       background-color: ${theme.colors.primary};
-    }
+    }3
   `;
 
   const AddButtonStyled = styled(AddButton)`
@@ -206,8 +395,11 @@ const PlanningPage: React.FC = () => {
           <div>Select a saved recipe to add to your meal plan!</div>
         </div>
         <div>
+          {/* Add navigation arrow for previous page */}
+          {currentPage > 0 && <button onClick={handlePrevious}>&lt;</button>}
           <PopupGridContainer className="grid">
-            {savedRecipes.map((recipe, index) => (
+            {/* Only display recipes for the current page */}
+            {displayedRecipes.map((recipe, index) => (
               <RecipeBox
                 key={index}
                 recipeID={index.toString()}
@@ -216,12 +408,16 @@ const PlanningPage: React.FC = () => {
                 image={recipe.image}
                 rating={recipe.rating}
                 reviewers={recipe.reviewers}
-                cook_time={recipe.cook_time} // Ensure these fields are now included in RecipeBoxObject
+                cook_time={recipe.cook_time}
                 prep_time={recipe.prep_time}
                 serving_size={recipe.serving_size}
               />
             ))}
           </PopupGridContainer>
+          {/* Add navigation arrow for next page */}
+          {currentPage < totalPages - 1 && (
+            <button onClick={handleNext}>&gt;</button>
+          )}
         </div>
         <div className="row meal-choice">
           <p className="meal-choice-selection">Breakfast</p>
@@ -240,106 +436,128 @@ const PlanningPage: React.FC = () => {
     breakfast: emptyRecipeCard,
     dinner: emptyRecipeCard,
   });
-  const savedRecipes: RecipeBoxObject[] = [
-    {
-      title: "Cereal",
-      rating: 4,
-      description: "Quick and easy breakfast",
-      reviewers: "",
-      image: "/assets/cereal.png",
-      cook_time: 0, // Cereal doesn't need cooking
-      prep_time: 5, // Time to pour cereal and milk
-      serving_size: 1,
-    },
-    {
-      title: "Lucky Charms with Oat Milk",
-      rating: 2,
-      description: "Lucky Charms cereal with a twist of oat milk",
-      reviewers: "",
-      image: "/assets/lucky-charms.png",
-      cook_time: 0,
-      prep_time: 5,
-      serving_size: 1,
-    },
-    {
-      title: "Chicken Alfredo",
-      rating: 5,
-      description: "Creamy Alfredo pasta with succulent chicken pieces",
-      reviewers: "",
-      image: "/assets/chicken-alfredo.png",
-      cook_time: 30, // Assuming it includes pasta cooking and sauce preparation
-      prep_time: 15, // Prep for chicken and other ingredients
-      serving_size: 4,
-    },
-    {
-      title: "Chocolate Cake",
-      rating: 1,
-      description: "Rich and moist chocolate cake",
-      reviewers: "",
-      image: "/assets/chocolate-cake.png",
-      cook_time: 45, // Baking time
-      prep_time: 20, // Mixing and preparing the batter
-      serving_size: 8, // Standard cake size
-    },
-  ];
 
-  const getCurrentDayPlan = (value: Date | Date[] | null) => {
-    // This would be where the backend is called to get current recipe card information
-    const breakfastRecipeCard: RecipeBoxObject = {
-      title: "Cereal",
-      rating: 2,
-      description: "Lucky Charms with oat milk",
-      reviewers: "",
-      image: "/assets/cereal.png",
-      cook_time: 0,
-      prep_time: 5,
-      serving_size: 1,
-    };
+  const getCurrentDayPlan = async () => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
 
-    const lunchRecipeCard: RecipeBoxObject = {
-      title: "Fried Chicken",
-      rating: 4,
-      description: "Garlic crusted fried chicken",
-      reviewers: "",
-      image: "/assets/fried-chicken.png",
-      cook_time: 40, // Assuming frying and preparation
-      prep_time: 20, // Marinating and breading
-      serving_size: 4,
-    };
+    console.log("Entered getCurrentDayPlan");
+    console.log(`Plans for the month:`, mealPlans[year]?.[month]);
+    console.log(
+      `Day: ${day}, Plans for day before filtering:`,
+      mealPlans[year]?.[month]
+    );
 
-    const dinnerRecipeCard: RecipeBoxObject = {
-      title: "Fettucine Alfredo",
-      rating: 5,
-      description: "White sauce pasta with grilled chicken",
-      reviewers: "",
-      image: "/assets/fettucine-alfredo.png",
-      cook_time: 30,
-      prep_time: 15,
-      serving_size: 4,
-    };
+    const plansForDay = mealPlans[year]?.[month]?.filter((entry) => {
+      let entryDate;
 
-    setCurrentDayPlan({
-      breakfast: breakfastRecipeCard,
-      lunch: lunchRecipeCard,
-      dinner: dinnerRecipeCard,
+      // Check if day is a FirestoreTimestamp and convert accordingly
+      if (typeof entry.day === "object" && "seconds" in entry.day) {
+        entryDate = new Date(entry.day.seconds * 1000); // Firestore Timestamp
+      } else {
+        entryDate = new Date(entry.day); // Assuming entry.day is a string
+      }
+
+      const entryYear = entryDate.getFullYear();
+      const entryMonth = entryDate.getMonth();
+      const entryDay = entryDate.getDate();
+
+      return entryYear === year && entryMonth === month && entryDay === day;
     });
-    console.log("day plan changed: " + currentDayPlan.breakfast.title);
-  };
-  // called when calendar is clicked
-  const handleDateChange = (
-    value: Date | Date[] | null,
-    event: ChangeEvent<any>
-  ) => {
-    if (value !== null && !Array.isArray(value)) {
-      setDate(value);
-      console.log("date clicked: " + date.getDate());
-      // calls function that returns day plan from backend
-      getCurrentDayPlan(value);
+
+    console.log(`Filtered plans for ${year}-${month + 1}-${day}:`, plansForDay);
+
+    console.log("Entered getCurrentDayPlan");
+
+    if (plansForDay && plansForDay.length > 0) {
+      let dayPlan = {
+        breakfast: emptyRecipeCard,
+        lunch: emptyRecipeCard,
+        dinner: emptyRecipeCard,
+      };
+
+      console.log("Starting to process plans for the day", plansForDay);
+
+      for (const plan of plansForDay) {
+        try {
+          const recipeDetails = await recipeIDtoRecipeBoxObject(plan.recipe_id);
+          if (plan.meal.toLowerCase() === "breakfast") {
+            dayPlan.breakfast = recipeDetails;
+          } else if (plan.meal.toLowerCase() === "lunch") {
+            dayPlan.lunch = recipeDetails;
+          } else if (plan.meal.toLowerCase() === "dinner") {
+            dayPlan.dinner = recipeDetails;
+          }
+        } catch (error) {
+          console.error("Error fetching recipe details:", error);
+        }
+      }
+
+      // Log the dayPlan contents here
+      console.log("Updated dayPlan contents:", dayPlan);
+
+      setCurrentDayPlan(dayPlan);
+    } else {
+      setCurrentDayPlan({
+        breakfast: emptyRecipeCard,
+        lunch: emptyRecipeCard,
+        dinner: emptyRecipeCard,
+      });
     }
   };
+
+  const handleDateChange = (selectedDate: Date | Date[] | null) => {
+    if (!selectedDate || Array.isArray(selectedDate) || !currentUser) {
+      console.log("Date selection is invalid or no user is logged in.");
+      return;
+    }
+
+    const newDate = selectedDate as Date;
+    setDate(newDate); // Update the currently selected date.
+    console.log(`Selected date changed to: ${newDate.toISOString()}`);
+
+    // Check if meal plans for the year and month of the new date are already loaded.
+    const year = newDate.getFullYear();
+    const month = newDate.getMonth();
+    if (mealPlans[year] && mealPlans[year][month]) {
+      // If meal plans for this month are already cached, update the view for the selected day.
+      console.log(`Using cached meal plans for ${year}-${month + 1}.`);
+      getCurrentDayPlan();
+    } else {
+      // If not, fetch and cache the meal plans for this month, then update the view.
+      console.log(`Fetching meal plans for ${year}-${month + 1}.`);
+      fetchAndCacheMealPlans(newDate, currentUser.uid)
+        .then(() => {
+          // Ensure this method updates the state correctly to reflect the changes.
+          console.log(
+            `Fetched and cached new meal plans for ${year}-${
+              month + 1
+            }, updating day plan.`
+          );
+          getCurrentDayPlan();
+        })
+        .catch((error) => {
+          console.error(
+            `Failed to fetch meal plans for ${year}-${month + 1}:`,
+            error
+          );
+        });
+    }
+  };
+
+  useEffect(() => {
+    // This function now correctly depends on `date`, `currentUser`, and `mealPlans`.
+    // It will run when any of these dependencies change.
+    if (currentUser) {
+      console.log("Fetching current day plan due to dependency change.");
+      getCurrentDayPlan();
+    }
+  }, [date, currentUser, mealPlans]); // Added dependencies here.
+
   // Ensures that app loads with current date information instead of blank
   useEffect(() => {
-    getCurrentDayPlan(date);
+    getCurrentDayPlan();
   }, []);
 
   return (

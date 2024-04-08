@@ -75,18 +75,18 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
   const recipeIDString = recipeID.toString();
   //Log the props each time they change
   useEffect(() => {
-    console.log("RecipeBox Props:", {
-      title,
-      description,
-      image,
-      rating,
-      reviewers,
-      recipeID,
-      cook_time,
-      prep_time,
-      serving_size,
-      showSaveButton,
-    });
+    // console.log("RecipeBox Props:", {
+    //   title,
+    //   description,
+    //   image,
+    //   rating,
+    //   reviewers,
+    //   recipeID,
+    //   cook_time,
+    //   prep_time,
+    //   serving_size,
+    //   showSaveButton,
+    // });
   }, [title, description, image, rating, reviewers, recipeID, showSaveButton]);
 
   useEffect(() => {
