@@ -7,4 +7,6 @@ export interface RecipeBoxObject {
   cook_time: number; // New property for cooking time
   prep_time: number; // New property for preparation time
   serving_size: number; // New property for the number of servings
+  day?: string | Date;
+  recipeID: string;
 }
