@@ -180,21 +180,27 @@ const PlanningPage: React.FC = () => {
         setCurrentUser(user);
         console.log("User logged in:", user.uid);
 
-        // Fetch and cache meal plans for the current date as soon as the user is authenticated
-        await fetchAndCacheMealPlans(new Date(), user.uid);
+        // Move fetching logic here to ensure it executes after user login
+        await fetchAndCacheMealPlans(new Date(), user.uid)
+          .then(() => {
+            // Additional logic can go here if needed after fetching meal plans
+            console.log(`Meal plans fetched for user: ${user.uid}`);
+          })
+          .catch((error) => {
+            console.error("Error fetching meal plans:", error);
+          });
 
-        // Now that we know meal plans are fetched and cached, call handleDateChange with today's date
-        // This assumes handleDateChange does not require event object and works correctly with just a Date object
-        const today = new Date();
-        handleDateChange(today);
+        // Assuming handleDateChange does not depend on external state that isn't set yet
+        handleDateChange(new Date());
       } else {
         setCurrentUser(null);
         console.log("User is not logged in.");
+        // Handle case where user logs out or is not logged in
       }
     });
 
     return () => unsubscribe();
-  }, []); // The dependency array is empty, indicating this effect runs once on component mount.
+  }, []); // This effect depends on component mounting and unmounting only.
 
   const GlobalStyle = createGlobalStyle`
     body {
@@ -539,6 +545,15 @@ const PlanningPage: React.FC = () => {
         });
     }
   };
+
+  useEffect(() => {
+    // This function now correctly depends on `date`, `currentUser`, and `mealPlans`.
+    // It will run when any of these dependencies change.
+    if (currentUser) {
+      console.log("Fetching current day plan due to dependency change.");
+      getCurrentDayPlan();
+    }
+  }, [date, currentUser, mealPlans]); // Added dependencies here.
 
   // Ensures that app loads with current date information instead of blank
   useEffect(() => {
