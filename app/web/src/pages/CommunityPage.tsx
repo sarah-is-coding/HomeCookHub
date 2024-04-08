@@ -23,7 +23,7 @@ const ComingSoonBanner = styled.div`
   font-family: ${theme.fonts.title}; // Use the title font for a bit of flair
 `;
 
-const TutorialsPage = () => {
+const CommunityPage = () => {
   return (
     <PageContainer>
       <ComingSoonBanner>Coming Soon</ComingSoonBanner>
@@ -31,4 +31,4 @@ const TutorialsPage = () => {
   );
 };
 
-export default TutorialsPage;
+export default CommunityPage;

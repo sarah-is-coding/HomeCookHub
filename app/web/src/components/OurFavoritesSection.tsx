@@ -28,16 +28,16 @@ const FeaturedRecipe = styled.div`
 const SmallRecipesContainer = styled.div`
   grid-column: span 4;
   display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
 `;
 
-const SmallRecipe = styled.div`
+// StyledRecipeBox applied directly to RecipeBox for styling and hover effects
+const StyledRecipeBox = styled(RecipeBox)`
   background-color: ${theme.colors.white};
   border-radius: 16px;
   box-shadow: ${theme.shadow};
   transition: transform 0.3s ease;
-
   &:hover {
     transform: translateY(-10px);
   }
@@ -94,21 +94,20 @@ const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
             />
           </FeaturedRecipe>
           <SmallRecipesContainer>
-            {recipes.slice(1).map((recipe, index) => (
-              <SmallRecipe key={recipe.id}>
-                <RecipeBox
-                  title={recipe.title}
-                  description={recipe.description}
-                  image={recipe.imageURL || "/assets/default.jpg"} // Ensure fallback for missing imageURL
-                  rating={recipe.rating}
-                  reviewers={recipe.reviewers}
-                  recipeID={recipe.id}
-                  cook_time={recipe.cook_time} // Pass the new props
-                  prep_time={recipe.prep_time}
-                  serving_size={recipe.serving_size}
-                  showSaveButton={true}
-                />
-              </SmallRecipe>
+            {recipes.slice(1, 3).map((recipe) => (
+              <StyledRecipeBox
+                key={recipe.id}
+                title={recipe.title}
+                description={recipe.description}
+                image={recipe.imageURL || "/assets/default.jpg"}
+                rating={recipe.rating}
+                reviewers={recipe.reviewers}
+                recipeID={recipe.id}
+                cook_time={recipe.cook_time}
+                prep_time={recipe.prep_time}
+                serving_size={recipe.serving_size}
+                showSaveButton={true}
+              />
             ))}
           </SmallRecipesContainer>
         </>
