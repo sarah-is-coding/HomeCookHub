@@ -12,6 +12,8 @@ import "./loginUser";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import GroceryPage from "./pages/GroceryPage";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import CommunityPage from "./pages/CommunityPage";
+//import CommunityPage from "./pages/CommunityPage";
 
 if (process.env.NODE_ENV === "development") {
   const originalWarn = console.warn.bind(console.warn);
@@ -41,6 +43,7 @@ function App() {
         <Route path="/add-recipe" element={<AddRecipePage />} />
         <Route path="/meal-planning" element={<PlanningPage />} />
         <Route path="/user-profile" element={<ProfilePage />} />
+        <Route path="/community" element={<CommunityPage />} />
       </Routes>
     </Router>
   );
