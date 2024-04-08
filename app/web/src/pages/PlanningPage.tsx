@@ -74,18 +74,10 @@ const PlanningPage: React.FC = () => {
       .toString()
       .padStart(2, "0")}/${endDay.toString().padStart(2, "0")}/${year}`;
 
-    console.log(
-      `Attempting to fetch meal plans for userId: ${userId}, date range: ${startDay}-${endDay} of month ${
-        month + 1
-      }, year ${year}`
-    );
-
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error("Network response was not ok");
       const data: MealPlanEntry[] = await response.json();
-
-      console.log(`Fetched meal plans successfully:`, data);
 
       setMealPlans((prev) => ({
         ...prev,
@@ -105,7 +97,6 @@ const PlanningPage: React.FC = () => {
   const recipeIDtoRecipeBoxObject = async (
     recipeId: string
   ): Promise<RecipeBoxObject> => {
-    console.log(`Starting fetch for recipe ID: ${recipeId}`); // Log at start
     const url = `http://localhost:9000/recipes/${recipeId}`;
     try {
       const response = await fetch(url);
@@ -115,7 +106,6 @@ const PlanningPage: React.FC = () => {
         );
       }
       const data = await response.json();
-      console.log(`Fetched data for recipe ID ${recipeId}:`, data); // Log fetched data
 
       // Prepare the object to be returned
       const recipeBoxObject = {
@@ -130,11 +120,6 @@ const PlanningPage: React.FC = () => {
         recipeID: recipeId, // Note: Adjust if 'recipeID' should not be included
       };
 
-      console.log(
-        `Returning mapped object for recipe ID ${recipeId}:`,
-        recipeBoxObject
-      ); // Log the object to be returned
-
       return recipeBoxObject;
     } catch (error) {
       console.error("Error fetching recipe details:", error);
@@ -142,15 +127,12 @@ const PlanningPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("Current meal plans state after update:", mealPlans);
-  }, [mealPlans]);
+  useEffect(() => {}, [mealPlans]);
 
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        console.log("User logged in:", currentUser.uid);
         fetch(`http://localhost:9000/users/${currentUser.uid}`)
           .then((response) => {
             if (!response.ok) {
@@ -178,14 +160,10 @@ const PlanningPage: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setCurrentUser(user);
-        console.log("User logged in:", user.uid);
 
         // Move fetching logic here to ensure it executes after user login
         await fetchAndCacheMealPlans(new Date(), user.uid)
-          .then(() => {
-            // Additional logic can go here if needed after fetching meal plans
-            console.log(`Meal plans fetched for user: ${user.uid}`);
-          })
+          .then(() => {})
           .catch((error) => {
             console.error("Error fetching meal plans:", error);
           });
@@ -442,13 +420,6 @@ const PlanningPage: React.FC = () => {
     const month = date.getMonth();
     const day = date.getDate();
 
-    console.log("Entered getCurrentDayPlan");
-    console.log(`Plans for the month:`, mealPlans[year]?.[month]);
-    console.log(
-      `Day: ${day}, Plans for day before filtering:`,
-      mealPlans[year]?.[month]
-    );
-
     const plansForDay = mealPlans[year]?.[month]?.filter((entry) => {
       let entryDate;
 
@@ -466,18 +437,12 @@ const PlanningPage: React.FC = () => {
       return entryYear === year && entryMonth === month && entryDay === day;
     });
 
-    console.log(`Filtered plans for ${year}-${month + 1}-${day}:`, plansForDay);
-
-    console.log("Entered getCurrentDayPlan");
-
     if (plansForDay && plansForDay.length > 0) {
       let dayPlan = {
         breakfast: emptyRecipeCard,
         lunch: emptyRecipeCard,
         dinner: emptyRecipeCard,
       };
-
-      console.log("Starting to process plans for the day", plansForDay);
 
       for (const plan of plansForDay) {
         try {
@@ -494,9 +459,6 @@ const PlanningPage: React.FC = () => {
         }
       }
 
-      // Log the dayPlan contents here
-      console.log("Updated dayPlan contents:", dayPlan);
-
       setCurrentDayPlan(dayPlan);
     } else {
       setCurrentDayPlan({
@@ -509,32 +471,24 @@ const PlanningPage: React.FC = () => {
 
   const handleDateChange = (selectedDate: Date | Date[] | null) => {
     if (!selectedDate || Array.isArray(selectedDate) || !currentUser) {
-      console.log("Date selection is invalid or no user is logged in.");
       return;
     }
 
     const newDate = selectedDate as Date;
     setDate(newDate); // Update the currently selected date.
-    console.log(`Selected date changed to: ${newDate.toISOString()}`);
 
     // Check if meal plans for the year and month of the new date are already loaded.
     const year = newDate.getFullYear();
     const month = newDate.getMonth();
     if (mealPlans[year] && mealPlans[year][month]) {
       // If meal plans for this month are already cached, update the view for the selected day.
-      console.log(`Using cached meal plans for ${year}-${month + 1}.`);
       getCurrentDayPlan();
     } else {
       // If not, fetch and cache the meal plans for this month, then update the view.
-      console.log(`Fetching meal plans for ${year}-${month + 1}.`);
       fetchAndCacheMealPlans(newDate, currentUser.uid)
         .then(() => {
           // Ensure this method updates the state correctly to reflect the changes.
-          console.log(
-            `Fetched and cached new meal plans for ${year}-${
-              month + 1
-            }, updating day plan.`
-          );
+
           getCurrentDayPlan();
         })
         .catch((error) => {
@@ -550,7 +504,6 @@ const PlanningPage: React.FC = () => {
     // This function now correctly depends on `date`, `currentUser`, and `mealPlans`.
     // It will run when any of these dependencies change.
     if (currentUser) {
-      console.log("Fetching current day plan due to dependency change.");
       getCurrentDayPlan();
     }
   }, [date, currentUser, mealPlans]); // Added dependencies here.
