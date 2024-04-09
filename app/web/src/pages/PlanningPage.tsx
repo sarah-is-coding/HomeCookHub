@@ -11,7 +11,134 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import theme from "../theme";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { close } from "fs";
 
+const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({ onSave }) => {
+  const [savedRecipes, setSavedRecipes] = useState<RecipeBoxObject[]>([]);
+  const [selectedMeal, setSelectedMeal] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const recipesPerPage = 4; // How many recipes you want to show per page
+  const totalPages = Math.ceil(savedRecipes.length / recipesPerPage); // Total number of pages
+  
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        fetch(`http://localhost:9000/users/${currentUser.uid}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setSavedRecipes(
+              Array.isArray(data.Saved_Recipes) ? data.Saved_Recipes : []
+            );
+          })
+          .catch((error) => {
+            console.error("Error fetching saved recipes:", error);
+            setSavedRecipes([]);
+          });
+      } else {
+        console.log("User is not logged in.");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const GridContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+  `;
+  const PopupGridContainer = styled(GridContainer)`
+    grid-template-columns: repeat(4, 1fr);
+  `;
+  const displayedRecipes = savedRecipes.slice(
+    currentPage * recipesPerPage,
+    (currentPage + 1) * recipesPerPage
+  );
+  const handleNext = () => {
+    setCurrentPage((prevCurrent) => (prevCurrent + 1) % totalPages);
+  };
+
+  // Function to handle clicking the previous arrow
+  const handlePrevious = () => {
+    setCurrentPage(
+      (prevCurrent) => (prevCurrent - 1 + totalPages) % totalPages
+    );
+  };
+  const handleSave = () => {
+    onSave(selectedMeal);
+  };
+
+  return (
+    <>
+      <div className="add-recipe">
+        <div className="content">
+          <b className="popup-header">Select a saved recipe to add to your meal plan!</b>
+        </div>
+        <div>
+          {/* Add navigation arrow for previous page */}
+          
+          <PopupGridContainer className="grid">
+            {/* Only display recipes for the current page */}
+            {displayedRecipes.map((recipe, index) => (
+              <RecipeBox
+                key={index}
+                recipeID={index.toString()}
+                title={recipe.title}
+                description={recipe.description}
+                image={recipe.image}
+                rating={recipe.rating}
+                reviewers={recipe.reviewers}
+                cook_time={recipe.cook_time}
+                prep_time={recipe.prep_time}
+                serving_size={recipe.serving_size}
+              />
+            ))}
+          </PopupGridContainer>
+          {/* Add navigation arrow for next page */}
+          {currentPage < totalPages - 1 && (
+            <button onClick={handleNext}>&gt;</button>
+          )}
+          {currentPage > 0 && <button onClick={handlePrevious}>&lt;</button>}
+        </div>
+        <div className="meal-choice">
+          <p
+            className={`meal-choice-selection row ${selectedMeal === "breakfast" ? "meal-choice-selected" : ""
+              }`}
+            onClick={() => setSelectedMeal("breakfast")}
+          >
+            Breakfast
+          </p>
+          <p
+            className={`meal-choice-selection ${selectedMeal === "lunch" ? "meal-choice-selected" : ""
+              }`}
+            onClick={() => setSelectedMeal("lunch")}
+          >
+            Lunch
+          </p>
+          <p
+            className={`meal-choice-selection ${selectedMeal === "dinner" ? "meal-choice-selected" : ""
+              }`}
+            onClick={() => setSelectedMeal("dinner")}
+          >
+            Dinner
+          </p>
+        </div>
+
+        <div className="close-button">
+          <button onClick={() => handleSave()}>Save</button>
+        </div>
+      </div>
+    </>
+  );
+};
 interface FirestoreTimestamp {
   seconds: number;
   nanoseconds: number;
@@ -58,7 +185,6 @@ const PlanningPage: React.FC = () => {
     currentPage * recipesPerPage,
     (currentPage + 1) * recipesPerPage
   );
-
   const fetchAndCacheMealPlans = async (date: Date, userId: string) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -69,10 +195,10 @@ const PlanningPage: React.FC = () => {
     const url = `${baseUrl}/${userId}/${(month + 1)
       .toString()
       .padStart(2, "0")}/${startDay.toString().padStart(2, "0")}/${year}/${(
-      month + 1
-    )
-      .toString()
-      .padStart(2, "0")}/${endDay.toString().padStart(2, "0")}/${year}`;
+        month + 1
+      )
+        .toString()
+        .padStart(2, "0")}/${endDay.toString().padStart(2, "0")}/${year}`;
 
     try {
       const response = await fetch(url);
@@ -93,7 +219,9 @@ const PlanningPage: React.FC = () => {
       );
     }
   };
-
+  const handlePopupSave = (meal: string) => {
+    console.log("main component: ", meal);
+  }
   const recipeIDtoRecipeBoxObject = async (
     recipeId: string
   ): Promise<RecipeBoxObject> => {
@@ -127,7 +255,7 @@ const PlanningPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {}, [mealPlans]);
+  useEffect(() => { }, [mealPlans]);
 
   useEffect(() => {
     const auth = getAuth();
@@ -163,7 +291,7 @@ const PlanningPage: React.FC = () => {
 
         // Move fetching logic here to ensure it executes after user login
         await fetchAndCacheMealPlans(new Date(), user.uid)
-          .then(() => {})
+          .then(() => { })
           .catch((error) => {
             console.error("Error fetching meal plans:", error);
           });
@@ -237,6 +365,7 @@ const PlanningPage: React.FC = () => {
       padding: 10px 20px; // Padding inside the button
       cursor: pointer; // Pointer cursor on hover
       transition: background-color 0.3s, color 0.3s; // Transition for hover effects
+      text-align: center;
     }
     .close-button button:hover {
       color: ${theme.colors.white}; // Button text color on hover
@@ -252,7 +381,7 @@ const PlanningPage: React.FC = () => {
       font-weight: bold; // Makes the text stand out
       cursor: pointer; // Changes cursor to indicate clickable
       transition: background-color 0.3s, color 0.3s; // Smooth transition for feedback
-    
+      width: 28%;
       &:hover, &:focus {
         background-color: ${theme.colors.primary}; // Highlight on hover/focus
         color: ${theme.colors.white}; // Text color contrast on hover/focus
@@ -365,50 +494,7 @@ const PlanningPage: React.FC = () => {
     prep_time: 0, // Default or placeholder value
     serving_size: 0, // Default or placeholder value
   };
-  type PopupChildFunction = (close: () => void) => React.ReactNode;
-  const popupContent: PopupChildFunction = (close) => (
-    <>
-      <div className="add-recipe">
-        <div className="content">
-          <div>Select a saved recipe to add to your meal plan!</div>
-        </div>
-        <div>
-          {/* Add navigation arrow for previous page */}
-          {currentPage > 0 && <button onClick={handlePrevious}>&lt;</button>}
-          <PopupGridContainer className="grid">
-            {/* Only display recipes for the current page */}
-            {displayedRecipes.map((recipe, index) => (
-              <RecipeBox
-                key={index}
-                recipeID={index.toString()}
-                title={recipe.title}
-                description={recipe.description}
-                image={recipe.image}
-                rating={recipe.rating}
-                reviewers={recipe.reviewers}
-                cook_time={recipe.cook_time}
-                prep_time={recipe.prep_time}
-                serving_size={recipe.serving_size}
-              />
-            ))}
-          </PopupGridContainer>
-          {/* Add navigation arrow for next page */}
-          {currentPage < totalPages - 1 && (
-            <button onClick={handleNext}>&gt;</button>
-          )}
-        </div>
-        <div className="row meal-choice">
-          <p className="meal-choice-selection">Breakfast</p>
-          <p className="meal-choice-selection">Lunch</p>
-          <p className="meal-choice-selection">Dinner</p>
-        </div>
 
-        <div className="close-button">
-          <button onClick={() => close()}>Save</button>
-        </div>
-      </div>
-    </>
-  );
   let [currentDayPlan, setCurrentDayPlan] = useState({
     lunch: emptyRecipeCard,
     breakfast: emptyRecipeCard,
@@ -529,7 +615,7 @@ const PlanningPage: React.FC = () => {
             modal
             nested
           >
-            {popupContent as unknown as React.ReactNode}
+            <PopupContent onSave={handlePopupSave} />
           </Popup>
         </CenteredContainer>
         <CardsContainer>
