@@ -13,15 +13,11 @@ const StyledImage = styled.img`
 `;
 
 const FirebaseImage: React.FC<FirebaseImageProps> = ({
-  imagePath = "", // Provide a default empty string if imagePath is undefined
+  imagePath = "",
   alt = "Image",
 }) => {
-  const baseUrl =
-    "https://firebasestorage.googleapis.com/v0/b/homecookhub-0.appspot.com/o/";
-
   const extractPath = (path: string) => {
-    // Safely handle undefined or nullish values
-    if (!path) return ""; // Return an empty string if path is falsy
+    if (!path) return "";
     const match = path.match(/gs:\/\/[^\/]+\/(.+)/);
     return match ? match[1] : path;
   };
@@ -30,6 +26,9 @@ const FirebaseImage: React.FC<FirebaseImageProps> = ({
     /%2F/g,
     "/"
   );
+
+  const baseUrl =
+    "https://firebasestorage.googleapis.com/v0/b/homecookhub-0.appspot.com/o/";
   const imageUrl = `${baseUrl}${formattedPath}?alt=media`;
 
   return <StyledImage src={imageUrl} alt={alt} />;
