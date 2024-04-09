@@ -16,11 +16,11 @@ const RecipeSearchContainer = styled.div`
 `;
 
 const Title = styled.h1`
-color: ${theme.colors.black};
-font-family: ${theme.fonts.title};
-text-align: center;
-font-size: 4rem;
-margin-bottom: 2rem;
+  color: ${theme.colors.black};
+  font-family: ${theme.fonts.title};
+  text-align: center;
+  font-size: 4rem;
+  margin-bottom: 2rem;
 `;
 
 const AddRecipeButton = styled(Link)`
@@ -48,7 +48,6 @@ const GridContainer = styled.div`
   width: 100%;
   max-width: 1200px;
 `;
-
 
 const RecipeSearchPage: React.FC = () => {
   const [recipes, setRecipes] = useState(recipesData); //Initialized with hard-coded data
@@ -87,7 +86,6 @@ const RecipeSearchPage: React.FC = () => {
       try {
         const response = await fetch("http://localhost:9000/recipes/");
         const data = await response.json();
-        console.log("Fetched Recipes Search Page:", data);
         setRecipes(data);
       } catch (error) {
         console.log(error);

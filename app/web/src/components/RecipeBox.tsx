@@ -135,6 +135,11 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
     }
   };
 
+  // console.log("Props going into FirebaseImage:", {
+  //   imagePath: image,
+  //   alt: title,
+  // });
+
   return (
     <Box to={`/recipes/${encodeURIComponent(recipeID)}`}>
       <FirebaseImage imagePath={image} alt={title} />

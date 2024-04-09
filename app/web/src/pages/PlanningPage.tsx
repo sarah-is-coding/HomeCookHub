@@ -425,7 +425,8 @@ const PlanningPage: React.FC = () => {
   `;
 
   const MealCard = styled.div`
-    width: 100%; // You might want to adjust this depending on the number of cards you want in a row
+    width: 100%;
+    height: 550px;
     max-width: 300px; // Example: Limit the maximum width to keep cards from becoming too large
     border-radius: 10px;
     background-color: ${theme.colors.primary};
