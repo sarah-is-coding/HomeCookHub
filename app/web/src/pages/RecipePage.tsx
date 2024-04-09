@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RecipeCard from "../components/RecipeCard";
+import FirebaseImage from "../components/FirebaseImage"; // Ensure correct import
 import styled from "styled-components";
 import theme from "../theme";
 import { FaStar, FaArrowDown } from "react-icons/fa";
-import recipesData from "../components/recipesData";
-// save recipe or add to calender option in recipe page
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -13,23 +12,13 @@ const PageContainer = styled.div`
   margin: auto;
 `;
 
-interface ImageContainerProps {
-  imageUrl: string;
-}
-
-const ImageContainer = styled.div<ImageContainerProps>`
+const ImageDisplay = styled.div`
   position: relative;
-  background-image: url(${(props) => props.imageUrl});
-  background-size: cover;
-  height: 300px;
+  height: 400px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
+  overflow: hidden;
 `;
 
 const ImageOverlay = styled.div`
@@ -39,23 +28,26 @@ const ImageOverlay = styled.div`
   bottom: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1; // Ensure overlay is above the image but below text/icons
 `;
 
 const TitleOnImage = styled.h1`
-  position: relative;
-  margin-left: 20px;
-  margin-bottom: 10px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
   color: white;
   font-family: ${theme.fonts.title};
   font-size: 2rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 2; // Ensure text is above the overlay
 `;
 
 const StarRating = styled.div`
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: 20px;
   color: white;
+  z-index: 2; // Ensure icons are above the overlay
 
   svg {
     transition: transform 0.2s ease;
@@ -67,7 +59,7 @@ const StarRating = styled.div`
 
 const JumpToRecipeButton = styled.button`
   position: absolute;
-  bottom: 10px;
+  bottom: 20px;
   right: 20px;
   background: ${theme.colors.primary};
   color: white;
@@ -79,6 +71,7 @@ const JumpToRecipeButton = styled.button`
   align-items: center;
   gap: 5px;
   transition: background-color 0.3s ease;
+  z-index: 2; // Ensure button is above the overlay
 
   &:hover {
     background-color: ${theme.hover.background};
@@ -102,27 +95,26 @@ const CommentsSection = styled.div`
   background-color: ${theme.colors.lightGrey};
   padding: 15px;
   border-radius: 8px;
-  // Additional styles for comments
 `;
 
 interface RecipeDetails {
   title: string;
-  image: string;
+  imageURL: string;
   description: string;
-  ingredients: Object;
-  quantities: Object;
-  units: Object;
-  steps: Object;
-  rating: number;
+  ingredients: {};
+  quantities: {};
+  units: {};
+  steps: {};
+  rating: 4.5;
   reviewers: string;
-  serving_size: number;
-  prep_time: number;
-  cook_time: number;
-  id: string;
+  serving_size: 2;
+  prep_time: 10;
+  cook_time: 20;
+  id: "mashed-potatoes";
 }
 
 const RecipePage: React.FC = () => {
-  const [recipe, setRecipe] = useState(recipesData[0]);
+  const [recipe, setRecipe] = useState<RecipeDetails | null>(null);
   const params = useParams<{ title?: string }>();
 
   useEffect(() => {
@@ -143,26 +135,6 @@ const RecipePage: React.FC = () => {
     };
 
     fetchRecipe();
-
-    /*
-    if (params.title) {
-      const normalizedTitle = decodeURIComponent(
-        params.title.replace(/-/g, " ")
-      );
-
-      // Find the recipe in recipesData using the normalized title
-      const recipeDetails = recipesData.find(
-        (r) => r.title.toLowerCase() === normalizedTitle.toLowerCase()
-      );
-
-      if (recipeDetails) {
-        setRecipe(recipeDetails);
-      } else {
-        // Handle the case where the recipe is not found
-        console.error("Recipe not found");
-      }
-    }
-    */
   }, [params.title]);
 
   const scrollToRecipeCard = () => {
@@ -176,24 +148,28 @@ const RecipePage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  // Prepend PUBLIC_URL to the image path
-  const imageUrl = `${process.env.PUBLIC_URL}${recipe.image}`;
+  console.log("Props going into FirebaseImage from RecipePage:", {
+    imagePath: recipe.imageURL, // Adjusted to match the fetched data property name
+    altText: recipe.title,
+  });
 
   return (
     <PageContainer>
-      <ImageContainer imageUrl={recipe.image || "/assets/default.jpg"}>
+      <ImageDisplay>
+        <FirebaseImage
+          imagePath={recipe.imageURL || "/assets/default.jpg"} // Use imageURL from fetched data
+          alt={recipe.title || ""}
+        />
         <ImageOverlay />
         <TitleOnImage>{recipe.title || ""}</TitleOnImage>
         <StarRating>
-          {[...Array(5)].map((star, index) => {
+          {[...Array(5)].map((_, index) => {
             const ratingValue = index + 1;
             return (
               <FaStar
                 key={index}
                 size={24}
-                color={
-                  ratingValue <= recipe.rating || 0 ? "#ffc107" : "#e4e5e9"
-                }
+                color={ratingValue <= recipe.rating ? "#ffc107" : "#e4e5e9"}
               />
             );
           })}
@@ -202,10 +178,10 @@ const RecipePage: React.FC = () => {
         <JumpToRecipeButton onClick={scrollToRecipeCard}>
           Jump to Recipe <FaArrowDown />
         </JumpToRecipeButton>
-      </ImageContainer>
+      </ImageDisplay>
       <BlogDescription>{recipe.description || ""}</BlogDescription>
       <RecipeCard RecipeId="recipe-card" {...recipe} />
-      <CommentsSection>{/* Comments and rating section */}</CommentsSection>
+      <CommentsSection />
     </PageContainer>
   );
 };

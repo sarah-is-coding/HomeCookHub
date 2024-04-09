@@ -62,7 +62,6 @@ interface OurFavoritesSectionProps {
 const OurFavoritesSection: React.FC<OurFavoritesSectionProps> = ({
   recipes,
 }) => {
-  console.log("OurFavoritesSection Recipes:", recipes);
   return (
     <Section>
       <h2
