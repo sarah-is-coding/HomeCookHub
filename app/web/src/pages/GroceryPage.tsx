@@ -20,7 +20,7 @@ const PopupContent: React.FC<{ onSave: (name: string, quantity: number, unit: st
   const [tempName, setTempName] = useState('');
   const [tempUnit, setTempUnit] = useState('');
   const [tempQuantity, setTempQuantity] = useState(0);
-  const dropdownOptions = [{ name: 'No Unit', value: '' }, { name: 'ounces', value: 'oz' }, { name: 'pounds', value: 'lbs' }, {name: "cans", value: 'cans'}, {name: "teaspoons", value: "tsp"}, {name: "tablespoon", value: "tbsp"}];
+  const dropdownOptions = [{ name: 'No Unit', value: '' }, { name: 'ounces', value: 'oz' }, { name: 'pounds', value: 'lbs' }, {name: "can", value: 'can'}, {name: "cloves", value: "cloves"}, {name: "teaspoons", value: "tsp"}, {name: "tablespoon", value: "tbsp"}, {name: "packet", value: "packet"}, {name: "bag", value: "bag"}, {name: "cups", value: "cups"}, {name: "slices", value: "slices"}];
   const defaultOption = dropdownOptions[0].name;
   
   const handleTempNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -157,12 +157,13 @@ const GroceryPage: React.FC = () => {
     margin-bottom: 10px;
   `;
   useEffect(() => {
+
     // API calls to populate all lists
     const fetchPantryList = async () => {
       try {
-        const response = await fetch("http://localhost:9000/users/Test_User");
+        const response = await fetch("http://localhost:9000/users/NWOUQ5rKfzf8fbOHdGapVcH261z1");
         const data = await response.json();
-        const userPantry = data[0].Pantry_Items;
+        const userPantry = data.Pantry_Items;
         setIngredient(userPantry);
        // setRecipes(data);
       } catch (error) {
@@ -181,7 +182,7 @@ const GroceryPage: React.FC = () => {
     
     // Iterate over each ingredient in the aggregated list
     aggregatedList.forEach((ingredient) => {
-      const key = `${ingredient.name}_${ingredient.unit}`; // Create a unique key for each ingredient
+      const key = `${ingredient.name.toLowerCase()}_${ingredient.unit}`; // Convert the name to lowercase before creating the key
       
       // If the ingredient already exists in the map, add its quantity to the existing one
       if (ingredientMap[key]) {
@@ -203,13 +204,14 @@ const GroceryPage: React.FC = () => {
     
     return combinedList;
   };
+  
   const fetchMealPlanList = async () => {
     try {
       const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to get 1-indexed months
       const startDay = startDate.getDate().toString().padStart(2, '0');
       const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 to get 1-indexed months
       const endDay = endDate.getDate().toString().padStart(2, '0');
-      const url = `http://localhost:9000/users/Test_User/${startMonth}/${startDay}/${startDate.getFullYear()}/${endMonth}/${endDay}/${endDate.getFullYear()}`;
+      const url = `http://localhost:9000/users/NWOUQ5rKfzf8fbOHdGapVcH261z1/${startMonth}/${startDay}/${startDate.getFullYear()}/${endMonth}/${endDay}/${endDate.getFullYear()}`;
       console.log(url);
       const response = await fetch(url);
 
@@ -259,16 +261,54 @@ const GroceryPage: React.FC = () => {
       console.log(error);
     }
   };
+  const deletePantryItemApi = async (tempIngredient:any) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9000/users/remove_pantry/NWOUQ5rKfzf8fbOHdGapVcH261z1`,
+      {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          name: tempIngredient.name,
+          quantity: tempIngredient.quantity,
+          unit: tempIngredient.unit,
+        })
+      }
+      
+    )
+    console.log("name: " + tempIngredient.name, "quantity: " + tempIngredient.quantity, "unit: " + tempIngredient.unit);
+    console.log(response);
+  } catch (error) {
+      console.log(error);
+    }
+  };
+  const addPantryItemApi = async (tempIngredient:any) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9000/users/add_pantry/NWOUQ5rKfzf8fbOHdGapVcH261z1`,
+      {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          name: tempIngredient.name,
+          quantity: tempIngredient.quantity,
+          unit: tempIngredient.unit,
+        })
+      }
+      
+    )
+    console.log("name: " + tempIngredient.name, "quantity: " + tempIngredient.quantity, "unit: " + tempIngredient.unit);
+    console.log(response);
+  } catch (error) {
+      console.log(error);
+    }
+  };
   // insert back end call here to populate original ingredient list
   const [ingredientList, setIngredient] = useState([
-    { unit: "oz", name: "Milk", quantity: 24 },
+    { unit: "", name: "", quantity: 0 },
   ]);
   const [MealPlanList, setMealPlan] = useState([
-    { unit: "oz", name: "Milk", quantity: 34 },
-    { unit: "", name: "Carrots", quantity: 2 },
-    { unit: "lbs", name: "Beef", quantity: 1 },
-    { unit: "oz", name: "Honey", quantity: 1 },
-    { unit: "", name: "Eggs", quantity: 3 }
+    { unit: "", name: "", quantity: 0 },
   ]);
   const [GroceryList, setGrocery] = useState([
     { unit: "", name: "", quantity: 0}
@@ -280,11 +320,14 @@ const GroceryPage: React.FC = () => {
     
     let ingredientFound = false;
 
+    addPantryItemApi({name: tempName, quantity: tempQuantity, unit: tempUnit});
     setIngredient(prevIngredientList => {
       const updatedIngredients = prevIngredientList.map(ingredient => {
         if ((ingredient.name).toUpperCase() === (tempName).toUpperCase()) {
           console.log("match found");
           ingredientFound = true;
+          deletePantryItemApi({name: ingredient.name, quantity: ingredient.quantity, unit: ingredient.unit})
+          addPantryItemApi({name: ingredient.name, quantity: ingredient.quantity + tempQuantity, unit: ingredient.unit})
           return {
             ...ingredient,
             quantity: ingredient.quantity + tempQuantity
@@ -332,6 +375,8 @@ const GroceryPage: React.FC = () => {
 
   }
   const deletePantryIngredient = (ingredientName: string, ingredientQuantity: number, ingredientUnit: string) => {
+    
+    deletePantryItemApi({name: ingredientName, quantity: ingredientQuantity, unit: ingredientUnit});
     setIngredient(prevIngredientList =>
       prevIngredientList.filter(ingredient => ingredient.name !== ingredientName)
     );
