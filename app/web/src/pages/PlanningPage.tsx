@@ -13,13 +13,15 @@ import theme from "../theme";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { close } from "fs";
 
-const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({ onSave }) => {
+const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({
+  onSave,
+}) => {
   const [savedRecipes, setSavedRecipes] = useState<RecipeBoxObject[]>([]);
   const [selectedMeal, setSelectedMeal] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(0);
   const recipesPerPage = 4; // How many recipes you want to show per page
   const totalPages = Math.ceil(savedRecipes.length / recipesPerPage); // Total number of pages
-  
+
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -80,11 +82,13 @@ const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({ onSave }) 
     <>
       <div className="add-recipe">
         <div className="content">
-          <b className="popup-header">Select a saved recipe to add to your meal plan!</b>
+          <b className="popup-header">
+            Select a saved recipe to add to your meal plan!
+          </b>
         </div>
         <div>
           {/* Add navigation arrow for previous page */}
-          
+
           <PopupGridContainer className="grid">
             {/* Only display recipes for the current page */}
             {displayedRecipes.map((recipe, index) => (
@@ -93,7 +97,7 @@ const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({ onSave }) 
                 recipeID={index.toString()}
                 title={recipe.title}
                 description={recipe.description}
-                image={recipe.image}
+                image={recipe.imageURL}
                 rating={recipe.rating}
                 reviewers={recipe.reviewers}
                 cook_time={recipe.cook_time}
@@ -110,22 +114,25 @@ const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({ onSave }) 
         </div>
         <div className="meal-choice">
           <p
-            className={`meal-choice-selection row ${selectedMeal === "breakfast" ? "meal-choice-selected" : ""
-              }`}
+            className={`meal-choice-selection row ${
+              selectedMeal === "breakfast" ? "meal-choice-selected" : ""
+            }`}
             onClick={() => setSelectedMeal("breakfast")}
           >
             Breakfast
           </p>
           <p
-            className={`meal-choice-selection ${selectedMeal === "lunch" ? "meal-choice-selected" : ""
-              }`}
+            className={`meal-choice-selection ${
+              selectedMeal === "lunch" ? "meal-choice-selected" : ""
+            }`}
             onClick={() => setSelectedMeal("lunch")}
           >
             Lunch
           </p>
           <p
-            className={`meal-choice-selection ${selectedMeal === "dinner" ? "meal-choice-selected" : ""
-              }`}
+            className={`meal-choice-selection ${
+              selectedMeal === "dinner" ? "meal-choice-selected" : ""
+            }`}
             onClick={() => setSelectedMeal("dinner")}
           >
             Dinner
@@ -195,10 +202,10 @@ const PlanningPage: React.FC = () => {
     const url = `${baseUrl}/${userId}/${(month + 1)
       .toString()
       .padStart(2, "0")}/${startDay.toString().padStart(2, "0")}/${year}/${(
-        month + 1
-      )
-        .toString()
-        .padStart(2, "0")}/${endDay.toString().padStart(2, "0")}/${year}`;
+      month + 1
+    )
+      .toString()
+      .padStart(2, "0")}/${endDay.toString().padStart(2, "0")}/${year}`;
 
     try {
       const response = await fetch(url);
@@ -221,7 +228,7 @@ const PlanningPage: React.FC = () => {
   };
   const handlePopupSave = (meal: string) => {
     console.log("main component: ", meal);
-  }
+  };
   const recipeIDtoRecipeBoxObject = async (
     recipeId: string
   ): Promise<RecipeBoxObject> => {
@@ -239,7 +246,7 @@ const PlanningPage: React.FC = () => {
       const recipeBoxObject = {
         title: data.title,
         description: data.description,
-        image: data.imageURL, // Adjust according to actual returned field names
+        imageURL: data.imageURL, // Adjust according to actual returned field names
         rating: data.rating,
         reviewers: data.reviewers,
         cook_time: data.cook_time,
@@ -255,7 +262,7 @@ const PlanningPage: React.FC = () => {
     }
   };
 
-  useEffect(() => { }, [mealPlans]);
+  useEffect(() => {}, [mealPlans]);
 
   useEffect(() => {
     const auth = getAuth();
@@ -291,7 +298,7 @@ const PlanningPage: React.FC = () => {
 
         // Move fetching logic here to ensure it executes after user login
         await fetchAndCacheMealPlans(new Date(), user.uid)
-          .then(() => { })
+          .then(() => {})
           .catch((error) => {
             console.error("Error fetching meal plans:", error);
           });
@@ -490,7 +497,7 @@ const PlanningPage: React.FC = () => {
     rating: 0,
     description: "",
     reviewers: "",
-    image: "",
+    imageURL: "",
     cook_time: 0, // Default or placeholder value
     prep_time: 0, // Default or placeholder value
     serving_size: 0, // Default or placeholder value
@@ -627,7 +634,7 @@ const PlanningPage: React.FC = () => {
                 recipeID="20"
                 title={currentDayPlan.breakfast.title}
                 description={currentDayPlan.breakfast.description}
-                image={currentDayPlan.breakfast.image}
+                image={currentDayPlan.breakfast.imageURL}
                 rating={currentDayPlan.breakfast.rating}
                 reviewers={currentDayPlan.breakfast.reviewers}
                 cook_time={currentDayPlan.breakfast.cook_time} // Assuming these fields are now part of RecipeBoxObject
@@ -643,7 +650,7 @@ const PlanningPage: React.FC = () => {
                 recipeID="21"
                 title={currentDayPlan.lunch.title}
                 description={currentDayPlan.lunch.description}
-                image={currentDayPlan.lunch.image}
+                image={currentDayPlan.lunch.imageURL}
                 rating={currentDayPlan.lunch.rating}
                 reviewers={currentDayPlan.lunch.reviewers}
                 cook_time={currentDayPlan.lunch.cook_time} // Assuming these fields are now part of RecipeBoxObject
@@ -659,7 +666,7 @@ const PlanningPage: React.FC = () => {
                 recipeID="22"
                 title={currentDayPlan.dinner.title}
                 description={currentDayPlan.dinner.description}
-                image={currentDayPlan.dinner.image}
+                image={currentDayPlan.dinner.imageURL}
                 rating={currentDayPlan.dinner.rating}
                 reviewers={currentDayPlan.dinner.reviewers}
                 cook_time={currentDayPlan.dinner.cook_time} // Assuming these fields are now part of RecipeBoxObject
