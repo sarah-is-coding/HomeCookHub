@@ -194,7 +194,7 @@ const ProfilePage: React.FC = () => {
                 recipeID={index.toString()}
                 title={recipe.title}
                 description={recipe.description}
-                image={recipe.image}
+                image={recipe.imageURL}
                 rating={recipe.rating}
                 reviewers={recipe.reviewers}
                 cook_time={recipe.cook_time}
