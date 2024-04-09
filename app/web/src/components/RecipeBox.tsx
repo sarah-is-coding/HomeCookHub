@@ -119,6 +119,7 @@ const RecipeBox: React.FC<RecipeBoxProps> = ({
             recipe_id: recipeIDString,
             title: title,
             serving_size: serving_size,
+            imageURL: image,
           }),
         }
       );
