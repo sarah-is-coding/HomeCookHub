@@ -56,6 +56,12 @@
 }
 .close-button{
     margin-top: 20px;
+    text-align:center;
+    color: #9B2D2B;
+}
+.close-button:hover{
+    margin-top: 20px;
+    text-align:center;
 }
 .range-button{
     text-align: center;

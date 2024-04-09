@@ -25,12 +25,19 @@
       width: 100%;
       max-width: 1200px;
   } */
+  .close-button{
+    text-align: center !important;
+    margin-left: 25%;
+  }
+  .popup-header{
+    margin-left: 25%;
+  }
   .add-recipe{
     text-align: center;
   }
   .meal-choice-selection{
     margin:auto;
-    width: 33%;
+    width: 33% !important;
   }
   .meal-choice-selection:hover{
     background-color: #9B2D2B;
@@ -39,11 +46,11 @@
     height: 100%;
   }
   .meal-choice{
-
+    --bs-gutter-x: -5.5rem !important;
     border-radius: 50px;
     background-color: #ebebeb;
     text-align: center;
-    width: 90%;
+    width: 100%;
     margin-left: 5%;
   }
   .calendar-with-tags{
