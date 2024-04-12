@@ -21,9 +21,9 @@
 
 ### 5. User Manual TODO: ADD LINK
 
-### 6. [Powerpoint Slideshow](documentation/Design%20Presentation.pptx) TODO: UPDATE
+### 6. [Powerpoint Slideshow](documentation/Spring%20Design%20Presentation.pptx)
 
-### 7. EXPO Poster TODO: ADD LINK
+### 7. [EXPO Poster](documentation/EXPO%20Poster.pdf)
 
 ### 8. Self Assessment Essays
 
