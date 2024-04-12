@@ -1,7 +1,9 @@
 ## Hour Summary: Mary Meineke
 ### Hour Summary
 **Semester 1:** 41.75
+
 **Winter Break:** 9.75
+
 **Semester 2:** 47
 
 ## Justification
