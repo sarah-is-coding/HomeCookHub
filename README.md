@@ -45,7 +45,7 @@
 
 - Sarah Murdock
 - Preston Savey
-- [Mary Meineke](documentation/Mary Meineke Hour Summary.md)
+- [Mary Meineke](documentation/Mary%20Meineke%20Hour%20Summary.md)
 - John Thompson
 
 ### 9. Budget
