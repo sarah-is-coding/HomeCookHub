@@ -38,7 +38,7 @@
 
 - Sarah Murdock
 - Preston Savey
-- Mary Meineke
+- [Mary Meineke](documentation/capstone_assessments/Mary_Meineke_Final_Self_Assessment.md)
 - John Thompson
 
 ### 8. Summary of Hours
