@@ -40,7 +40,7 @@
 #### Final Assessments
 
 - Sarah Murdock
-- Preston Savey
+- [Preston Savey](documentation/capstone_assessments/Preston_Savey_Final_Self_Assessment.md)
 - [Mary Meineke](documentation/capstone_assessments/Mary_Meineke_Final_Self_Assessment.md)
 - [John Thompson](documentation/capstone_assessments/johnathan-thompson-final-assessment.md)
 
