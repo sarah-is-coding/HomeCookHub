@@ -4,7 +4,7 @@
 
 **Winter Break:** 9.75
 
-**Semester 2:** 47
+**Semester 2:** 48
 
 ## Justification
 During the first semester, I contributed to the initial design work, participated in all meetings we held, worked to design and initialize the databases for the project, filled those databases with initial test data, and began research into implementing an API. This semester had a slower start as I needed to find a group, and work with that group to decide what we wanted to do and how to go about it. While I did not put in 45 hours of work during the first semester, I did put in work over Winter Break to make up for it.
