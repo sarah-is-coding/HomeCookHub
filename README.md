@@ -19,6 +19,9 @@
 
 ### 4. Test Plan and Results TODO: ADD LINK(S)
 
+#### [Test Plan](documentation/Test%20Plan.md)
+#### [Results](documentation/Test_Results.pdf)
+
 ### 5. User Manual TODO: ADD LINK
 
 ### 6. [Powerpoint Slideshow](documentation/Spring%20Design%20Presentation.pptx)
@@ -39,18 +42,18 @@
 - Sarah Murdock
 - Preston Savey
 - [Mary Meineke](documentation/capstone_assessments/Mary_Meineke_Final_Self_Assessment.md)
-- John Thompson
+- [John Thompson](documentation/capstone_assessments/johnathan-thompson-final-assessment.md)
 
 ### 8. Summary of Hours
 
 - Sarah Murdock
 - Preston Savey
 - [Mary Meineke](documentation/Mary%20Meineke%20Hour%20Summary.md)
-- John Thompson
+- [John Thompson](documentation/John_Thompson_Hours_Summary.md)
 
 ### 9. Budget
 
-There has not been any expenses so the budget is $0
+There was an expense to buy a cardboard poster board for the expo, so our expenses for our project is $4
 
 ### 10. Appendix
 #### Other Documentation
