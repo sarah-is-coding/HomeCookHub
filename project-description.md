@@ -28,7 +28,7 @@ Email: thomp5je@mail.uc.edu
 ## Project Description
 HomeCookHub: 
 
-A recipe-sharing site/app where users can upload and share recipes, create meal plans, and generate grocery lists based on selected recipes and what they already have at their home.
+A recipe-sharing site/app where users can upload and share recipes, create meal plans, and generate grocery lists based on selected recipes and what they already have in their pantry at home.
 
 ## Project Abstract with Problem Statement:
 
@@ -42,17 +42,15 @@ Many apps and websites cater to specific niches within the cooking community. So
 
 The project demands expertise in the following areas:
 
-**Web and Mobile App Development:** Ensuring a seamless and responsive user experience across devices.
+**Web App Development:** Ensuring a seamless and responsive user experience across devices.
 
 **Database Management:** Efficient storage, retrieval, and management of vast amounts of recipe data, user profiles, reviews, and more.
-
-**Machine Learning:** For recipe recommendations based on user preferences and dietary habits.
 
 **UI/UX Design:** Crafting an intuitive user interface that caters to diverse user bases including those with special accessibility needs.
 
 **Cloud Computing:** For backup, storage, and ensuring data integrity and accessibility.
 
-**API Integrations:** To link up with health or diet apps and potentially local farm databases.
+**API Integrations:** To link with the database storing our recipe and user data.
 
 ## Project Team Approach to Problem:
 
