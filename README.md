@@ -17,12 +17,12 @@
 
 ### 3. User Interface Specification TODO: ADD LINK
 
-### 4. Test Plan and Results TODO: ADD LINK(S)
+### 4. Test Plan and Results
 
 #### [Test Plan](documentation/Test%20Plan.md)
 #### [Results](documentation/Test_Results.pdf)
 
-### 5. User Manual TODO: ADD LINK
+### 5. [User Manual](documentation/User_Docs.md)
 
 ### 6. [Powerpoint Slideshow](documentation/Spring%20Design%20Presentation.pptx)
 
