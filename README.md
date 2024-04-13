@@ -47,7 +47,7 @@
 ### 8. Summary of Hours
 
 - Sarah Murdock
-- Preston Savey
+- [Preston Savey](documentation/Preston_Savey_Hours_Summary.md)
 - [Mary Meineke](documentation/Mary%20Meineke%20Hour%20Summary.md)
 - [John Thompson](documentation/John_Thompson_Hours_Summary.md)
 
