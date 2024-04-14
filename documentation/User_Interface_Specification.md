@@ -16,7 +16,7 @@ The UI design of the project leverages a centralized theme defined in `theme.ts`
 ### Effects
 - **Shadow**: Generic shadow for floating elements
 
-## RecipePage Component
+## RecipePage 
 
 The `RecipePage` is designed to display detailed information about a specific recipe, which users can access by navigating from other parts of the application or directly via a URL.
 
@@ -50,7 +50,7 @@ The `RecipePage` is designed to display detailed information about a specific re
 
 This specification provides a comprehensive overview of the `RecipePage`, detailing its role in displaying individual recipes within the application. It covers the layout, interactions, data management, and styling that facilitate a detailed and user-friendly viewing experience.
 
-## Profile Page Component Structure
+## Profile Page
 
 The `ProfilePage` component is a React component styled with `styled-components` and makes use of the theme for dynamic styling based on the application's state and properties.
 
@@ -118,7 +118,7 @@ This component showcases a selection of favorite recipes, highlighting the appli
 
 The theme and styling across these components are consistent with the application's color palette and typography settings defined in the `theme.ts` file, ensuring a cohesive user experience.
 
-## RecipeSearchPage Component
+## RecipeSearchPage 
 
 The `RecipeSearchPage` is a dedicated component for searching and displaying recipes. It includes a search functionality that dynamically updates the displayed recipes based on the search criteria.
 
@@ -148,7 +148,7 @@ The `RecipeSearchPage` is a dedicated component for searching and displaying rec
 
 This component, like others in the application, adheres to the defined `theme.ts` settings, ensuring that the appearance remains consistent with the rest of the application's aesthetic. The use of styled components allows for modular and maintainable code, with style rules directly linked to the logic of the application.
 
-## PlanningPage Component
+## PlanningPage 
 
 The `PlanningPage` serves as a comprehensive interface where users can plan and organize their meals using a calendar layout. It integrates recipe selection through a modal popup, allowing users to conveniently set meals for different days.
 
@@ -189,7 +189,7 @@ The `PlanningPage` serves as a comprehensive interface where users can plan and 
 
 This specification provides a comprehensive overview of the `PlanningPage`, highlighting its role in meal planning within the application. It details the interactions, data management, and styling that facilitate an intuitive and efficient user experience.
 
-## GroceryPage Component
+## GroceryPage
 
 The `GroceryPage` provides functionality for users to manage groceries, incorporating elements such as a pantry inventory, meal plan ingredients, and a generated grocery list based on user needs.
 
