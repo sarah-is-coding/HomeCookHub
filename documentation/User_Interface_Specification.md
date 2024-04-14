@@ -90,31 +90,31 @@ The `HomePage` serves as the landing page of the application, providing users wi
 ### Interactions
 - **Data Fetching**: The component fetches a list of recipes on initial load to display in the `OurFavoritesSection`.
 
-## OurFavoritesSection Component
+### OurFavoritesSection
 
 This component showcases a selection of favorite recipes, highlighting the application's recipe management capabilities.
 
-### Structure
+#### Structure
 - **Section**: Styled section that organizes content within the page.
 - **FeaturedRecipe**: Displays a single featured recipe in greater detail.
 - **SmallRecipesContainer**: Houses additional recipes in a smaller format for quick browsing.
 
-### Recipe Display
+#### Recipe Display
 - Recipes are displayed using the `RecipeBox` component, which is styled to fit the theme of the site.
 - The first recipe is featured prominently, with up to two additional recipes displayed alongside in smaller boxes.
 
-### Styling
+#### Styling
 - **Section**: Utilizes grid layout for responsive arrangement of recipes.
 - **FeaturedRecipe and SmallRecipesContainer**: Use shadows and border-radius for a subtle, elevated effect.
 
-### Functionality
+#### Functionality
 - **Dynamic Recipe Loading**: Recipes passed to the component are dynamically loaded into the layout.
 - **Interaction Effects**: Hover effects on recipe boxes enhance user interaction by providing visual feedback.
 
-### Data Handling
+#### Data Handling
 - **Props**: Receives an array of recipe objects that it displays. Each recipe object includes details such as title, description, image URL, rating, and cook time.
 
-## Overall Theme and Style
+### Overall Theme and Style
 
 The theme and styling across these components are consistent with the application's color palette and typography settings defined in the `theme.ts` file, ensuring a cohesive user experience.
 
