@@ -19,8 +19,8 @@
 
 ### 4. Test Plan and Results
 
-#### [Test Plan](documentation/Test%20Plan.md)
-#### [Results](documentation/Test_Results.pdf)
+- #### [Test Plan](documentation/Test%20Plan.md)
+- #### [Results](documentation/Test_Results.pdf)
 
 ### 5. [User Manual](documentation/User_Docs.md)
 
@@ -39,7 +39,7 @@
 
 #### Final Assessments
 
-- Sarah Murdock
+- [Sarah Murdock](documentation/capstone_assessments/Sarah-Murdock-Individual-Assessment.md)
 - [Preston Savey](documentation/capstone_assessments/Preston_Savey_Final_Self_Assessment.md)
 - [Mary Meineke](documentation/capstone_assessments/Mary_Meineke_Final_Self_Assessment.md)
 - [John Thompson](documentation/capstone_assessments/johnathan-thompson-final-assessment.md)
