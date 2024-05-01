@@ -15,7 +15,7 @@
 
 ### 2. [Project Description](project-description.md)
 
-### 3. User Interface Specification TODO: ADD LINK
+### 3. [User Interface Specification](documentation/User_Interface_Specification.md)
 
 ### 4. Test Plan and Results
 
