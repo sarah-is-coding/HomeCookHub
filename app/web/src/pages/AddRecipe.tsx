@@ -21,7 +21,7 @@ const FormContainer = styled.div`
     flex: 3;
     position: absolute;
     color: black;
-    top: 15%;
+    top: 16%;
     left: 25%;
     border-color: black;
     border-radius: 5px;
@@ -39,13 +39,11 @@ const RightContainer = styled.div<{ height: number }>`
     width: 20%`
 
 const Title = styled.h1`
-  color: black;
-  left: 10%;
-  top: 15%;
-  width: 800px;
-  text-align: left;
+  color: ${theme.colors.black};
+  font-family: ${theme.fonts.title};
+  text-align: center;
   font-size: 4rem;
-  padding-bottom: 100px
+  margin-bottom: 2rem;
 `;
 
 const Body = styled.h1`
@@ -54,7 +52,8 @@ const Body = styled.h1`
   width: 400px;
   text-align: left;
   font-size: 2rem;
-  padding-top: 100px
+  padding-top: 100px;
+  font-family: ${theme.fonts.primary};
 `;
 
 const TitleBody = styled(Body) `
@@ -92,7 +91,7 @@ const Input = styled.input`
   `;
 
 const NumberInput = styled(Input)`
-    width: 20%;
+    width: 40%;
   `;
 
 
@@ -167,8 +166,8 @@ const TutorialsPage = () => {
   const [servingSize, setServingSize]  = useState<number>(0)
   const [prepTime, setPrepTime] = useState<number>(0)
   // const [tags, setTags] = useState<string>("")
-  const [leftContainerHeight, setLeftContainerHeight] = useState(215); // Initial height
-  const [rightContainerHeight, setRightContainerHeight] = useState(215); 
+  const [leftContainerHeight, setLeftContainerHeight] = useState(230); // Initial height
+  const [rightContainerHeight, setRightContainerHeight] = useState(230); 
   const [recipeIngredients, setIngredients] = useState<Ingredient[]>([{ ingredient: "", quantity: "", unit: "" }]);
   const [recipeSteps, setSteps] = useState<Steps[]>([{step: ""}]);
   const [newTitle, setTitle] = useState<string>("")

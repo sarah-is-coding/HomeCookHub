@@ -33,7 +33,7 @@ const Body = styled.h1`
   color: ${theme.colors.black};
   position: absolute;
   left: 120px;
-  top: 65%;
+  top: 74%;
   transform: translateY(-50%);
   width: calc(100% - 40px);
   text-align: left;

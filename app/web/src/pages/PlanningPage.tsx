@@ -52,8 +52,8 @@ const PopupContent: React.FC<{ onSave: (meal: string) => void }> = ({
   const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 20px;
-    padding: 20px;
+    gap: 10px;
+    padding: 10px;
     width: 100%;
     max-width: 1200px;
   `;
@@ -388,7 +388,7 @@ const PlanningPage: React.FC = () => {
       font-weight: bold; // Makes the text stand out
       cursor: pointer; // Changes cursor to indicate clickable
       transition: background-color 0.3s, color 0.3s; // Smooth transition for feedback
-      width: 28%;
+      width: 25%;
       &:hover, &:focus {
         background-color: ${theme.colors.primary}; // Highlight on hover/focus
         color: ${theme.colors.white}; // Text color contrast on hover/focus
